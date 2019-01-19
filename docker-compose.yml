@@ -1,0 +1,11 @@
+version: '3'
+services:
+  docs:
+    container_name: ridesharing-docs
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    entrypoint: ['sleep', '60000']
