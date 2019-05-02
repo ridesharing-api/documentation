@@ -14,7 +14,7 @@
     },
     "type": {
       "type": "string",
-      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Trip$"
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/RecurrentTrip$"
     },
     "created": {
       "description": "Zeitpunkt der Erstellung.",
