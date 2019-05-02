@@ -1,0 +1,95 @@
+{
+  "title": "Trip",
+  "description": "Das Objekt beschreibt eine Fahrt.",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "url"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "url"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Trip$"
+    },
+    "created": {
+      "description": "Zeitpunkt der Erstellung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "modified": {
+      "description": "Zeitpunkt der letzten Änderung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "published": {
+      "description": "Zeitpunkt der Veröffentlichung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "expired": {
+      "description": "Zeitpunkt, ab welchem das Angebot nicht mehr gültig ist.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "active": {
+      "description": "Status, ob das Angebot weiterhin angeboten wird.",
+      "type": "boolean"
+    },
+    "url": {
+      "description": "Öffentlicher Link auf das Angebot.",
+      "type": "string",
+      "format": "url"
+    },
+    "recurrentTrip": {
+      "description": "Wiederkehrende Fahrt (falls vorhanden)",
+      "references": "RecurrentTrip",
+      "backreference": "trip",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "car": {
+      "description": "Fahrzeug",
+      "references": "Car",
+      "backreference": "trip",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "preferences": {
+      "description": "Präferenzen",
+      "references": "Preferences",
+      "backreference": "trip",
+      "cardinality": "1:1",
+      "type": "string",
+      "format": "url"
+    },
+    "stop": {
+      "description": "Haltepunkte",
+      "references": "Stop",
+      "backreference": "trip",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    },
+    "participation": {
+      "description": "Teilnahmen",
+      "references": "Participation",
+      "backreference": "trip",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    }
+  }
+}

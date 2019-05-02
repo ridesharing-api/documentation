@@ -1,0 +1,65 @@
+{
+  "title": "Location",
+  "description": "Das Objekt beschreibt einen Ort.",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "name"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "url"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Location$"
+    },
+    "created": {
+      "description": "Zeitpunkt der Erstellung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "modified": {
+      "description": "Zeitpunkt der letzten Änderung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "name": {
+      "description": "Name des Ortes.",
+      "type": "string"
+    },
+    "streetAddress": {
+      "description": "Straße und Hausnummer des Ortes.",
+      "type": "string"
+    },
+    "postalCode": {
+      "description": "Postleitzahl des Ortes.",
+      "type": "string"
+    },
+    "locality": {
+      "description": "Stadt oder Ort des Ortes.",
+      "type": "string"
+    },
+    "subLocality": {
+      "description": "Untergeordnete Ortsangabe der Anschrift, z.B. Stadtbezirk, Ortsteil oder Dorf.",
+      "type": "string"
+    },
+    "geojson": {
+      "description": "Geodaten-Repräsentation des Orts. Der Wert dieser Eigenschaft muss der Spezifikation von GeoJSON entsprechen, d.h. es muss ein vollständiges Feature-Objekt ausgegeben werden.",
+      "type": "object"
+    },
+    "stop": {
+      "description": "Haltepunkte",
+      "references": "Stop",
+      "backreference": "location",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    }
+  }
+}

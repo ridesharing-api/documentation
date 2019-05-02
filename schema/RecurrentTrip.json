@@ -1,0 +1,78 @@
+{
+  "title": "RecurrentTrip",
+  "description": "Das Objekt beschreibt eine wiederkehrende Fahrt.",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "url"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "url"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Trip$"
+    },
+    "created": {
+      "description": "Zeitpunkt der Erstellung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "modified": {
+      "description": "Zeitpunkt der letzten Änderung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "time": {
+      "description": "Uhrzeiten, zu denen die Fahrt angeboten wird, als Liste an ISO 8601 Wochentag-Nummern.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "time"
+      }
+    },
+    "weekday": {
+      "description": "Tage, an denen die Fahrt angeboten wird, als Liste an ISO 8601 Wochentag-Nummern.",
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "month": {
+      "description": "Monate, an denen die Fahrt angeboten wird, als Liste an Monats-Nummern.",
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "weeks": {
+      "description": "Wochen, an denen die Fahrt angeboten wird, als Liste an WochenNummern.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "exception": {
+      "description": "Ausnahmen, an denen keine Fahrt angeboten wird.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "datetime"
+      }
+    },
+    "trip": {
+      "description": "Fahrt",
+      "references": "Trip",
+      "backreference": "recurrentTrip",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    }
+  }
+}

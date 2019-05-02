@@ -1,0 +1,57 @@
+{
+  "title": "Preferences",
+  "description": "Das Objekt beschreibt die Präferenzen gegenüber Mitfahrern.",
+  "type": "object",
+  "required": [
+    "id",
+    "type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "url"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Preferences$"
+    },
+    "created": {
+      "description": "Zeitpunkt der Erstellung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "modified": {
+      "description": "Zeitpunkt der letzten Änderung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "nonsmoking": {
+      "description": "Nichtraucher-Fahrt.",
+      "type": "boolean"
+    },
+    "gender": {
+      "description": "Gender der MitfahrerInnen. Es SOLLTEN die Begriffe female fü weiblich und male für männlich verwendet werden. Andere Geschlechter SOLLTEN klein geschrieben und in englisch beschrieben werden.",
+      "type": "string"
+    },
+    "age": {
+      "description": "Alter der MitfahrerInnen, Freitext.",
+      "type": "string"
+    },
+    "age_from": {
+      "description": "Mindestalter der MitfahrerInnen, numerischer Wert.",
+      "type": "integer"
+    },
+    "age_to": {
+      "description": "Maximales Alter der MitfahrerInnen, numerischer Wert.",
+      "type": "integer"
+    },
+    "trip": {
+      "description": "Fahrt",
+      "references": "Trip",
+      "backreference": "car",
+      "cardinality": "1:1",
+      "type": "string",
+      "format": "url"
+    }
+  }
+}

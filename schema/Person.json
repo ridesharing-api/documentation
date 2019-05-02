@@ -1,0 +1,53 @@
+{
+  "title": "Person",
+  "description": "Eine anonymisierte Person.",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "role",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "url"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Person$"
+    },
+    "created": {
+      "description": "Zeitpunkt der Erstellung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "modified": {
+      "description": "Zeitpunkt der letzten Änderung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "car": {
+      "description": "Fahrzeuge",
+      "references": "Car",
+      "backreference": "owner",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    },
+    "participation": {
+      "description": "Teilnahmen",
+      "references": "Participation",
+      "backreference": "person",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    }
+  }
+}

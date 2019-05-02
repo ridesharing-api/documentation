@@ -1,0 +1,71 @@
+{
+  "title": "Participation",
+  "description": "Das Objekt beschreibt die Teilnahme an einer Fahrt.",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "role",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "url"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Preferences$"
+    },
+    "created": {
+      "description": "Zeitpunkt der Erstellung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "modified": {
+      "description": "Zeitpunkt der letzten Änderung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "role": {
+      "description": "Rolle des Mitfahrenden. Mögliche Werte sind driver und passenger.",
+      "type": "string"
+    },
+    "status": {
+      "description": "Status der Teilnahme an einer Fahrt. Mögliche Werte sind driver, passenger, requested und rejected.",
+      "type": "string"
+    },
+    "start": {
+      "description": "Haltepunkt, an welchem die Person zusteigt.",
+      "references": "Stop",
+      "backreference": "starts",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "stop": {
+      "description": "Haltepunkt, an welchem die Person aussteigt.",
+      "references": "Stop",
+      "backreference": "stops",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "trip": {
+      "description": "Fahrt.",
+      "references": "Trip",
+      "backreference": "participation",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "person": {
+      "description": "Anonymisierte Person.",
+      "references": "Person",
+      "backreference": "participation",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    }
+  }
+}

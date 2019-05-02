@@ -15,7 +15,3 @@ Als Plattform für die Diskussion eignet sich v.a. der [Bereich Issues hier auf 
 Außerdem steht [eine Mailingliste zur Verfügung](https://mlists.okfn.de/cgi-bin/mailman/listinfo/ridesharing).
 
 Wenn ein persönlicher Kontakt z.B. für eine Freigabe einer privaten Schnittstelle gewüscht ist: bitte Mail an [Ernesto Ruge, mail@ernestoruge.de](mailto:mail@ernestoruge.de).
-
-# Status
-
-Diese Readme wurde am 19.01.2019 geschrieben, also bitte verzeiht mir, dass da noch nicht unendlich viel Text steht. Aber versprochen: da kommt mehr! :)

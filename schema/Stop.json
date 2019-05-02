@@ -1,0 +1,77 @@
+{
+  "title": "Stop",
+  "description": "Das Objekt beschreibt die Haltepunkte einer Fahrt.",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "moment"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "url"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Stop$"
+    },
+    "created": {
+      "description": "Zeitpunkt der Erstellung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "modified": {
+      "description": "Zeitpunkt der letzten Änderung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "moment": {
+      "description": "Erwarteter Zeitpunkt des Stops.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "momentInaccuracy": {
+      "description": "Erwartete Ungenauigkeit des Stop-Zeitpunktes in Sekunden",
+      "type": "integer"
+    },
+    "trip": {
+      "description": "Mitfahrgelegenheit, zu welchem der Stop gehört.",
+      "references": "Trip",
+      "backreference": "stops",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "location": {
+      "description": "Ort.",
+      "references": "Location",
+      "backreference": "stop",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "participationStart": {
+      "description": "Einsteigende Teilnahmen",
+      "references": "Participation",
+      "backreference": "start",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    },
+    "participationStop": {
+      "description": "Aussteigende Teilnahmen",
+      "references": "Participation",
+      "backreference": "stop",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    }
+  }
+}

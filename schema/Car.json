@@ -1,0 +1,77 @@
+{
+  "title": "Car",
+  "description": "Das Objekt beschreibt das Fahrzeug.",
+  "type": "object",
+  "required": [
+    "id",
+    "type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "url"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Car$"
+    },
+    "created": {
+      "description": "Zeitpunkt der Erstellung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "modified": {
+      "description": "Zeitpunkt der letzten Änderung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "carClass": {
+      "description": "Art des Fahrzeugs. Hierbei SOLLTE die aus Buchstaben bestehende Klassifizierung verwendet werden, welche in der Verordnung 1400/2002 der EU-Komission beschrieben wird.",
+      "type": "string"
+    },
+    "capacity": {
+      "description": "Anzahl der Sitze.",
+      "type": "integer"
+    },
+    "vacancy": {
+      "description": "Anzahl der freien Sitze.",
+      "type": "integer"
+    },
+    "color": {
+      "description": "Farbe des Fahrzeugs. Der Wert SOLLTE klein geschrieben und in englisch angegeben werden.",
+      "type": "string"
+    },
+    "year": {
+      "description": "Baujahr des Fahrzeugs.",
+      "type": "integer"
+    },
+    "manufacturer": {
+      "description": "Hersteller des Fahrzeugs.",
+      "type": "string"
+    },
+    "model": {
+      "description": "Modell des Fahrzeugs.",
+      "type": "string"
+    },
+    "licencePlate": {
+      "description": "Nummernschild des Fahrzeugs.",
+      "type": "string"
+    },
+    "trip": {
+      "description": "Mitfahrgelegenheit, zu welchem der Stop gehört.",
+      "references": "Trip",
+      "backreference": "stops",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "owner": {
+      "description": "Besitzer des Fahrzeugs.",
+      "references": "Person",
+      "backreference": "stops",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    }
+  }
+}
