@@ -1,2 +1,7 @@
 .idea
+build
+._*
+.cache
+__pycache__
+
 
