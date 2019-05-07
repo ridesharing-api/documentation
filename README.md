@@ -6,6 +6,10 @@ Die Entwicklung findet offen und transparent als Community-Projekt der [Open Kno
 
 Initiiert wurde die Entwicklung vom [MetaMitfahrPort](https://mmport.de), welches vom [BMVI](https://www.bmvi.de) via [mFund](https://www.bmvi.de/DE/Themen/Digitales/mFund/Ueberblick/ueberblick.html) gefördert wird.
 
+# Ansehen
+
+Die aktuelle Development-Version befindet sich [im Ordner /out](https://github.com/ridesharing-api/documentation/tree/master/out). Die aktuelle PDF-Ausgabe kann [hier heruntergeladen werden](https://github.com/ridesharing-api/documentation/raw/master/out/ridesharing-api-dev-de.pdf).
+
 # Mitmachen
 
 Verbesserungen, Diskussionen und weitere Informationen wie weitere Schnittstellen oder Daten sind herzlich willkommen.
