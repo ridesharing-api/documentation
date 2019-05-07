@@ -121,7 +121,8 @@ def check_build_action(action):
 
 
 def get_git_describe_version():
-    return subprocess.check_output('git describe', shell=True, universal_newlines=True).strip()
+    return 'dev'
+    #return subprocess.check_output('git describe', shell=True, universal_newlines=True).strip()
 
 
 def check_available_tools():

@@ -50,21 +50,6 @@
             "description": "URL der Website des Mitfahr-Portals",
             "type": "string",
             "format": "url"
-        },
-        "created": {
-            "type": "string",
-            "format": "date-time"
-        },
-        "modified": {
-            "type": "string",
-            "format": "date-time"
-        },
-        "web": {
-            "type": "string",
-            "format": "url"
-        },
-        "deleted": {
-            "type": "boolean"
         }
     }
 }

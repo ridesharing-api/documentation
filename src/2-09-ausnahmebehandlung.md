@@ -18,3 +18,4 @@ Ein Server **sollte** in diesem Fall ein Objekt ausgeben, das die folgenden
 
  Ein Client **darf nicht** voraussetzen, dass er im Fall eines Fehlers
  verwertbare Informationen wie das oben beschriebene Fehlerobjekt erhält.
+ 

@@ -3,5 +3,5 @@ build
 ._*
 .cache
 __pycache__
-
+scripts/__pycache__
 

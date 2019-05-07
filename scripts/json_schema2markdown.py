@@ -20,6 +20,7 @@ class RidesharingApi:
     ]
 
     objects = [
+        "System",
         "Trip",
         "Person",
         "Participation",

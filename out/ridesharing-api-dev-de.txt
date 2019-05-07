@@ -1,0 +1,1112 @@
+---
+date: '01.01.2019'
+description: 'Spezifikation einer einheitlichen Schnittstelle für Mitfahr-Portale.'
+detailed-version: dev
+language: 'de-DE'
+rights: 'CC BY-SA 4.0'
+title: 'ridesharing.api'
+toc-title: Inhaltsverzeichnis
+---
+
+-   [Einleitung](#einleitung)
+    -   [Zielsetzung](#zielsetzung)
+    -   [Nutzungsszenarien](#nutzungsszenarien)
+    -   [Marktumfeld](#marktumfeld)
+    -   [Bestehende Schnittellen](#bestehende-schnittellen)
+    -   [Nomenklatur](#nomenklatur)
+    -   [Datenschutz](#datenschutz)
+    -   [Autoren](#autoren)
+-   [Prinzipien und Funktionen der
+    Schnittstelle](#prinzipien-und-funktionen-der-schnittstelle)
+    -   [Designprinzipien](#designprinzipien)
+    -   [Zukunftssicherheit](#zukunftssicherheit)
+    -   [URLs](#urls)
+    -   [JSON-Ausgabe](#json-ausgabe)
+    -   [Objektlisten und Paginierung](#objektlisten-und-paginierung)
+    -   [Cross-Origin Resource Sharing (CORS)](#cors)
+    -   [Gelöschte Objekte](#geloeschte-objekte)
+    -   [Ausnahmebehandlung](#ausnahmebehandlung)
+    -   [ridesharing.api Endpunkt](#ridesharing.api-endpunkt)
+-   [Schema](#schema)
+    -   [Die Objekte](#objekttypen)
+    -   [Übergreifende Aspekte](#uebergreifende-aspekte)
+    -   [Eigenschaften mit Verwendung in mehreren
+        Objekttypen](#eigenschaften-mit-verwendung-in-mehreren-objekttypen)
+    -   [System](#entity-system)
+    -   [Trip](#entity-trip)
+    -   [Person](#entity-person)
+    -   [Participation](#entity-participation)
+    -   [Preferences](#entity-preferences)
+    -   [Stop](#entity-stop)
+    -   [Car](#entity-car)
+    -   [Location](#entity-location)
+    -   [RecurrentTrip](#entity-recurrenttrip)
+
+Einleitung
+==========
+
+Zielsetzung
+-----------
+
+Nutzungsszenarien
+-----------------
+
+Marktumfeld
+-----------
+
+Bestehende Schnittellen
+-----------------------
+
+Nomenklatur
+-----------
+
+Datenschutz
+-----------
+
+Autoren
+-------
+
+Prinzipien und Funktionen der Schnittstelle
+===========================================
+
+Designprinzipien
+----------------
+
+### Aufbauen auf gängiger Praxis {#aufbauen-auf-gaengiger-praxis}
+
+Grundlage für die Erarbeitung der ridesharing.api-Spezifikation in der
+vorliegenden Version ist eine Analyse von aktuell (2018 - 2019) in
+Deutschland etablierten Ridesharing-Angeboten. Erklärtes Ziel für diese
+erste Version ist es, mit möglichst geringem Entwicklungsaufwand auf
+Seite der Plattformanbieter. Für die ridesharing.api-Spezifikation wurde
+sozusagen ein Datenmodell als "gemeinsamer Nenner" auf Basis der
+gängigen Praxis konstruiert.
+
+### Verbesserung gegenüber dem Status Quo wo möglich {#verbesserung-gegenueber-status-quo}
+
+Dort, wo es dem Ziel der einfachen Implementierbarkeit und der einfachen
+Migration nicht im Weg steht, erlauben sich die Autoren dieser
+Spezifikation, auch Funktionen aufzunehmen, die noch nicht als gängige
+Praxis im Bereich der Ridesharing-Plattformen bezeichnet werden können
+oder welche nur von einzelnen Systemen unterstützt werden. Solche
+Funktionen sind dann so integriert, dass sie nicht als zwingende
+Anforderung gelten.
+
+Als Beispiel wäre die Fähigkeit zu Websocket-basierten Live-Updates zu
+nennen. Diese sind nicht verpflichtend, sind aber eine sinnvolle
+Erweiterung, die mit demselben Datenmodel realsierbar sind.
+
+### Selbstbeschreibungsfähigkeit {#selbstbeschreibungsfaehigkeit}
+
+Ausgaben des Servers sollten so beschaffen sein, dass sie für
+menschliche Nutzerinnen weitgehend selbsterklärend sein können. Dies
+betrifft besonders die Benennung von Objekten und Objekteigenschaften.
+
+Um den Kreis der Entwicklerinnen und Entwickler, die mit einer
+ridesharing.api arbeiten können, nicht unnötig einzuschränken, wird
+hierbei grundsätzlich und soweit sinnvoll auf englischsprachige
+Begrifflichkeiten gesetzt.
+
+### Erweiterbarkeit
+
+Implementierer sollen in der Lage sein, über eine
+ridesharing.api-konforme Schnittstelle auch solche Informationen
+auszugeben, die nicht im Rahmen des ridesharing.api-Schemas abgebildet
+werden können. Dies bedeutet zum einen, dass ein System Objekttypen
+unterstützen und ausliefern darf, die nicht (oder noch nicht) im
+ridesharing.api-Schema beschrieben sind. Das bedeutet auch, dass
+Objekttypen so um eigene Eigenschaften erweitert werden können, die
+nicht im ridesharing.api Schema beschrieben sind.
+
+Ein weiterer Aspekt betrifft die Abwärtskompatibilität, also die
+Kompatibilität von ridesharing.api-Clients mit zukünftigen
+Schnittstellen. So können beispielsweise zukünftige Erweiterungen des
+ridesharing.api-Schemas, etwa um neue Objekttypen, genauso durchgeführt
+werden, wie die Erweiterungen um herstellerspezifische Objekttypen. Ein
+Client muss diese Anteile nicht auswerten, sofern sie nicht für die
+Aufgabe des Clients relevant sind. Es bedeutet im Umkehrschluss
+allerdings auch, dass ein Client nicht fehlschlagen darf, falls
+derartige Erweiterungen vorhanden sind.
+
+### Browseability/Verlinkung {#browseability_verlinkung}
+
+Klassische Webservice-Schnittstellen erfordern von den Entwicklern
+vollständige Kenntnis der angebotenen Einstiegspunkte und
+Zugriffsmethoden, gepaart mit sämtlichen unterstützten URL-Parametern,
+um den vollen Funktionsumfang der Schnittstelle ausschöpfen zu können.
+
+Ridesharing-Angebote sind weitgehend in Form von Graphen aufgebaut. Das
+bedeutet, dass Objekte häufig mit einer Vielzahl anderer Objekte
+verknüpft sind. So hat eine Fahrt mehrere Stops, an denen Personen in
+Form einer Participation ein- oder aussteigen. Gleichzeitig können
+Personen Autos besitzen, die wiederum bei mehreren angebotenen Fahrten
+eingesetzt werden.
+
+Eine ridesharing.api-Schnittstelle gibt jedem einzelnen Objekt eine
+eindeutige Adresse, eine URL. Somit kann die Schnittstelle den Verweis
+von einem Objekt, beispielsweise einem Gremium, auf ein anderes Objekt,
+etwa ein Mitglied des Gremiums, dadurch ausgeben, dass im Kontext des
+Gremiums die URL des Mitglieds ausgeben wird. Der Client kann somit
+ausgehend von einem bestimmten Objekt die zugehörigen Objekte im System
+finden, indem er einfach den angebotenen URLs folgt. Dieses Prinzip wird
+auch "Follow Your Nose"[^1] genannt.
+
+Zukunftssicherheit
+------------------
+
+Sollte in Zukunft eine zu ridesharing.api 1.0 inkompatible Version 2.0
+erscheinen, kann ein Server beide Versionen gleichzeitig unterstützen,
+um mit ridesharing.api 1.0 Clients kompatibel zu bleiben. Dazu muss der
+Server die ridesharing.api 2.0-Schnittstelle unter einer eigenen URL
+parallel zur bestehenden ridesharing.api 1.0-Schnittstelle anbieten,
+siehe Kapitel [System](#system).
+
+URLs
+----
+
+![Aufbau einer URL](build/src/images/url.png){width="100%"}
+
+Den URLs (für *Uniform Resource Locators*) kommt eine besondere
+Bedeutung zu und es werden deshalb eine Reihe von Anforderungen an deren
+Aufbau und Eigenschaften gestellt. Die allgemeine Funktionsweise von
+URLs ist in RFC 3986 beschrieben[^2].
+
+Grundsätzlich **müssen** alle Zugriffe zustandslos erfolgen können, also
+ohne Sessioninformationen wie Cookies. Das bedeutet, dass alle
+Informationen, die zum Abrufen eines Objekts nötig sind, in der URL
+vorhanden sein müssen.
+
+### URL-Kanonisierung {#url_kanonisierung}
+
+Um Objekte eindeutig identifizieren zu können ist es notwendig, dass ein
+Server für ein Objekt genau eine unveränderliche URL benutzt. Diese
+Festlegung auf genaue eine eindeutige URL wird Kanonisierung genannt.
+Ein Server **muss** deshalb für jedes seiner Objekte eine kanonische URL
+bestimmen können.
+
+Es wird empfohlen keine IP-Adressen in URLs zu benutzen, sondern einen
+mit Bedacht gewählten Hostnamen einzusetzen. Das ist vor allem im
+Hinblick auf die Langlebigkeit der URLs wichtig.
+
+Um die Kanonisierung zu gewährleisten **sollten** ridesharing.api-Server
+so konfiguriert werden, dass sie nur über eine bestimmte Domain
+erreichbar sind. ridesharing.api-Server **sollten** dagegen möglichst
+**nicht** nur über eine IP-Addresse sowieso möglichst auch **nicht**
+über weitere, nicht kanonische URLs erreichbar sein.
+
+Wenn ein Server auch durch eine nicht-kanonische URL erreichbar ist,
+dann **sollte** eine entsprechende HTTP-Anfrage mit einer Weiterleitung
+auf die entsprechende kanonische URL und HTTP-Status-Code 301
+beantwortet werden. Zur Überprüfung kann z.B. der `Host`-Header einer
+HTTP-Anfrage verwendet werden.
+
+Beim Pfad-Bestandteil der URL **müssen** Server-Implementierer darüber
+hinaus beachten, dass zur kanonischen Schreibweise auch die Groß- und
+Kleinschreibung, die Anzahl von Schrägstrichen als Pfad-Trennzeichen und
+die Anzahl von führenden Nullen vor numerischen URL-Bestandteilen
+gehört.
+
+Die Kanonisierung umfasst auch den Query-String-Bestandteil der URL. Wie
+auch beim Pfad gilt, dass für jeden Parameter und jeden Wert im
+Query-String genau eine kanonische Schreibweise gelten **muss**.
+
+Darüber hinaus **sollte** der Server-Implementierer darauf achten,
+Query-String-Parameter immer nach demselben Prinzip zu sortieren. Als
+Beispiel: Die beiden URLs
+
+    https://ridesharing.example.org/stops?person=1&trip=2
+    https://ridesharing.example.org/stops?trip=2&person=1
+
+unterscheiden sich lediglich in der Reihenfolge der
+Query-String-Parameter. Da sie jedoch nicht identisch sind, könnten
+Clients annehmen, dass beide URLs verschiedene Objekte repräsentieren.
+
+Clients **sollen** die vom Server gelieferten URLs bei Anzeige,
+Speicherung und Weiterverarbeitung nicht verändern.
+
+### HTTP und HTTPS
+
+Der Einsatz des verschlüsselten HTTPS wird empfohlen. Bei Verwendung von
+HTTPS wird allen URLs "https://" voran gestellt, ansonsten beginnen URLs
+mit "http://".
+
+Aus Gründen der URL-Kanonisierung ist es **zwingend** notwendig, dass
+ein Server-Betreiber sich entweder für HTTP oder für HTTPS entscheidet.
+Es jedoch möglich, eine Weiterleitung (HTTP Status-Code 301)
+einzurichten. Eine Weiterleitung von HTTPS auf HTTP wird **nicht
+empfohlen**.
+
+### Langlebigkeit {#url_langlebigkeit}
+
+Weiterhin sollen URLs langlebig sein, sodass sie möglichst lange zur
+Abfrage des dazugehörigen Objekts verwendet werden können.
+
+In URLs **sollten** deshalb nur Eigenschaften des Objekts aufgenommen
+werden, die nicht verändert werden. Ändert sich beispielsweise die
+Kennung einer Drucksache im Verlauf ihrer Existenz, dann scheidet sie
+für die Bildung der URL aus.
+
+Des Weiteren sollen Eigenschaften der Implementierung nicht sichtbar
+sein. Ist ein ridesharing.api-Server beispielsweise in PHP geschrieben,
+**sollte** dies **nicht** dazu führen, dass im Pfad ein Bestandteil wie
+"ridesharing.php/" erscheint.
+
+Weitere Empfehlungen für langlebige URLs liefern Tim Berners-Lee[^3]
+sowie die Europäische Kommission[^4].
+
+JSON-Ausgabe
+------------
+
+Ein ridesharing.api-Server **muss** Objekte in Form von JSON ausgeben.
+Die Abkürzung JSON steht für "JavaScript Object Notation". Das
+JSON-Format ist in RFC 7159[^5] beschrieben.
+
+Sämtliche JSON-Ausgabe **muss** in UTF-8 ohne Byte Order Mark (BOM)
+geschehen. Dies entspricht RFC 7159 Section 8.1[^6]. Gemäß RFC 7159
+Section 7[^7] **darf** UTF-8 String-Escaping verwendet werden.
+XML-/HTML-String-Escaping **darf nicht** verwendet werden.
+
+Eine Syntaxübersicht und weitere Implementierungshinweise finden sich
+auf [json.org](http://json.org/).
+
+Es ist gestattet, weitere zur JSON-Ausgabe semantisch identische
+Formate[^8] anzubieten. Da diese jedoch nicht Bestandteil der
+Spezifikation sind, **sollten** sich Clients nicht auf deren
+Vorhandensein verlassen.
+
+### In der ridesharing.api verwendete Datentypen
+
+In ridesharing.api werden alle in JSON definierten Dateitypen verwendet:
+
+object:
+:   Objects entsprechen der Definition des Objects in RFC 7159 Section 4
+
+array:
+:   Arrays entsprechen der Definition des Arrays in RFC 7159 Section 5
+
+integer:
+:   Integers entsprechen der Definition des Integer-Parts der Number aus
+    RFC 7159 Section 6
+
+boolean:
+:   Booleans entsprechen der Definition von Boolean in RFC 7159 Section
+    3
+
+string:
+:   Strings entsprechen der Definition der Unicode-Strings aus RFC 7159
+    Section 7
+
+In der ridesharing.api werden verschiedene String-Typen verwendet. Wenn
+von diesen Typen gesprochen wird, so wird automatisch ein JSON-String
+vorausgesetzt:
+
+url:
+:   Eine URL ist ein String, der entsprechend des [URL-Kapitels](#urls)
+    formatiert wurde.
+
+url (Object):
+:   Eine URL mit in Klammern angehängtem Objektname beschreibt eine URL
+    auf eben diesen Objekttypus.
+
+date:
+:   Entspricht einem Datum ohne Uhrzeit und ohne Zeitzone, wie sie im
+    folgenden Abschnitt beschrieben werden.
+
+date-time:
+:   Entspricht einem Datum und einer Uhrzeit mit Zeitzone, wie sie im
+    folgenden Abschnitt beschrieben werden.
+
+### Datums- und Zeitangaben {#datum_zeit}
+
+Für Datums- und Zeitangaben wird eine Spezielisierung der in ISO 8601
+beschriebenen Formate verwendet. Ein Datum (date) **muss** muss die Form
+`yyyy-mm-dd` besitzen und ein Zeitpunkt (date-time) **muss** in der Form
+`yyyy-mm-ddThh:mm:ss±hh:mm` angegeben werden.
+
+Beispiel für ein Datum: `1969-07-21`
+
+Beispiel für einen Zeitpunkt: `1969-07-21T02:56:00+00:00`
+
+### `null`-Werte und leere Listen
+
+JSON erlaubt es grundsätzlich, Eigenschaften mit dem Wert `null` zu
+versehen. Eigenschaften **sollten** nicht mit dem Wert `null` ausgegeben
+werden, wenn zu einer Eigenschaft keine Daten vorliegen. Obligatorische
+Eigenschaften **dürfen nicht** den Wert `null` haben.
+
+Im Fall von Arrays erlaubt JSON grundsätzlich die Ausgabe von `[]` für
+leere Arrays. Wie bei `null` wird auch hier **empfohlen**, auf die
+Ausgabe einer Eigenschaft mit dem Wert `[]` zu verzichten, wenn zu einer
+Eigenschaft keine Daten vorliegen. Bei obligatorischen Eigenschaften
+**muss** jedoch eine leere Liste ausgegeben werden.
+
+Bei nicht obligatorischen Eigenschaften sollte gleichermaßen auf die
+Ausgabe eines leeren Strings `""` verzichtet werden.
+
+Objektlisten und Paginierung
+----------------------------
+
+Oft wird für ein Attribut kein Wert ausgegeben, sondern ein anderes
+Objekt oder eine Liste von Objekten. Dabei kann eine Referenz auf das
+Objekt bzw. die Objektliste angegeben werden, oder das Objekt bzw. die
+Objektlist wird intern ausgegeben. Beide Verfahren sollen im Folgenden
+erklärt werden. Zu beachten ist, dass für jedes Listenattribut
+festgelegt ist, welches dieser Verfahren jeweils zu verwenden ist. Diese
+Information ist den [Schemadefinitionen](#schema) zu entnehmen.
+
+### Referenzierung von Objekten via URL
+
+Bei der Referenzierung einzelner Objekte wird eine URL angegeben, welche
+auf das entsprechende Objekt verweist. Der Typ ist hierbei ein
+`string (url: Objekt-ID)`. Ein Beispiel hierfür ist `in`:
+
+``` {#objektlisten_ex1 .json}
+{
+}
+```
+
+Es kann auch eine Liste von Referenzen ausgegeben werden. Der Typ ist in
+diese Fall `array of string (url: Objekt-ID)`.
+
+Ein Beispiel hierfür ist `in`:
+
+``` {#objektlisten_ex2 .json}
+{
+}
+```
+
+### Interne Ausgabe von Objekten
+
+Objekte können auch intern ausgegeben werden. Dabei wird das gesamte
+Objekt als Wert eines Attributs angegeben. Ein Beispiel für ein internes
+Objekt ist `trip` in `ridesharing-api:System`:
+
+``` {#objektlisten_ex3 .json}
+```
+
+Ebenso kann eine Liste von Objekten intern ausgegeben werden. Hier das
+Beispiel des Attributes `stop` in `ridesharing-api:Trip`.
+
+``` {#objektlisten_ex4 .json}
+{
+}
+```
+
+Bei der internen Ausgabe von Objekten **darf** der Server keine
+gelöschten Objekte ausgeben.
+
+### Externe Objektlisten
+
+Es können auch Referenzen zu sogenannten externen Objektlisten angegeben
+werden. Die externe Liste enthält dann die betreffenden Objekte in Form
+einer Listenausgabe. Ein Beispiel dafür ist `trips` in
+`ridesharing-api:System`.
+
+`ridesharing-api:System`:
+
+``` {#objektlisten_ex5a .json}
+{
+}
+```
+
+Die externe Objektliste:
+
+``` {#objektlisten_ex5b .json}
+{
+    "data": [
+      
+    ],
+    ...
+}
+```
+
+### Paginierung
+
+Für externe Objektlisten ist eine Aufteilung sogenannte *Listenseiten*
+vorgesehen, wobei jede Listenseite eine eigene URL erhält. Das dient
+dazu, die bei der jeweiligen Anfrage übertragenen Datenmengen und
+Antwortzeiten zu begrenzen.
+
+Die Entscheidung, ob eine externe Objektliste mit Paginierung ausgegeben
+wird, liegt allein beim Server. Bei Listen mit mehr als 100 Einträgen
+wird dies **empfohlen**.
+
+Ein Server **muss** für eine stabile Sortierung von Listeneinträgen
+sorgen. Das heißt, dass die Sortierung der Einträge einem konstanten
+Prinzip folgt und sich nicht von Abfrage zu Abfrage ändert. Das kann
+z.B. durch die Sortierung von Objekten nach einer eindeutigen und
+unveränderlichen ID erreicht werden.
+
+Jede Listenseite **muss** die Attribute folgenden Attribute enthalten:
+
+-   **data** (Array der intern ausgegebenen Objekte)
+
+-   **pagination** (Object)
+
+-   **links** (Object)
+
+Für `pagination` sind die folgenden Attribute festgelegt, die alle
+**optional** sind:
+
+-   `totalElements`: Gibt die Gesamtanzahl der Objekte in der Liste an.
+    Diese Zahl kann sich unter Umständen bis zum Aufruf der nächsten
+    Listenseiten ändern.
+
+-   `elementsPerPage`: Gibt die Anzahl der Objekte pro Listenseite an.
+    Dieser Wert muss auf allen Listenseiten bis auf die letzte gleich
+    sein.
+
+-   `currentPage`: Gibt die aktuelle Seitenzahl in der Liste an.
+
+-   `totalPages`: Gibt die Gesamtanzahl der Seiten in der Liste an.
+
+Für `links` sind folgende Attribute festgelegt, die bis auf `next` alle
+**optional** sind:
+
+-   `first`: URL der ersten Listenseite
+
+-   `prev`: URL der vorherigen Listenseite
+
+-   `self`: Die kanonische URL dieser Listenseite
+
+-   `next`: URL der nächsten Listen. Für alle Seiten bis auf die letzte
+    ist die Angabe dieser URL **zwingend**.
+
+-   `last`: URL der letzten Listenseite
+
+``` {#paginierung_ex1 .json}
+{
+    "data": [
+        {...},
+        {...},
+        ...
+    ],
+    "pagination": {
+        "totalElements": 50000,
+        "elementsPerPage": 100,
+        "currentPage": 3,
+        "totalPages":500
+    },
+    "links": {
+        "first": "https://ridesharing.example.org/trips/",
+        "prev": "https://ridesharing.example.org/trips/?page=2",
+        "self": "https://ridesharing.example.org/trips/?page=3",
+        "next": "https://ridesharing.example.org/trips/?page=4",
+        "last": "https://ridesharing.example.org/trips/?page=500",
+    }
+}
+```
+
+### Filter
+
+Externe Objektlisten können mit den URL-Parametern `created_since`,
+`created_until`, `modified_since` und `modified_until` eingeschränkt
+werden. Diese Parameter beziehen sich auf die entsprechenden Attribute
+der jeweiligen Objekte, wobei reservierte Zeichen URL-Kodiert werden
+müssen. Ein Server muss diese Parameter bei allen externen Objektlisten
+unterstützen.
+
+Die Filter werden vom Client benutzt, indem die gewünschten
+URL-Parameter an die URL der ersten Listenseite angehängt werden. Bei
+allen weiteren Seiten, genauer gesagt bei den Werten von `links`,
+**muss** der Server sicherzustellen, dass die verwendeten Filter
+erhalten bleiben.
+
+Ein Server **muss** für den im nächsten Abschnitt beschrieben
+Aktualisierungsmechanismus auch die den Filtern entsprechenden
+gelöschten Objekte ausgeben, wenn der Parameter `modified_since` gesetzt
+ist. Wenn `modified_since` nicht gesetzt ist, dann **dürfen** die
+gelöschten Objekte **nicht** ausgegeben werden. Dadurch kann sich ein
+Client effizient darüber informieren, welche der Objekte in seinem
+lokalen Bestand gelöscht wurden.
+
+Lautet die URL für eine Liste von Drucksachen wie folgt:
+
+    https://ridesharing.example.org/trips/
+
+kann der Client die folgende URL bilden, um die Ausgabe der Liste auf
+Drucksachen einzuschränken, die seit dem 1. Januar 2014 veröffentlicht
+wurden:
+
+    https://ridesharing.example.org/trips/?created_since=2014-01-01T00%3A00%3A00%2B01%3A00
+
+Mehrere Parameter können auch gemeinsam verwendet werden. So kann man
+z.B. eine Einschränkung vom 1.1.2014 bis zum 31.1.2014 vornehmen:
+
+    https://ridesharing.example.org/trips/?created_since=2014-01-01T00%3A00%3A00%2B01%3A00&created_until=2014-01-31T23%3A59%3A59%2B01%3A00
+
+Die genannten URL-Parameter erwarten grundsätzlich eine vollständige
+[`date-time`-Angabe](#datum_zeit).
+
+Des Weiteren kann ein Client die Anzahl der Objekte pro Listenseite
+durch den URL-Parameter `limit` begrenzen, der sich auf das gleichnamige
+Attribut bezieht. Ein Client **darf nicht** erwarten, dass sich ein
+Server an seine `limit`-Anfrage hält.
+
+### Der Aktualisierungsmechanismus {#aktualisierungsmechanismus}
+
+Der Hauptnutzen der Filter ist die Möglichkeit, einen lokalen
+Datenbestand inkrementell zu aktualisieren.
+
+Ein Client könnte z.B. am 1.1.2014 um 2:00 Uhr deutscher Zeit die Liste
+aller Drucksachen herunterladen und in einer Datenbank speichern.
+
+    https://ridesharing.example.org/trips/
+
+Um den Datenbestand am nächsten Tag zu aktualisieren, ruft der Client
+dieselbe URL auf, diesmal jedoch mit dem Parameter `modified_since` mit
+dem Wert `2014-01-01T02:00:00+01:00` und mit `omit_internal`.
+
+    https://ridesharing.example.org/trips/?modified_since=2014-01-01T02%3A00%3A00%2B01%3A00&omit_internal=true
+
+Diese Liste ist in der Regel deutlich kürzer als die Liste aller
+Objekte, sodass die Aktualisierung bedeutend schneller ist als der erste
+Abruf. Der Client muss außerdem nur noch eine deutlich kleinere Menge an
+Objekten in die Datenbank einfügen, aktualisieren oder löschen, um den
+gleichen Datenstand wie der Server zu haben.
+
+Cross-Origin Resource Sharing (CORS) {#cors}
+------------------------------------
+
+Wenn Webbrowser mittels Skript auf JSON-Ressourcen zugreifen sollen
+unterliegen diese Zugriffe üblicherweise einer *Same-Origin-Policy*
+(SOP). Das heißt, eine Anfrage ist nur an den Server zulässig, der auch
+das initiierende Skript ausgeliefert hat. Anfragen an andere Server
+werden vom Browser blockiert. Diese Einschränkung dient im Allgemeinen
+der Sicherheit von Webbrowsern.[^9]
+
+Um die Daten von ridesharing.api-Servern auch im Kontext von
+Webanwendungen flexibel nutzen zu können, ist die Überwindung der SOP
+nötig. Hierzu dient *Cross-Origin Resource Sharing* (CORS)[^10]. Mittels
+CORS kann ein Server mitteilen, dass bestimmte von ihm ausgelieferte
+Ressourcen auch innerhalb von Webapplikationen genutzt werden dürfen,
+die nicht vom selben Server ausgeliefert werden. Technisch wird dies
+durch Ausgabe zusätzlicher HTTP-Header erreicht.
+
+ridesharing.api-Server **müssen** für jegliche Anfrage, die mit der
+Ausgabe von JSON-Daten beantwortet wird (das sind alle Anfragen außer
+[Dateizugriffe](#dateizugriff)) den folgenden HTTP-Antwort-Header
+senden:
+
+    Access-Control-Allow-Origin: *
+
+Der HTTP-Antwort-Header `Access-Control-Allow-Methods` **sollte**
+darüber hinaus **nicht** gesetzt sein, oder **muss** die Methode `GET`
+beinhalten.
+
+Entwicklerinnen von Webanwendungen sollten sich darüber bewusst sein,
+dass durch die direkte Einbindung von Skripten Dritter in ihre
+Anwendungen mögliche Sicherheitsrisiken entstehen. Für den Fall, dass
+ein ridesharing.api-Server, etwa in Folge einer Manipulation, Schadcode
+ausliefert, könnte dieser unmittelbar von Skripten im Browser ausgeführt
+werden.
+
+Gelöschte Objekte {#geloeschte-objekte}
+-----------------
+
+In der ridesharing.api **dürfen** Objekte **nicht** einfach gelöscht
+werden, sodass unter der betreffenden URL kein gültiges Objekt
+ausgeliefert wird. Stattdessen wird ein sogenanntes *soft delete*
+verwendet.
+
+Hintergrund ist, dass ridesharing.api-Clients bei der Aktualisierung
+ihres Datenbestandes, z.B. mit den [Filtern](#filter) `modified_since`
+bzw. `created_since`, erfahren können müssen, welche Objekte gelöscht
+wurden.
+
+Dies wird durch die folgenden Regeln gewährleistet.
+
+Wenn ein Objekt gelöscht wird,
+
+-   **muss** das Objekt das zusätzliche Attribut `deleted` mit dem Wert
+    `true` bekommen
+-   **muss** das Attribut `modified` auf den Zeitpunkt der Löschung
+    setzen
+-   **müssen** die Attribute `id`, `type` und `created` erhalten bleiben
+-   **dürfen** alle weiteren Attribute entfernt werden
+
+Als HTTP-Statuscode **muss** weiterhin 200 verwendet werden.
+
+Ausnahmebehandlung
+------------------
+
+Wenn ein Server eine Anfrage nicht bearbeiten kann, z.B. weil die URL
+ungültig ist oder das angefragte Objekt nicht existiert, dann **sollte**
+er mit dem entsprechenden HTTP-Statuscode antworten.
+
+Ein Server **sollte** in diesem Fall ein Objekt ausgeben, das die
+folgenden 3 Attribute enthält:
+
+-   `type`: Enthält als Wert die URL
+    `https://ridesharing-api.org/1.0/Error`
+-   `message`: Eine Fehlermeldung, die zur Anzeige für einen Nutzer
+    gedacht ist. Die Fehlermeldung sollte deshalb in der Sprache der
+    durch die Schnittstelle ausgelieferten Inhalte verfasst sein
+-   `debug`: Zusätzliche Informationen über den Fehler
+
+Wenn ein Server ein solches Objekt ausgibt, dann **muss** er dazu einen
+HTTP-Statuscode senden, der einen Fehler anzeigt.
+
+Ein Client **darf nicht** voraussetzen, dass er im Fall eines Fehlers
+verwertbare Informationen wie das oben beschriebene Fehlerobjekt erhält.
+
+ridesharing.api Endpunkt
+------------------------
+
+Als ridesharing.api Endpunkt bzw. Einsprungspunkt zur Schnittstelle wird
+ein `ridesharing.api:System` Objekt genutzt. Falls auf einem HTTP-Host
+mehrere ridesharing.api-Schnittstellen oder mehrere ridesharing.api
+Versionen parallel installiert sind, **müssen** diese eindeutige und
+voneinander unabhängige ridesharing.api-Endpunkte anbieten. Es ist
+allerdings möglich, eine Liste von `ridesharing.api:System`-Objekten
+auszugeben, die z.B. auf verschiedene ridesharing.api-Versionen einer
+Schnittstelle verweisen.
+
+Schema
+======
+
+Dieses Kapitel beschreibt das Schema der ridesharing.api. Das Schema
+definiert die Objekttypen und ihre Eigenschaften. Darüber hinaus ist im
+Schema auch festgelegt, in welcher Beziehung verschiedene Objekttypen zu
+einander stehen.
+
+![ridesharing.api Objekttypen: Ein Überblick. Die Zahl an den
+Verbindungslinien entspricht der Anzahl der Attribute, die eine oder
+mehrere Verknüpfungen
+herstellen.](build/src/images/objekttypen_graph.png){width="100%"}
+
+Die Objekte {#objekttypen}
+-----------
+
+Die ridesharing.api nutzt folgenden Objekte:
+
+-   ridesharing.api:System
+-   ridesharing.api:Trip
+-   ridesharing.api:Person
+-   ridesharing.api:Car
+-   ridesharing.api:Participation
+-   ridesharing.api:Stop
+-   ridesharing.api:Location
+-   ridesharing.api:Preferences
+
+Grundsätzlich muss jedes Objekt unter seiner ID abrufbar sein - auch
+dann, wenn das Objekt in anderen Objekten intern ausgegeben wird. Bei
+der internen Ausgabe wird beim internen Objekt auf die Rückreferenz auf
+das Elternobjekt verzichtet.
+
+Als Beispiel hier eine Ausgabe von `ridesharing-api:Trip`, in welchem
+ein `ridesharing-api:Stop` enthalten ist:
+
+``` {#objekte_example1 .json}
+{
+}
+```
+
+Das enthaltene `ridesharing-api:Stop` muss auch einzeln abgerufen werden
+können. Dabei kommt dann das Eltern-Objekt als zusätzliches Attribut
+hinzu.:
+
+``` {#objekte_example2 .json}
+{
+}
+```
+
+Das zusätzliche Attribut ist ein Array, da es auch möglich ist, dass
+Fahrzeuge von mehreren Hauptobjekten aus genutzt werden. Das kann z.B.
+bei `ridesharing-api:Car` vorkommen:
+
+``` {#objekte_example2 .json}
+{
+}
+```
+
+Übergreifende Aspekte {#uebergreifende-aspekte}
+---------------------
+
+### Vollständigkeit {#schema-vollstaendigkeit}
+
+Alle regulär öffentlich abrufbaren Informationen **sollten** auch in der
+ridesharing.api ausgegeben werden, solange dies nicht den
+Datenschutzbestimmungen widerspricht. Daher sind sämtliche Felder im
+Schema als **empfohlen** zu behandeln, wenn nicht explizit etwas anderes
+angegeben wurde.
+
+### Herstellerspezifische Erweiterungen
+
+In der ridesharing.api können zusätzliche, herstellerspezifische
+Eigenschaften hinzugefügt werden. Dazu wird diesen Eigenschaften ein
+Herstellerprefix vorangestellt. So könnte man z.B.
+`ridesharing-api:Location` um einen Point of Interest erweitern:
+
+    "BeispielHersteller:pointOfInterest": "Altes Stadttor",
+
+### URL-Pfade in den Beispielen
+
+ridesharing.api-Clients wissen nichts vom Aufbau von Pfaden innerhalb
+von URLs, müssen dies nicht wissen, und es gibt deshalb in der
+ridesharing.api-Spezifikation keine Festlegungen dazu. Die in den
+Beispielen verwendeten URLs zeigen einen möglichen Weg zur Umsetzungen
+der Empfehlungen in URLs.
+
+Eigenschaften mit Verwendung in mehreren Objekttypen
+----------------------------------------------------
+
+### `id` {#eigenschaft-id}
+
+Die Eigenschaft `id` enthält den eindeutigen Bezeichner des Objekts,
+nämlich seine URL. Dies ist ein **zwingendes** Merkmal für jedes Objekt.
+
+### `type` {#eigenschaft-type}
+
+Objekttypenangabe des Objekts, **zwingend** für jedes Objekt. Der Wert
+ist eine Namespace-URL. Für die ridesharing.api-Objekttypen sind die
+folgenden URLs definiert:
+
+  Typ (kurz)                                             Namespace-URL
+  ------------------------------------------------------ ------------------------------------------------------------------------------------
+  `ridesharing-api:Car`                                  https://schema.ridesharing-api.org/1.0/Car
+  `ridesharing-api:Location`                             https://schema.ridesharing-api.org/1.0/Location
+  `ridesharing-api:Participation`                        https://schema.ridesharing-api.org/1.0/Participation
+  `ridesharing-api:Person`                               https://schema.ridesharing-api.org/1.0/Person
+  `ridesharing-api:Preferences`                          https://schema.ridesharing-api.org/1.0/Preferences
+  `ridesharing-api:RecurrentTrip`                        https://schema.ridesharing-api.org/1.0/RecurrentTrip
+  `ridesharing-api:Stop`                                 https://schema.ridesharing-api.org/1.0/Stop
+  `ridesharing-api:System`                               https://schema.ridesharing-api.org/1.0/System
+  `ridesharing-api:Trip`                                 https://schema.ridesharing-api.org/1.0/Trip
+
+### `created` {#eigenschaft-created}
+
+Datum und Uhrzeit der Erstellung des jeweiligen Objekts.
+
+Diese Eigenschaft **muss** in allen Objekttypen angegeben werden.
+
+### `modified` {#eigenschaft-modified}
+
+Diese Eigenschaft kennzeichnet stets Datum und Uhrzeit der letzten
+Änderung des jeweiligen Objekts.
+
+Diese Eigenschaft **muss** - genau wie `created` - in allen Objekttypen
+angegeben werden.
+
+Es ist **zwingend**, dass bei jeder Änderung eines Objekts der Wert
+dieses Attributs auf die zu diesem Zeitpunkt aktuelle Uhrzeit gesetzt
+wird, da ein Client in der Regel seinen Datenbestand nur auf Basis
+dieses Attributs verlustfrei aktualisieren kann.
+
+### `deleted` {#eigenschaft-deleted}
+
+Falls das Objekt gelöscht wurde, muss dieses gemäß Kapitel 2.8 das
+Attribut `deleted: true` bekommen.
+
+System {#entity-system}
+------
+
+Ein ridesharing-api:System-Objekt repräsentiert eine
+ridesharing.api-Schnittstelle für eine bestimmte
+ridesharing.api-Version. Es ist außerdem der Startpunkt für Clients beim
+Zugriff auf einen Server.
+
+  -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Name                            Typ                                            Beschreibung
+  ------------------------------- ---------------------------------------------- ----------------------------------------------------------------------------------
+  `id`                            url                                            
+
+  `type`                          string                                         
+
+  `ridesharingApiVersion`         string                                         ridesharing.api Version
+
+  `otherRidesharingApiVersions`   array of url (System)                          Andere ridesharing.api Versionen
+
+  `license`                       url                                            Lizenz, unter der durch diese API abrufbaren Daten stehen.
+
+  `name`                          string                                         Nutzerfreundlicher Name für das System, mit dessen Hilfe Nutzerinnen und Nutzer
+                                                                                 das System erkennen und von anderen unterscheiden können.
+
+  `contactEmail`                  string                                         E-Mail-Adresse für Anfragen zur ridesharing.api-API. Die Angabe einer
+                                                                                 E-Mail-Adresse dient sowohl NutzerInnen wie auch Entwicklerinnen von Clients zur
+                                                                                 Kontaktaufnahme mit dem Betreiber.
+
+  `contactName`                   string                                         Name der Ansprechpartnerin bzw. des Ansprechpartners oder der Abteilung, die über
+                                                                                 die in contactEmail angegebene Adresse erreicht werden kann.
+
+  `website`                       url                                            URL der Website des Mitfahr-Portals
+  -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Trip {#entity-trip}
+----
+
+Das Objekt beschreibt eine Fahrt.
+
+  ---------------------------------------------------------------------------------------------------
+  Name                Typ                          Beschreibung
+  ------------------- ---------------------------- --------------------------------------------------
+  `id`                url                          
+
+  `type`              string                       
+
+  `created`           date-time                    Zeitpunkt der Erstellung.
+
+  `modified`          date-time                    Zeitpunkt der letzten Änderung.
+
+  `published`         date-time                    Zeitpunkt der Veröffentlichung.
+
+  `expired`           date-time                    Zeitpunkt, ab welchem das Angebot nicht mehr
+                                                   gültig ist.
+
+  `active`            boolean                      Status, ob das Angebot weiterhin angeboten wird.
+
+  `url`               url                          **ZWINGEND** Öffentlicher Link auf das Angebot.
+
+  `recurrentTrip`     url (RecurrentTrip)          Wiederkehrende Fahrt (falls vorhanden)
+
+  `car`               url (Car)                    Fahrzeug
+
+  `preferences`       url (Preferences)            Präferenzen
+
+  `stop`              array of url (Stop)          Haltepunkte
+
+  `participation`     array of url (Participation) Teilnahmen
+  ---------------------------------------------------------------------------------------------------
+
+Person {#entity-person}
+------
+
+Eine anonymisierte Person.
+
+  -----------------------------------------------------------------------------------------
+  Name              Typ                       Beschreibung
+  ----------------- ------------------------- ---------------------------------------------
+  `id`              url                       
+
+  `type`            string                    
+
+  `created`         date-time                 Zeitpunkt der Erstellung.
+
+  `modified`        date-time                 Zeitpunkt der letzten Änderung.
+
+  `car`             array of url (Car)        Fahrzeuge
+
+  `participation`   array of url              Teilnahmen
+                    (Participation)           
+  -----------------------------------------------------------------------------------------
+
+Participation {#entity-participation}
+-------------
+
+Das Objekt beschreibt die Teilnahme an einer Fahrt.
+
+  -------------------------------------------------------------------------------
+  Name            Typ                    Beschreibung
+  --------------- ---------------------- ----------------------------------------
+  `id`            url                    
+
+  `type`          string                 
+
+  `created`       date-time              Zeitpunkt der Erstellung.
+
+  `modified`      date-time              Zeitpunkt der letzten Änderung.
+
+  `role`          string                 **ZWINGEND** Rolle des Mitfahrenden.
+                                         Mögliche Werte sind driver und
+                                         passenger.
+
+  `status`        string                 **ZWINGEND** Status der Teilnahme an
+                                         einer Fahrt. Mögliche Werte sind driver,
+                                         passenger, requested und rejected.
+
+  `start`         url (Stop)             Haltepunkt, an welchem die Person
+                                         zusteigt.
+
+  `stop`          url (Stop)             Haltepunkt, an welchem die Person
+                                         aussteigt.
+
+  `trip`          url (Trip)             Fahrt.
+
+  `person`        url (Person)           Anonymisierte Person.
+  -------------------------------------------------------------------------------
+
+Preferences {#entity-preferences}
+-----------
+
+Das Objekt beschreibt die Präferenzen gegenüber Mitfahrern.
+
+  --------------------------------------------------------------------------------------------------------------
+  Name                  Typ                             Beschreibung
+  --------------------- ------------------------------- --------------------------------------------------------
+  `id`                  url                             
+
+  `type`                string                          
+
+  `created`             date-time                       Zeitpunkt der Erstellung.
+
+  `modified`            date-time                       Zeitpunkt der letzten Änderung.
+
+  `nonsmoking`          boolean                         Nichtraucher-Fahrt.
+
+  `gender`              string                          Gender der MitfahrerInnen. Es SOLLTEN die Begriffe
+                                                        female fü weiblich und male für männlich verwendet
+                                                        werden. Andere Geschlechter SOLLTEN klein geschrieben
+                                                        und in englisch beschrieben werden.
+
+  `age`                 string                          Alter der MitfahrerInnen, Freitext.
+
+  `age_from`            integer                         Mindestalter der MitfahrerInnen, numerischer Wert.
+
+  `age_to`              integer                         Maximales Alter der MitfahrerInnen, numerischer Wert.
+
+  `trip`                url (Trip)                      Fahrt
+  --------------------------------------------------------------------------------------------------------------
+
+Stop {#entity-stop}
+----
+
+Das Objekt beschreibt die Haltepunkte einer Fahrt.
+
+  Name                   Typ                               Beschreibung
+  ---------------------- --------------------------------- ----------------------------------------------------------
+  `id`                   url                               
+  `type`                 string                            
+  `created`              date-time                         Zeitpunkt der Erstellung.
+  `modified`             date-time                         Zeitpunkt der letzten Änderung.
+  `moment`               date-time                         **ZWINGEND** Erwarteter Zeitpunkt des Stops.
+  `momentInaccuracy`     integer                           Erwartete Ungenauigkeit des Stop-Zeitpunktes in Sekunden
+  `trip`                 url (Trip)                        Mitfahrgelegenheit, zu welchem der Stop gehört.
+  `location`             url (Location)                    Ort.
+  `participationStart`   array of url (Participation)      Einsteigende Teilnahmen
+  `participationStop`    array of url (Participation)      Aussteigende Teilnahmen
+
+Car {#entity-car}
+---
+
+Das Objekt beschreibt das Fahrzeug.
+
+  --------------------------------------------------------------------------------------------------------------
+  Name                  Typ                             Beschreibung
+  --------------------- ------------------------------- --------------------------------------------------------
+  `id`                  url                             
+
+  `type`                string                          
+
+  `created`             date-time                       Zeitpunkt der Erstellung.
+
+  `modified`            date-time                       Zeitpunkt der letzten Änderung.
+
+  `carClass`            string                          Art des Fahrzeugs. Hierbei SOLLTE die aus Buchstaben
+                                                        bestehende Klassifizierung verwendet werden, welche in
+                                                        der Verordnung 1400/2002 der EU-Komission beschrieben
+                                                        wird.
+
+  `capacity`            integer                         Anzahl der Sitze.
+
+  `vacancy`             integer                         Anzahl der freien Sitze.
+
+  `color`               string                          Farbe des Fahrzeugs. Der Wert SOLLTE klein geschrieben
+                                                        und in englisch angegeben werden.
+
+  `year`                integer                         Baujahr des Fahrzeugs.
+
+  `manufacturer`        string                          Hersteller des Fahrzeugs.
+
+  `model`               string                          Modell des Fahrzeugs.
+
+  `licencePlate`        string                          Nummernschild des Fahrzeugs.
+
+  `trip`                url (Trip)                      Mitfahrgelegenheit, zu welchem der Stop gehört.
+
+  `owner`               url (Person)                    Besitzer des Fahrzeugs.
+  --------------------------------------------------------------------------------------------------------------
+
+Location {#entity-location}
+--------
+
+Das Objekt beschreibt einen Ort.
+
+  ----------------------------------------------------------------------------------------------------------------------------------
+  Name                      Typ                                   Beschreibung
+  ------------------------- ------------------------------------- ------------------------------------------------------------------
+  `id`                      url                                   
+
+  `type`                    string                                
+
+  `created`                 date-time                             Zeitpunkt der Erstellung.
+
+  `modified`                date-time                             Zeitpunkt der letzten Änderung.
+
+  `name`                    string                                **ZWINGEND** Name des Ortes.
+
+  `streetAddress`           string                                Straße und Hausnummer des Ortes.
+
+  `postalCode`              string                                Postleitzahl des Ortes.
+
+  `locality`                string                                Stadt oder Ort des Ortes.
+
+  `subLocality`             string                                Untergeordnete Ortsangabe der Anschrift, z.B. Stadtbezirk,
+                                                                  Ortsteil oder Dorf.
+
+  `geojson`                 object                                Geodaten-Repräsentation des Orts. Der Wert dieser Eigenschaft muss
+                                                                  der Spezifikation von GeoJSON entsprechen, d.h. es muss ein
+                                                                  vollständiges Feature-Objekt ausgegeben werden.
+
+  `stop`                    array of url (Stop)                   Haltepunkte
+  ----------------------------------------------------------------------------------------------------------------------------------
+
+RecurrentTrip {#entity-recurrenttrip}
+-------------
+
+Das Objekt beschreibt eine wiederkehrende Fahrt.
+
+  ---------------------------------------------------------------------------------------------------------
+  Name                 Typ                            Beschreibung
+  -------------------- ------------------------------ -----------------------------------------------------
+  `id`                 url                            
+
+  `type`               string                         
+
+  `created`            date-time                      Zeitpunkt der Erstellung.
+
+  `modified`           date-time                      Zeitpunkt der letzten Änderung.
+
+  `time`               array of time                  Uhrzeiten, zu denen die Fahrt angeboten wird, als
+                                                      Liste an ISO 8601 Wochentag-Nummern.
+
+  `weekday`            array of integer               Tage, an denen die Fahrt angeboten wird, als Liste an
+                                                      ISO 8601 Wochentag-Nummern.
+
+  `month`              array of integer               Monate, an denen die Fahrt angeboten wird, als Liste
+                                                      an Monats-Nummern.
+
+  `weeks`              array of string                Wochen, an denen die Fahrt angeboten wird, als Liste
+                                                      an WochenNummern.
+
+  `exception`          array of datetime              Ausnahmen, an denen keine Fahrt angeboten wird.
+
+  `trip`               array of url (Trip)            Fahrt
+  ---------------------------------------------------------------------------------------------------------
+
+[^1]: <http://patterns.dataincubator.org/book/follow-your-nose.html>
+
+[^2]: RFC 3986: <http://tools.ietf.org/html/rfc3986>
+
+[^3]: Berners-Lee, Tim: Cool URIs don't change.
+    <http://www.w3.org/Provider/Style/URI.html>
+
+[^4]: Study on persistent URIs, with identification of best practices
+    and recommendations on the topic for the MSs and the EC. (PDF)
+    <https://joinup.ec.europa.eu/sites/default/files/D7.1.3%20-%20Study%20on%20persistent%20URIs.pdf>
+
+[^5]: RFC 7159: <https://tools.ietf.org/html/rfc7159>
+
+[^6]: [RFC 7159 Section
+    8.1](https://tools.ietf.org/html/rfc7159#section-8.1)
+
+[^7]: [RFC 7159 Section
+    7](https://tools.ietf.org/html/rfc7159#section-7)
+
+[^8]: Zu semantisch identischen Formaten zählen u.a.: YAML, MessagePack,
+    etc.
+
+[^9]: vgl. Wikipedia: Same-Origin-Policy
+    <https://de.wikipedia.org/wiki/Same-Origin-Policy>
+
+[^10]: Cross Origin Resource Sharing - W3C Recommendation 16. Januar
+    2014: <http://www.w3.org/TR/cors/>
