@@ -1,0 +1,70 @@
+{
+    "title": "System",
+    "description": "Ein ridesharing-api:System-Objekt repräsentiert eine ridesharing.api-Schnittstelle für eine bestimmte ridesharing.api-Version. Es ist außerdem der Startpunkt für Clients beim Zugriff auf einen Server.",
+    "type": "object",
+    "required": [
+        "id",
+        "type"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "format": "url"
+        },
+        "type": {
+            "type": "string",
+            "pattern": "^https\\:\\/\\/schema\\.ridesharing-api\\.org\\/1\\.0\\/System$"
+        },
+        "ridesharingApiVersion": {
+            "type": "string",
+            "pattern": "^https\\:\\/\\/schema\\.ridesharing-api\\.org/1\\.(0|1)\\/$",
+            "description": "ridesharing.api Version"
+        },
+        "otherRidesharingApiVersions": {
+            "description": "Andere ridesharing.api Versionen",
+            "references": "System",
+            "items": {
+                "type": "string",
+                "format": "url"
+            },
+            "type": "array"
+        },
+        "license": {
+            "description": "Lizenz, unter der durch diese API abrufbaren Daten stehen.",
+            "type": "string",
+            "format": "url"
+        },
+        "name": {
+            "description": "Nutzerfreundlicher Name für das System, mit dessen Hilfe Nutzerinnen und Nutzer das System erkennen und von anderen unterscheiden können.",
+            "type": "string"
+        },
+        "contactEmail": {
+            "description": "E-Mail-Adresse für Anfragen zur ridesharing.api-API. Die Angabe einer E-Mail-Adresse dient sowohl NutzerInnen wie auch Entwicklerinnen von Clients zur Kontaktaufnahme mit dem Betreiber.",
+            "type": "string"
+        },
+        "contactName": {
+            "description": "Name der Ansprechpartnerin bzw. des Ansprechpartners oder der Abteilung, die über die in contactEmail angegebene Adresse erreicht werden kann.",
+            "type": "string"
+        },
+        "website": {
+            "description": "URL der Website des Mitfahr-Portals",
+            "type": "string",
+            "format": "url"
+        },
+        "created": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "modified": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "web": {
+            "type": "string",
+            "format": "url"
+        },
+        "deleted": {
+            "type": "boolean"
+        }
+    }
+}
