@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 LABEL maintainer "Ernesto Ruge <mail@ernestoruge.de>"
 ENV PYTHONUNBUFFERED 1
 ENV DEBIAN_FRONTEND noninteractive
@@ -13,13 +13,17 @@ RUN apt-get update && \
     apt-get dist-upgrade -y && \
     apt-get autoremove -y && \
     apt-get clean
-RUN apt-get update && apt-get install -y pandoc texlive texlive-lang-german texlive-latex-extra texlive-xetex qpdf
+RUN apt-get update && apt-get install -y bzip2 ghostscript git-core graphviz lmodern pandoc pandoc-citeproc qpdf tar \
+    zip python3 python3-pip python3-setuptools imagemagick \
+    texlive texlive-lang-german texlive-latex-recommended texlive-generic-recommended texlive-fonts-recommended \
+    texlive-latex-extra texlive-luatex texlive-xetex
+RUN pip3 install pyyaml
 
 RUN groupadd -g 1002 webdev
 RUN useradd -u 1002 -g webdev -m -d /home/webdev -s /bin/bash webdev
 
 ENV HOME /home/webdev
-
 RUN mkdir /app
 WORKDIR /app
-COPY . /app
+COPY --chown=webdev:webdev . /app
+USER webdev
