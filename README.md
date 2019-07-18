@@ -14,7 +14,7 @@ Die aktuelle Development-Version befindet sich [im Ordner /out](https://github.c
 
 Verbesserungen, Diskussionen und weitere Informationen wie weitere Schnittstellen oder Daten sind herzlich willkommen.
 
-Als Plattform für die Diskussion eignet sich v.a. der [Bereich Issues hier auf Githab](https://github.com/ridesharing-api/documentation/issues), da so eine für alle transparente Diskussion entstehen kann.
+Als Plattform für die Diskussion eignet sich v.a. der [Bereich Issues hier auf Github](https://github.com/ridesharing-api/documentation/issues), da so eine für alle transparente Diskussion entstehen kann.
 
 Außerdem steht [eine Mailingliste zur Verfügung](https://mlists.okfn.de/cgi-bin/mailman/listinfo/ridesharing).
 
