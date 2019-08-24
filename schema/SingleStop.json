@@ -1,6 +1,6 @@
 {
   "title": "Stop",
-  "description": "Das Objekt beschreibt einen geplanten, noch nicht instanzierten Haltepunkte einer Fahrt.",
+  "description": "Das Objekt beschreibt die Haltepunkte einer Fahrt.",
   "type": "object",
   "required": [
     "id",
@@ -27,40 +27,37 @@
       "format": "date-time"
     },
     "moment": {
-      "description": "Geplante Zeitpunkt des Stops.",
+      "description": "Erwarteter Zeitpunkt des Stops.",
       "type": "string",
       "format": "date-time"
     },
     "momentInaccuracy": {
-      "description": "Geplante Ungenauigkeit des Stop-Zeitpunktes in Sekunden",
+      "description": "Erwartete Ungenauigkeit des Stop-Zeitpunktes in Sekunden",
       "type": "integer"
     },
-    "trip": {
-      "description": "Mitfahrgelegenheit, zu welchem der Stop gehört.",
-      "references": "Trip",
-      "backreference": "stops",
+    "singleTrip": {
+      "description": "Instanzierter Trip, zu welchem der Stop gehört.",
+      "references": "SingleTrip",
+      "backreference": "stop",
       "cardinality": "n:1",
       "type": "string",
       "format": "url"
     },
-    "location": {
+    "singleLocation": {
       "description": "Ort.",
-      "references": "Location",
+      "references": "SingleLocation",
       "backreference": "stop",
       "cardinality": "n:1",
       "type": "string",
       "format": "url"
     },
-    "singleStop": {
-      "description": "Instanzierter Stop",
+    "stop": {
+      "description": "Noch nicht instanzierter Stop, von dem der SingleStop abgeleitet wurde.",
       "references": "Stop",
-      "backreference": "stop",
-      "cardinality": "1:n",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "url"
-      }
+      "backreference": "singleStop",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
     },
     "participationStart": {
       "description": "Einsteigende Teilnahmen",

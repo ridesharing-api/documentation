@@ -37,18 +37,18 @@
       "description": "Alter der MitfahrerInnen, Freitext.",
       "type": "string"
     },
-    "age_from": {
+    "ageFrom": {
       "description": "Mindestalter der MitfahrerInnen, numerischer Wert.",
       "type": "integer"
     },
-    "age_to": {
+    "ageTo": {
       "description": "Maximales Alter der MitfahrerInnen, numerischer Wert.",
       "type": "integer"
     },
-    "trip": {
-      "description": "Fahrt",
-      "references": "Trip",
-      "backreference": "car",
+    "person": {
+      "description": "Person, dem die Einstellungen gehören",
+      "references": "Person",
+      "backreference": "person",
       "cardinality": "1:1",
       "type": "string",
       "format": "url"

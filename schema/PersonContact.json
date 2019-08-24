@@ -1,0 +1,46 @@
+{
+  "title": "PersonContact",
+  "description": "Eine anonymisierte PersonContact.",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "role",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "url"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Person$"
+    },
+    "created": {
+      "description": "Zeitpunkt der Erstellung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "modified": {
+      "description": "Zeitpunkt der letzten Änderung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "contactType": {
+      "description": "Art der Kontaktmöglichkeit. Vorgegebene Werte sind email, phone, fax, mobile, website. Telefonnummern sollten immer mit internationaler Vorwahl ausgegeben werden (z.B. für Deutsche Nummern also +49123456780 oder 00491234567890).",
+      "type": "string"
+    },
+    "contactIdentifier": {
+      "description": "Kontaktmöglichkeit, also z.B. die E-Mail oder die Handynummer.",
+      "type": "string"
+    },
+    "person": {
+      "description": "Person, zu dem der Kontakt gehört",
+      "references": "Participation",
+      "backreference": "person",
+      "cardinality": "n:1",
+      "type": "string"
+    }
+  }
+}

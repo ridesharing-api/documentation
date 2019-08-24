@@ -27,6 +27,44 @@
       "type": "string",
       "format": "date-time"
     },
+    "name": {
+      "description": "Der vollständige Name der Person mit akademischem Grad und dem gebräuchlichen Vornamen, wie er zur Anzeige durch den Client genutzt werden kann.",
+      "type": "string"
+    },
+    "affix": {
+      "description": "Namenszusatz (z.B. jun. oder MdL.)",
+      "type": "string"
+    },
+    "title": {
+      "description": "Akademische Titel",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "givenName": {
+      "description": "Vorname bzw. Taufname.",
+      "type": "string"
+    },
+    "familyName": {
+      "description": "Familienname bzw. Nachname.",
+      "type": "string"
+    },
+    "gender": {
+      "description": "Geschlecht. Vorgegebene Werte sind female und male, weitere werden durch die durchgehend klein geschriebene englische Bezeichnung angegeben. Für den Fall, dass das Geschlecht der Person unbekannt ist, sollte die Eigenschaft nicht ausgegeben werden.",
+      "type": "string"
+    },
+    "route": {
+      "description": "Routen, die die Person anbietet.",
+      "references": "Route",
+      "backreference": "owner",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    },
     "car": {
       "description": "Fahrzeuge",
       "references": "Car",
@@ -48,6 +86,25 @@
         "type": "string",
         "format": "url"
       }
+    },
+    "personContact": {
+      "description": "Kontaktmöglichkeiten zur Person",
+      "references": "PersonContact",
+      "backreference": "person",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    },
+    "preferences": {
+      "description": "Persönliche Präferenzen gegenüber Mitfahrern.",
+      "references": "Preferences",
+      "backreference": "person",
+      "cardinality": "1:1",
+      "type": "string",
+      "format": "url"
     }
   }
 }

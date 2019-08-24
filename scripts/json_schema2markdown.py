@@ -21,14 +21,20 @@ class RidesharingApi:
 
     objects = [
         "System",
+        "Route",
         "Trip",
+        "Calendar",
+        "CalendarException",
+        "Stop",
+        "Location",
+        "SingleTrip",
+        "SingleStop",
+        "SingleLocation",
         "Person",
+        "PersonContact",
         "Participation",
         "Preferences",
-        "Stop",
-        "Car",
-        "Location",
-        "RecurrentTrip"
+        "Car"
     ]
 
 
@@ -57,6 +63,8 @@ def type_to_string(prop):
     elif type == "boolean":
         pass
     elif type == "integer":
+        pass
+    elif type == "float":
         pass
     else:
         raise Exception("Invalid type: " + type)

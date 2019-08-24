@@ -1,0 +1,52 @@
+{
+  "title": "RecurrentTrip",
+  "description": "Das Objekt beschreibt eine wiederkehrende Fahrt.",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "url"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "url"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/RecurrentTrip$"
+    },
+    "created": {
+      "description": "Zeitpunkt der Erstellung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "modified": {
+      "description": "Zeitpunkt der letzten Änderung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "date": {
+      "description": "Ausnahme-Datum zum bestehenden Calendar",
+      "type": "string",
+      "format": "date"
+    },
+    "end": {
+      "description": "Ende der Gültigkeit der angegebenen Wochentage",
+      "type": "string",
+      "format": "date"
+    },
+    "reason": {
+      "description": "Grund führ die Ausnahme",
+      "type": "string"
+    },
+    "trip": {
+      "description": "Calendar",
+      "references": "Calendar",
+      "backreference": "calendarException",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    }
+  }
+}

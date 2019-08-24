@@ -1,0 +1,79 @@
+{
+  "title": "SingleTrip",
+  "description": "Das Objekt beschreibt eine instanzierte, also eine real zu einem Zeitpunkt stattfindende Fahrt.",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "url"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "url"
+    },
+    "type": {
+      "type": "string",
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/SingleTrip$"
+    },
+    "created": {
+      "description": "Zeitpunkt der Erstellung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "modified": {
+      "description": "Zeitpunkt der letzten Änderung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "published": {
+      "description": "Zeitpunkt der Veröffentlichung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "expired": {
+      "description": "Zeitpunkt, ab welchem das Angebot nicht mehr gültig ist.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "active": {
+      "description": "Status, ob das Angebot weiterhin angeboten wird.",
+      "type": "boolean"
+    },
+    "url": {
+      "description": "Öffentlicher Link auf das Angebot.",
+      "type": "string",
+      "format": "url"
+    },
+    "trip": {
+      "description": "Abstrakter Trip",
+      "references": "RecurrentTrip",
+      "backreference": "trip",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "singleStop": {
+      "description": "Haltepunkte",
+      "references": "Stop",
+      "backreference": "trip",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    },
+    "participation": {
+      "description": "Teilnahmen",
+      "references": "Participation",
+      "backreference": "trip",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    }
+  }
+}

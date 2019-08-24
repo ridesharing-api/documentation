@@ -1,11 +1,12 @@
 {
-  "title": "Trip",
-  "description": "Das Objekt beschreibt eine abstrakte Fahrt, welche sich wöchentlich wiederholen kann.",
+  "title": "Route",
+  "description": "Eine Route, zu der eine oder mehrere Fahrten gehören.",
   "type": "object",
   "required": [
     "id",
     "type",
-    "url"
+    "role",
+    "status"
   ],
   "properties": {
     "id": {
@@ -14,7 +15,7 @@
     },
     "type": {
       "type": "string",
-      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/SingleTrip$"
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Route"
     },
     "created": {
       "description": "Zeitpunkt der Erstellung.",
@@ -26,75 +27,34 @@
       "type": "string",
       "format": "date-time"
     },
-    "published": {
-      "description": "Zeitpunkt der Veröffentlichung.",
-      "type": "string",
-      "format": "date-time"
-    },
-    "expired": {
-      "description": "Zeitpunkt, ab welchem das Angebot nicht mehr gültig ist.",
-      "type": "string",
-      "format": "date-time"
-    },
-    "active": {
-      "description": "Status, ob das Angebot weiterhin angeboten wird.",
-      "type": "boolean"
-    },
     "website": {
-      "description": "Öffentlicher Link auf das Angebot (Deeplink).",
+      "description": "URL der Route auf dem Mitfahr-Portals (Deeplink)",
       "type": "string",
       "format": "url"
     },
-    "route": {
-      "description": "Wiederkehrende Fahrt (falls vorhanden)",
-      "references": "RecurrentTrip",
-      "backreference": "trip",
-      "cardinality": "n:1",
-      "type": "string",
-      "format": "url"
-    },
-    "car": {
-      "description": "Fahrzeug",
-      "references": "Car",
-      "backreference": "trip",
-      "cardinality": "n:1",
-      "type": "string",
-      "format": "url"
-    },
-    "stop": {
-      "description": "Haltepunkte",
-      "references": "Stop",
-      "backreference": "trip",
+    "system": {
+      "description": "System",
+      "references": "System",
+      "backreference": "route",
       "cardinality": "1:n",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "url"
-      }
+      "type": "string",
+      "format": "url"
     },
-    "backTrip": {
-      "description": "Der in die exakt entgegengesetzte Richtung laufende Trip, also die Rückfahrt.",
+    "owner": {
+      "description": "Besitzer der Fahrt. Wert darf nur bei personenbesogenen Exporten ausgegeben werden.",
+      "references": "Person",
+      "backreference": "route",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "trip": {
+      "description": "Die zu der Route gehörenden Fahrten.",
       "references": "Trip",
-      "backreference": "backTrip",
-      "cardinality": "1:1",
+      "backreference": "route",
+      "cardinality": "1:n",
       "type": "string",
       "format": "url"
-    },
-    "singleTrip": {
-      "description": "Die Instanzierungen des abstrakten Trips.",
-      "references": "SingleTrip",
-      "backreference": "trip",
-      "cardinality": "1:n",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "url"
-      }
-    },
-    "seats": {
-      "description": "Anzahl der Sitze",
-      "type": "integer",
-      "minimum": 1
     },
     "boardingMinimum": {
       "description": "Mindestanteil der Fahrt, die ein Mitfahrender dabei sein muss.",
@@ -113,6 +73,11 @@
       "type": "float",
       "exclusiveMinimum": 0,
       "maximum": 1
+    },
+    "seats": {
+      "description": "Anzahl der Sitze",
+      "type": "integer",
+      "minimum": 1
     },
     "nonsmoking": {
       "description": "Nichtraucher-Fahrt.",
@@ -138,6 +103,12 @@
         "female",
         "any"
       ]
+    },
+    "talkingLevel": {
+      "description": "Das Level an Gesprächigkeit.",
+      "type": "float",
+      "minimum": 0,
+      "maximum": 1
     }
   }
 }

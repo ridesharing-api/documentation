@@ -33,29 +33,159 @@ toc-title: Inhaltsverzeichnis
     -   [Eigenschaften mit Verwendung in mehreren
         Objekttypen](#eigenschaften-mit-verwendung-in-mehreren-objekttypen)
     -   [System](#entity-system)
+    -   [Route](#entity-route)
     -   [Trip](#entity-trip)
+    -   [RecurrentTrip](#entity-recurrenttrip)
+    -   [RecurrentTrip](#entity-recurrenttrip)
+    -   [Stop](#entity-stop)
+    -   [Location](#entity-location)
+    -   [SingleTrip](#entity-singletrip)
+    -   [Stop](#entity-stop)
+    -   [SingleLocation](#entity-singlelocation)
     -   [Person](#entity-person)
+    -   [PersonContact](#entity-personcontact)
     -   [Participation](#entity-participation)
     -   [Preferences](#entity-preferences)
-    -   [Stop](#entity-stop)
     -   [Car](#entity-car)
-    -   [Location](#entity-location)
-    -   [RecurrentTrip](#entity-recurrenttrip)
 
 Einleitung
 ==========
 
+Der Mitfahrmarkt in Deutschland ist stark fragmentiert und hierdurch für
+die Nutzer der vielfältigen Vermittlungsangebote nicht ausreichend
+transparent. Fahrer und Mitfahrer finden zum Teil nicht oder nur mit
+großem Zeitaufwand zusammen. Dieses Problem wollen wir mit einem offenen
+Datenstandard und der Perspektive auf ein gemeinsames Meta-Such-Portal
+angehen.
+
 Zielsetzung
 -----------
+
+Dass Mobilität durch eine bessere Vernetzung verschiedener
+Verkehrsmittel schneller, komfortabler und umweltfreundlicher werden
+kann ist mittlerweile allgemeiner Konsens. Doch an dem „wie“ scheiden
+sich oft die Geister. Eines der Kernprobleme ist, dass fast jeder
+Anbieter von Mobilitätslösungen in Deutschland einen anderen
+Datenstandard nutzt.
+
+Dies ist auch imbeim Mitfahrmarkt nicht anders. Dabei wäre gerade der
+Mitfahrmarkt besonders auf eine Vernetzung angewiesen, wie ein früheres
+Forschungsprojekt und die darauf folgenden Entwicklungen des
+Mitfahrmarkts in den letzten Jahren verdeutlicht haben. Die große Anzahl
+an Vermittlungsangeboten erhöht den Aufwand für das Zusammenfinden und
+vermindert mögliche Vermittlungserfolge. Ein Metaportal könnte dieses
+roblem lösen, doch dies ist nur möglich, wenn die Daten mindestens
+strukturiert, im besten Fall in einem einheitlichen Datenstandard
+vorliegen.
+
+Vergleichbar ist die Situation mit der menschlichen Kommunikation:
+Möchte man komplexe Informationen austauschen, so ist es zwangsweise
+erforderlich, dass man die Sprache des Anderen beherrscht. Ansonsten ist
+Kommunikation nur mit hohem Aufwand und dem Verlust vieler Details
+möglich. Genauso verhält es sich in der Mobilität: Eine gut
+funktionierende Vernetzung gibt es nur mit gemeinsamer Sprache, also
+einem gemeinsamen Datenstandard.
+
+Wichtig ist, dass es sich dabei um einen offenen Datenstandard handelt,
+der ohne Lizenzgebühren einsehbar und nutzbar ist. Die aktuelle
+unbefriedigende Situation ist unter anderem auf geschlossene Standards
+zurückzuführen – ein Datenaustausch zwischen den Plattformen findet zur
+Zeit nahezu nicht statt. Das Internet selbst sollte dabei Vorbild sein:
+Nur durch die vielen offenen Standards ist die Vernetzung möglich
+geworden. Und auch hier wieder gilt die Analogie zur menschlichen
+Sprache: Die Idee, für jede Nutzung eines deutschen Wortes eine
+Lizenzgebühr zu verlangen, würde zu Recht als völlig absurd abgetan
+werden.
 
 Nutzungsszenarien
 -----------------
 
+Ein Datenstandard für den Mitfahrmarkt hat zahlreiche Anwendungen.
+Einige davon sollen hier exemplarisch vorgestellt werden.
+
 Marktumfeld
 -----------
 
+### Metaportal
+
+Aktuell verlieren sich Fahrt-Anbieter und Mitfahrer von
+Mitfahrgelegenheiten auf den über 50 Mitfahrportalen, Apps u.v.m..
+Darüber hinaus gibt es noch zahlreiche interne und / oder analoge
+Systeme wie Mitfahrbänke.
+
+Es bräuchte also eine spezielle Suchmaschine, welche Zugriff auf alle
+Daten aller Mitfahrbörsen hat und so Nutzer schnell über alle
+Plattformen hinweg Fahrten suchen können. Diese Suchmaschine wäre das
+schon mehrfach zuvor angesprochene Meta-Portal.
+
+Ein Meta-Portal würde von möglichst vielen Mitfahr-Plattformen Daten
+aggregieren und zusammenfügen. Es hätte lediglich Fahrt-Informationen
+und wäre so eine rein anonyme Suchmaschine: Die Kontaktaufnahme würde
+weiterhin auf der Plattform geschehen, in welcher der Fahrer die Fahrt
+eingestellt hat.
+
+Darüber hinaus könnte das Metaportal die aggregierten Daten
+normalisieren, automatisiert veredeln und wiederum via ridesharing.api
+zur Verfügung stellen. Dies würde den Aufwand einer Vernetzung zwischen
+den Portalen reduzieren, da Fehler einmal auf der Metaplattform statt
+bei jedem Datenimport einer Mitfahrbörse ausgebügelt werden können.
+Außerdem könnte das Meta-Portal dieselben Daten auch über moderne
+Schnittstellen wie z.B. Websockets bereitstellen, selbst wenn das
+ursprüngliche Portal dies nicht kann.
+
+### Multimodalität
+
+### Export von Profildaten
+
+Da es zahlreiche Ridesharing-Plattformen gibt, sollte es eine
+Möglichkeit geben, dass Nutzer ihre persönlichen Einstellngen und
+Präferenzen auf einer Plattform exportieren und auf einer anderen
+importieren können. Mit der DSGVO ist dieses eh wünschenswerte Feature
+verpflichtend geworden.
+
+Vielfach scheitert dieses Anliegen aber noch an dem Datenformat, da man
+aktuell eher CSVs und Textdateien statt strukturierte Daten bekommt.
+Dies kann die ridesharing.api ändern, indem es ein JSON-Datenmodell
+definiert und so die Plattformen in weiten Teilen untereinander
+kompatibel macht.
+
+Praktisch sähe das dann so aus, dass ein Nutzer beim Export seiner
+Nutzerdaten eine einzige JSON-Datei herunterladen könnte. Wenn die Ziel-
+Plattform das unterstützt, könnte der Nutzer die Datei dann auf der
+Ziel- Plattform hochladen und hätte so ganz einfach sämtliche
+Einstellungen übertragen.
+
 Bestehende Schnittellen
 -----------------------
+
+Es gibt bereits eine Reihe an Datenstandards, die sich im Umfeld des
+Ridesharing-Marktes bewegen. Grob lassen sich diese in zwei Kategorien
+einsortieren: Spezielle Ride-Sharing-Schnittstellen, welche die
+besonderen Bedürfnisse des Ridesharings berücksichtigen, und allgemeine
+Mobilitäts-Daten-Standards, welche durch eine höhere Abstraktion
+Kompatibilität zu anderen Mobilitätsformen herstellen. Eine Auswahl:
+
+-   Dycapo ist das Ergebnis einer Bachelor-Arbeit, welche ein abstraktes
+    Datenmodell auf JSON-Basis definiert und einen vollwertigen Server
+    mit vielen Aspekten des Meta-M-Mitfahrportals entwickelt hat. Die
+    Dokumentation und der Code sind öffentlich auf Github einsehbar.
+-   Das oben erwähnte Forschungsprojekt hat ein sehr umfangreiches
+    XML-Datenmodell spezifiziert, welches viele wichtige Aspekte
+    anspricht, aber mittlerweile aufgrund seines Alters von ca. 10
+    Jahren einer Aktualisierung bedarf .
+-   Eine Reihe an plattform-spezifischen Schnittstellen bilden ebenfalls
+    Mitfahrgelegenheiten ab. Diese werden hier aus Neutralitätsgründen
+    nicht aufgeführt. Umso mehr wird eingeladen, diese auf Github zu
+    sammeln und zu diskutieren .
+-   Die abstrakten Datenstandards GTFS und GTFS-RT bieten eine gute und
+    realistische Möglichkeit, Ridesharing-Daten mit weiteren
+    Mobilitätsdaten wie zum Beispiel dem ÖPNV zu verknüpfen. Außerdem
+    ist GTFS ein Standard-Import-Format für Open-Source-Routing-Engines.
+-   Es sollte darauf geachtet werden, Kompatibilität zum zukünftigen
+    europäischen Datenstandard für Nahverkehrs-Daten NeTEx zu
+    gewährleisten, da abzusehen ist, dass in diesem Umfeld Daten und
+    Software entstehen wird, welche auch für den Mitfahr-Markt von
+    Interesse sind.
 
 Nomenklatur
 -----------
@@ -813,7 +943,11 @@ Zugriff auf einen Server.
 
   `type`                          string                                         
 
-  `ridesharingApiVersion`         string                                         ridesharing.api Version
+  `created`                       date-time                                      **ZWINGEND** Zeitpunkt der Erstellung.
+
+  `modified`                      date-time                                      **ZWINGEND** Zeitpunkt der letzten Änderung.
+
+  `ridesharingApiVersion`         string                                         **ZWINGEND** ridesharing.api Version
 
   `otherRidesharingApiVersions`   array of url (System)                          Andere ridesharing.api Versionen
 
@@ -832,10 +966,225 @@ Zugriff auf einen Server.
   `website`                       url                                            URL der Website des Mitfahr-Portals
   -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+Route {#entity-route}
+-----
+
+Eine Route, zu der eine oder mehrere Fahrten gehören.
+
+  ------------------------------------------------------------------------------------------------------------------------
+  Name                    Typ                                Beschreibung
+  ----------------------- ---------------------------------- -------------------------------------------------------------
+  `id`                    url                                
+
+  `type`                  string                             
+
+  `created`               date-time                          Zeitpunkt der Erstellung.
+
+  `modified`              date-time                          Zeitpunkt der letzten Änderung.
+
+  `website`               url                                URL der Route auf dem Mitfahr-Portals (Deeplink)
+
+  `system`                url (System)                       System
+
+  `owner`                 url (Person)                       Besitzer der Fahrt. Wert darf nur bei personenbesogenen
+                                                             Exporten ausgegeben werden.
+
+  `trip`                  url (Trip)                         Die zu der Route gehörenden Fahrten.
+
+  `boardingMinimum`       float                              Mindestanteil der Fahrt, die ein Mitfahrender dabei sein
+                                                             muss.
+
+  `boardingAllowedFrom`   float                              Anteil der Fahrt, bis zu dem Aussteigen nicht erlaubt ist.
+
+  `boardingAllowedTill`   float                              Anteil der Fahrt, ab dem kein Zusteigen mehr erlaubt ist.
+
+  `seats`                 integer                            Anzahl der Sitze
+
+  `nonsmoking`            boolean                            Nichtraucher-Fahrt.
+
+  `bike`                  boolean                            Fahrrad-Mitnahme.
+
+  `ageFrom`               integer                            Mindestalter der MitfahrerInnen, numerischer Wert.
+
+  `ageTill`               integer                            Maximales Alter der MitfahrerInnen, numerischer Wert.
+
+  `gender`                string                             Geschlecht der MitfahrerInnen
+
+  `talkingLevel`          float                              Das Level an Gesprächigkeit.
+  ------------------------------------------------------------------------------------------------------------------------
+
 Trip {#entity-trip}
 ----
 
-Das Objekt beschreibt eine Fahrt.
+Das Objekt beschreibt eine abstrakte Fahrt, welche sich wöchentlich
+wiederholen kann.
+
+  ------------------------------------------------------------------------------------------------------------------------
+  Name                    Typ                                Beschreibung
+  ----------------------- ---------------------------------- -------------------------------------------------------------
+  `id`                    url                                
+
+  `type`                  string                             
+
+  `created`               date-time                          Zeitpunkt der Erstellung.
+
+  `modified`              date-time                          Zeitpunkt der letzten Änderung.
+
+  `published`             date-time                          Zeitpunkt der Veröffentlichung.
+
+  `expired`               date-time                          Zeitpunkt, ab welchem das Angebot nicht mehr gültig ist.
+
+  `active`                boolean                            Status, ob das Angebot weiterhin angeboten wird.
+
+  `website`               url                                Öffentlicher Link auf das Angebot (Deeplink).
+
+  `route`                 url (RecurrentTrip)                Wiederkehrende Fahrt (falls vorhanden)
+
+  `car`                   url (Car)                          Fahrzeug
+
+  `stop`                  array of url (Stop)                Haltepunkte
+
+  `backTrip`              url (Trip)                         Der in die exakt entgegengesetzte Richtung laufende Trip,
+                                                             also die Rückfahrt.
+
+  `singleTrip`            array of url (SingleTrip)          Die Instanzierungen des abstrakten Trips.
+
+  `seats`                 integer                            Anzahl der Sitze
+
+  `boardingMinimum`       float                              Mindestanteil der Fahrt, die ein Mitfahrender dabei sein
+                                                             muss.
+
+  `boardingAllowedFrom`   float                              Anteil der Fahrt, bis zu dem Aussteigen nicht erlaubt ist.
+
+  `boardingAllowedTill`   float                              Anteil der Fahrt, ab dem kein Zusteigen mehr erlaubt ist.
+
+  `nonsmoking`            boolean                            Nichtraucher-Fahrt.
+
+  `bike`                  boolean                            Fahrrad-Mitnahme.
+
+  `ageFrom`               integer                            Mindestalter der MitfahrerInnen, numerischer Wert.
+
+  `ageTill`               integer                            Maximales Alter der MitfahrerInnen, numerischer Wert.
+
+  `gender`                string                             Geschlecht der MitfahrerInnen
+  ------------------------------------------------------------------------------------------------------------------------
+
+RecurrentTrip {#entity-recurrenttrip}
+-------------
+
+Das Objekt beschreibt eine wiederkehrende Fahrt.
+
+  --------------------------------------------------------------------------------------------------------------
+  Name                  Typ                             Beschreibung
+  --------------------- ------------------------------- --------------------------------------------------------
+  `id`                  url                             
+
+  `type`                string                          
+
+  `created`             date-time                       Zeitpunkt der Erstellung.
+
+  `modified`            date-time                       Zeitpunkt der letzten Änderung.
+
+  `start`               date                            Beginn der Gültigkeit der angegebenen Wochentage
+
+  `end`                 date                            Ende der Gültigkeit der angegebenen Wochentage
+
+  `weekday`             array of integer                Tage, an denen die Fahrt angeboten wird, als Liste an
+                                                        ISO 8601 Wochentag-Nummern.
+
+  `trip`                url (Trip)                      Fahrt
+
+  `calendarException`   array of url                    Ausnahmen zu den definierten Tagen
+                        (CalendarException)             
+  --------------------------------------------------------------------------------------------------------------
+
+RecurrentTrip {#entity-recurrenttrip}
+-------------
+
+Das Objekt beschreibt eine wiederkehrende Fahrt.
+
+  ------------------------------------------------------------------------------------
+  Name             Typ                      Beschreibung
+  ---------------- ------------------------ ------------------------------------------
+  `id`             url                      
+
+  `type`           string                   
+
+  `created`        date-time                Zeitpunkt der Erstellung.
+
+  `modified`       date-time                Zeitpunkt der letzten Änderung.
+
+  `date`           date                     Ausnahme-Datum zum bestehenden Calendar
+
+  `end`            date                     Ende der Gültigkeit der angegebenen
+                                            Wochentage
+
+  `reason`         string                   Grund führ die Ausnahme
+
+  `trip`           url (Calendar)           Calendar
+  ------------------------------------------------------------------------------------
+
+Stop {#entity-stop}
+----
+
+Das Objekt beschreibt einen geplanten, noch nicht instanzierten
+Haltepunkte einer Fahrt.
+
+  Name                   Typ                               Beschreibung
+  ---------------------- --------------------------------- ----------------------------------------------------------
+  `id`                   url                               
+  `type`                 string                            
+  `created`              date-time                         Zeitpunkt der Erstellung.
+  `modified`             date-time                         Zeitpunkt der letzten Änderung.
+  `moment`               date-time                         **ZWINGEND** Geplante Zeitpunkt des Stops.
+  `momentInaccuracy`     integer                           Geplante Ungenauigkeit des Stop-Zeitpunktes in Sekunden
+  `trip`                 url (Trip)                        Mitfahrgelegenheit, zu welchem der Stop gehört.
+  `location`             url (Location)                    Ort.
+  `singleStop`           array of url (Stop)               Instanzierter Stop
+  `participationStart`   array of url (Participation)      Einsteigende Teilnahmen
+  `participationStop`    array of url (Participation)      Aussteigende Teilnahmen
+
+Location {#entity-location}
+--------
+
+Das Objekt beschreibt einen geplanten, noch nicht instanzierten Ort.
+
+  ----------------------------------------------------------------------------------------------------------------------------------
+  Name                      Typ                                   Beschreibung
+  ------------------------- ------------------------------------- ------------------------------------------------------------------
+  `id`                      url                                   
+
+  `type`                    string                                
+
+  `created`                 date-time                             Zeitpunkt der Erstellung.
+
+  `modified`                date-time                             Zeitpunkt der letzten Änderung.
+
+  `name`                    string                                **ZWINGEND** Name des Ortes.
+
+  `streetAddress`           string                                Straße und Hausnummer des Ortes.
+
+  `postalCode`              string                                Postleitzahl des Ortes.
+
+  `locality`                string                                Stadt oder Ort des Ortes.
+
+  `subLocality`             string                                Untergeordnete Ortsangabe der Anschrift, z.B. Stadtbezirk,
+                                                                  Ortsteil oder Dorf.
+
+  `geojson`                 object                                Geodaten-Repräsentation des Orts. Der Wert dieser Eigenschaft muss
+                                                                  der Spezifikation von GeoJSON entsprechen, d.h. es muss ein
+                                                                  vollständiges Feature-Objekt ausgegeben werden.
+
+  `singleLocation`          array of url (SingleLocation)         Instanzierte Location
+
+  `stop`                    array of url (Stop)                   Haltepunkte
+  ----------------------------------------------------------------------------------------------------------------------------------
+
+SingleTrip {#entity-singletrip}
+----------
+
+Das Objekt beschreibt eine instanzierte, also eine real zu einem
+Zeitpunkt stattfindende Fahrt.
 
   ---------------------------------------------------------------------------------------------------
   Name                Typ                          Beschreibung
@@ -857,38 +1206,154 @@ Das Objekt beschreibt eine Fahrt.
 
   `url`               url                          **ZWINGEND** Öffentlicher Link auf das Angebot.
 
-  `recurrentTrip`     url (RecurrentTrip)          Wiederkehrende Fahrt (falls vorhanden)
+  `trip`              url (RecurrentTrip)          Abstrakter Trip
 
-  `car`               url (Car)                    Fahrzeug
-
-  `preferences`       url (Preferences)            Präferenzen
-
-  `stop`              array of url (Stop)          Haltepunkte
+  `singleStop`        array of url (Stop)          Haltepunkte
 
   `participation`     array of url (Participation) Teilnahmen
   ---------------------------------------------------------------------------------------------------
+
+Stop {#entity-stop}
+----
+
+Das Objekt beschreibt die Haltepunkte einer Fahrt.
+
+  -------------------------------------------------------------------------------------------------------------------
+  Name                   Typ                               Beschreibung
+  ---------------------- --------------------------------- ----------------------------------------------------------
+  `id`                   url                               
+
+  `type`                 string                            
+
+  `created`              date-time                         Zeitpunkt der Erstellung.
+
+  `modified`             date-time                         Zeitpunkt der letzten Änderung.
+
+  `moment`               date-time                         **ZWINGEND** Erwarteter Zeitpunkt des Stops.
+
+  `momentInaccuracy`     integer                           Erwartete Ungenauigkeit des Stop-Zeitpunktes in Sekunden
+
+  `singleTrip`           url (SingleTrip)                  Instanzierter Trip, zu welchem der Stop gehört.
+
+  `singleLocation`       url (SingleLocation)              Ort.
+
+  `stop`                 url (Stop)                        Noch nicht instanzierter Stop, von dem der SingleStop
+                                                           abgeleitet wurde.
+
+  `participationStart`   array of url (Participation)      Einsteigende Teilnahmen
+
+  `participationStop`    array of url (Participation)      Aussteigende Teilnahmen
+  -------------------------------------------------------------------------------------------------------------------
+
+SingleLocation {#entity-singlelocation}
+--------------
+
+Das Objekt beschreibt einen instanzierten Ort.
+
+  ----------------------------------------------------------------------------------------------------------------------------------
+  Name                      Typ                                   Beschreibung
+  ------------------------- ------------------------------------- ------------------------------------------------------------------
+  `id`                      url                                   
+
+  `type`                    string                                
+
+  `created`                 date-time                             Zeitpunkt der Erstellung.
+
+  `modified`                date-time                             Zeitpunkt der letzten Änderung.
+
+  `name`                    string                                **ZWINGEND** Name des Ortes.
+
+  `streetAddress`           string                                Straße und Hausnummer des Ortes.
+
+  `postalCode`              string                                Postleitzahl des Ortes.
+
+  `locality`                string                                Stadt oder Ort des Ortes.
+
+  `subLocality`             string                                Untergeordnete Ortsangabe der Anschrift, z.B. Stadtbezirk,
+                                                                  Ortsteil oder Dorf.
+
+  `geojson`                 object                                Geodaten-Repräsentation des Orts. Der Wert dieser Eigenschaft muss
+                                                                  der Spezifikation von GeoJSON entsprechen, d.h. es muss ein
+                                                                  vollständiges Feature-Objekt ausgegeben werden.
+
+  `stop`                    array of url (SingleStop)             Instanzierte Haltepunkte
+
+  `location`                url (Location)                        Ursprüngliche noch nicht instanzierte Location, von der die
+                                                                  SingleLocation abgeleitet wurde.
+  ----------------------------------------------------------------------------------------------------------------------------------
 
 Person {#entity-person}
 ------
 
 Eine anonymisierte Person.
 
-  -----------------------------------------------------------------------------------------
-  Name              Typ                       Beschreibung
-  ----------------- ------------------------- ---------------------------------------------
-  `id`              url                       
+  -------------------------------------------------------------------------------------------------------------------
+  Name                   Typ                               Beschreibung
+  ---------------------- --------------------------------- ----------------------------------------------------------
+  `id`                   url                               
 
-  `type`            string                    
+  `type`                 string                            
 
-  `created`         date-time                 Zeitpunkt der Erstellung.
+  `created`              date-time                         Zeitpunkt der Erstellung.
 
-  `modified`        date-time                 Zeitpunkt der letzten Änderung.
+  `modified`             date-time                         Zeitpunkt der letzten Änderung.
 
-  `car`             array of url (Car)        Fahrzeuge
+  `name`                 string                            Der vollständige Name der Person mit akademischem Grad und
+                                                           dem gebräuchlichen Vornamen, wie er zur Anzeige durch den
+                                                           Client genutzt werden kann.
 
-  `participation`   array of url              Teilnahmen
-                    (Participation)           
-  -----------------------------------------------------------------------------------------
+  `affix`                string                            Namenszusatz (z.B. jun. oder MdL.)
+
+  `title`                array of string                   Akademische Titel
+
+  `givenName`            string                            Vorname bzw. Taufname.
+
+  `familyName`           string                            Familienname bzw. Nachname.
+
+  `gender`               string                            Geschlecht. Vorgegebene Werte sind female und male,
+                                                           weitere werden durch die durchgehend klein geschriebene
+                                                           englische Bezeichnung angegeben. Für den Fall, dass das
+                                                           Geschlecht der Person unbekannt ist, sollte die
+                                                           Eigenschaft nicht ausgegeben werden.
+
+  `route`                array of url (Route)              Routen, die die Person anbietet.
+
+  `car`                  array of url (Car)                Fahrzeuge
+
+  `participation`        array of url (Participation)      Teilnahmen
+
+  `personContact`        array of url (PersonContact)      Kontaktmöglichkeiten zur Person
+
+  `preferences`          url (Preferences)                 Persönliche Präferenzen gegenüber Mitfahrern.
+  -------------------------------------------------------------------------------------------------------------------
+
+PersonContact {#entity-personcontact}
+-------------
+
+Eine anonymisierte PersonContact.
+
+  --------------------------------------------------------------------------------------------------------------
+  Name                  Typ                             Beschreibung
+  --------------------- ------------------------------- --------------------------------------------------------
+  `id`                  url                             
+
+  `type`                string                          
+
+  `created`             date-time                       Zeitpunkt der Erstellung.
+
+  `modified`            date-time                       Zeitpunkt der letzten Änderung.
+
+  `contactType`         string                          Art der Kontaktmöglichkeit. Vorgegebene Werte sind
+                                                        email, phone, fax, mobile, website. Telefonnummern
+                                                        sollten immer mit internationaler Vorwahl ausgegeben
+                                                        werden (z.B. für Deutsche Nummern also +49123456780 oder
+                                                        00491234567890).
+
+  `contactIdentifier`   string                          Kontaktmöglichkeit, also z.B. die E-Mail oder die
+                                                        Handynummer.
+
+  `person`              string                          Person, zu dem der Kontakt gehört
+  --------------------------------------------------------------------------------------------------------------
 
 Participation {#entity-participation}
 -------------
@@ -950,30 +1415,12 @@ Das Objekt beschreibt die Präferenzen gegenüber Mitfahrern.
 
   `age`                 string                          Alter der MitfahrerInnen, Freitext.
 
-  `age_from`            integer                         Mindestalter der MitfahrerInnen, numerischer Wert.
+  `ageFrom`             integer                         Mindestalter der MitfahrerInnen, numerischer Wert.
 
-  `age_to`              integer                         Maximales Alter der MitfahrerInnen, numerischer Wert.
+  `ageTo`               integer                         Maximales Alter der MitfahrerInnen, numerischer Wert.
 
-  `trip`                url (Trip)                      Fahrt
+  `person`              url (Person)                    Person, dem die Einstellungen gehören
   --------------------------------------------------------------------------------------------------------------
-
-Stop {#entity-stop}
-----
-
-Das Objekt beschreibt die Haltepunkte einer Fahrt.
-
-  Name                   Typ                               Beschreibung
-  ---------------------- --------------------------------- ----------------------------------------------------------
-  `id`                   url                               
-  `type`                 string                            
-  `created`              date-time                         Zeitpunkt der Erstellung.
-  `modified`             date-time                         Zeitpunkt der letzten Änderung.
-  `moment`               date-time                         **ZWINGEND** Erwarteter Zeitpunkt des Stops.
-  `momentInaccuracy`     integer                           Erwartete Ungenauigkeit des Stop-Zeitpunktes in Sekunden
-  `trip`                 url (Trip)                        Mitfahrgelegenheit, zu welchem der Stop gehört.
-  `location`             url (Location)                    Ort.
-  `participationStart`   array of url (Participation)      Einsteigende Teilnahmen
-  `participationStop`    array of url (Participation)      Aussteigende Teilnahmen
 
 Car {#entity-car}
 ---
@@ -1015,73 +1462,6 @@ Das Objekt beschreibt das Fahrzeug.
 
   `owner`               url (Person)                    Besitzer des Fahrzeugs.
   --------------------------------------------------------------------------------------------------------------
-
-Location {#entity-location}
---------
-
-Das Objekt beschreibt einen Ort.
-
-  ----------------------------------------------------------------------------------------------------------------------------------
-  Name                      Typ                                   Beschreibung
-  ------------------------- ------------------------------------- ------------------------------------------------------------------
-  `id`                      url                                   
-
-  `type`                    string                                
-
-  `created`                 date-time                             Zeitpunkt der Erstellung.
-
-  `modified`                date-time                             Zeitpunkt der letzten Änderung.
-
-  `name`                    string                                **ZWINGEND** Name des Ortes.
-
-  `streetAddress`           string                                Straße und Hausnummer des Ortes.
-
-  `postalCode`              string                                Postleitzahl des Ortes.
-
-  `locality`                string                                Stadt oder Ort des Ortes.
-
-  `subLocality`             string                                Untergeordnete Ortsangabe der Anschrift, z.B. Stadtbezirk,
-                                                                  Ortsteil oder Dorf.
-
-  `geojson`                 object                                Geodaten-Repräsentation des Orts. Der Wert dieser Eigenschaft muss
-                                                                  der Spezifikation von GeoJSON entsprechen, d.h. es muss ein
-                                                                  vollständiges Feature-Objekt ausgegeben werden.
-
-  `stop`                    array of url (Stop)                   Haltepunkte
-  ----------------------------------------------------------------------------------------------------------------------------------
-
-RecurrentTrip {#entity-recurrenttrip}
--------------
-
-Das Objekt beschreibt eine wiederkehrende Fahrt.
-
-  ---------------------------------------------------------------------------------------------------------
-  Name                 Typ                            Beschreibung
-  -------------------- ------------------------------ -----------------------------------------------------
-  `id`                 url                            
-
-  `type`               string                         
-
-  `created`            date-time                      Zeitpunkt der Erstellung.
-
-  `modified`           date-time                      Zeitpunkt der letzten Änderung.
-
-  `time`               array of time                  Uhrzeiten, zu denen die Fahrt angeboten wird, als
-                                                      Liste an ISO 8601 Wochentag-Nummern.
-
-  `weekday`            array of integer               Tage, an denen die Fahrt angeboten wird, als Liste an
-                                                      ISO 8601 Wochentag-Nummern.
-
-  `month`              array of integer               Monate, an denen die Fahrt angeboten wird, als Liste
-                                                      an Monats-Nummern.
-
-  `weeks`              array of string                Wochen, an denen die Fahrt angeboten wird, als Liste
-                                                      an WochenNummern.
-
-  `exception`          array of datetime              Ausnahmen, an denen keine Fahrt angeboten wird.
-
-  `trip`               array of url (Trip)            Fahrt
-  ---------------------------------------------------------------------------------------------------------
 
 [^1]: <http://patterns.dataincubator.org/book/follow-your-nose.html>
 

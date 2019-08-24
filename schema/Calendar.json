@@ -26,13 +26,15 @@
       "type": "string",
       "format": "date-time"
     },
-    "time": {
-      "description": "Uhrzeiten, zu denen die Fahrt angeboten wird, als Liste an ISO 8601 Wochentag-Nummern.",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "time"
-      }
+    "start": {
+      "description": "Beginn der Gültigkeit der angegebenen Wochentage",
+      "type": "string",
+      "format": "date"
+    },
+    "end": {
+      "description": "Ende der Gültigkeit der angegebenen Wochentage",
+      "type": "string",
+      "format": "date"
     },
     "weekday": {
       "description": "Tage, an denen die Fahrt angeboten wird, als Liste an ISO 8601 Wochentag-Nummern.",
@@ -41,32 +43,18 @@
         "type": "integer"
       }
     },
-    "month": {
-      "description": "Monate, an denen die Fahrt angeboten wird, als Liste an Monats-Nummern.",
-      "type": "array",
-      "items": {
-        "type": "integer"
-      }
-    },
-    "weeks": {
-      "description": "Wochen, an denen die Fahrt angeboten wird, als Liste an WochenNummern.",
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
-    "exception": {
-      "description": "Ausnahmen, an denen keine Fahrt angeboten wird.",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "datetime"
-      }
-    },
     "trip": {
       "description": "Fahrt",
       "references": "Trip",
-      "backreference": "recurrentTrip",
+      "backreference": "calendar",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "calendarException": {
+      "description": "Ausnahmen zu den definierten Tagen",
+      "references": "CalendarException",
+      "backreference": "calendar",
       "cardinality": "1:n",
       "type": "array",
       "items": {

@@ -1,6 +1,6 @@
 {
-  "title": "Location",
-  "description": "Das Objekt beschreibt einen geplanten, noch nicht instanzierten Ort.",
+  "title": "SingleLocation",
+  "description": "Das Objekt beschreibt einen instanzierten Ort.",
   "type": "object",
   "required": [
     "id",
@@ -14,7 +14,7 @@
     },
     "type": {
       "type": "string",
-      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Location$"
+      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/SingleLocation$"
     },
     "created": {
       "description": "Zeitpunkt der Erstellung.",
@@ -50,9 +50,9 @@
       "description": "Geodaten-Repräsentation des Orts. Der Wert dieser Eigenschaft muss der Spezifikation von GeoJSON entsprechen, d.h. es muss ein vollständiges Feature-Objekt ausgegeben werden.",
       "type": "object"
     },
-    "singleLocation": {
-      "description": "Instanzierte Location",
-      "references": "SingleLocation",
+    "stop": {
+      "description": "Instanzierte Haltepunkte",
+      "references": "SingleStop",
       "backreference": "location",
       "cardinality": "1:n",
       "type": "array",
@@ -61,16 +61,13 @@
         "format": "url"
       }
     },
-    "stop": {
-      "description": "Haltepunkte",
-      "references": "Stop",
-      "backreference": "location",
-      "cardinality": "1:n",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "url"
-      }
+    "location": {
+      "description": "Ursprüngliche noch nicht instanzierte Location, von der die SingleLocation abgeleitet wurde.",
+      "references": "Location",
+      "backreference": "singleLocation",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
     }
   }
 }
