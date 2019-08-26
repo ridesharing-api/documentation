@@ -25,16 +25,42 @@
       "type": "string",
       "format": "date-time"
     },
+    "trip": {
+      "description": "Mitfahrgelegenheiten, in welchem das Fahrzeug eingesetzt wird.",
+      "references": "Trip",
+      "backreference": "car",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    },
+    "singleTrip": {
+      "description": "Instanzierte Mitfahrgelegenheiten, in welchem das Fahrzeug eingesetzt wird.",
+      "references": "SingleTrip",
+      "backreference": "car",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    },
+    "owner": {
+      "description": "Besitzer des Fahrzeugs.",
+      "references": "Person",
+      "backreference": "car",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
     "carClass": {
       "description": "Art des Fahrzeugs. Hierbei SOLLTE die aus Buchstaben bestehende Klassifizierung verwendet werden, welche in der Verordnung 1400/2002 der EU-Komission beschrieben wird.",
       "type": "string"
     },
     "capacity": {
       "description": "Anzahl der Sitze.",
-      "type": "integer"
-    },
-    "vacancy": {
-      "description": "Anzahl der freien Sitze.",
       "type": "integer"
     },
     "color": {
@@ -56,22 +82,6 @@
     "licencePlate": {
       "description": "Nummernschild des Fahrzeugs.",
       "type": "string"
-    },
-    "trip": {
-      "description": "Mitfahrgelegenheit, zu welchem der Stop gehört.",
-      "references": "Trip",
-      "backreference": "stops",
-      "cardinality": "n:1",
-      "type": "string",
-      "format": "url"
-    },
-    "owner": {
-      "description": "Besitzer des Fahrzeugs.",
-      "references": "Person",
-      "backreference": "stops",
-      "cardinality": "n:1",
-      "type": "string",
-      "format": "url"
     }
   }
 }

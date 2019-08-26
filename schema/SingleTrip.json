@@ -26,28 +26,17 @@
       "type": "string",
       "format": "date-time"
     },
-    "published": {
-      "description": "Zeitpunkt der Veröffentlichung.",
-      "type": "string",
-      "format": "date-time"
-    },
-    "expired": {
-      "description": "Zeitpunkt, ab welchem das Angebot nicht mehr gültig ist.",
-      "type": "string",
-      "format": "date-time"
-    },
-    "active": {
-      "description": "Status, ob das Angebot weiterhin angeboten wird.",
-      "type": "boolean"
-    },
-    "url": {
-      "description": "Öffentlicher Link auf das Angebot.",
-      "type": "string",
-      "format": "url"
-    },
     "trip": {
       "description": "Abstrakter Trip",
       "references": "RecurrentTrip",
+      "backreference": "trip",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "car": {
+      "description": "Fahrzeug",
+      "references": "Car",
       "backreference": "trip",
       "cardinality": "n:1",
       "type": "string",
@@ -74,6 +63,63 @@
         "type": "string",
         "format": "url"
       }
+    },
+    "cancelled": {
+      "description": "Wenn der instanzierte Trip ausfällt, darf er nicht einfach gelöscht werden, sondern bekommt das Attribut cancelled.",
+      "type": "bool"
+    },
+    "seats": {
+      "description": "Anzahl der Sitze",
+      "type": "integer",
+      "minimum": 1
+    },
+    "boardingMinimum": {
+      "description": "Mindestanteil der Fahrt, die ein Mitfahrender dabei sein muss.",
+      "type": "float",
+      "exclusiveMinimum": 0,
+      "maximum": 1
+    },
+    "boardingAllowedFrom": {
+      "description": "Anteil der Fahrt, bis zu dem Aussteigen nicht erlaubt ist.",
+      "type": "float",
+      "minimum": 0,
+      "exclusiveMaximum": 1
+    },
+    "boardingAllowedTill": {
+      "description": "Anteil der Fahrt, ab dem kein Zusteigen mehr erlaubt ist.",
+      "type": "float",
+      "exclusiveMinimum": 0,
+      "maximum": 1
+    },
+    "nonsmoking": {
+      "description": "Nichtraucher-Fahrt.",
+      "type": "boolean"
+    },
+    "bike": {
+      "description": "Fahrrad-Mitnahme.",
+      "type": "boolean"
+    },
+    "ageFrom": {
+      "description": "Mindestalter der MitfahrerInnen, numerischer Wert.",
+      "type": "integer"
+    },
+    "ageTill": {
+      "description": "Maximales Alter der MitfahrerInnen, numerischer Wert.",
+      "type": "integer"
+    },
+    "gender": {
+      "description": "Geschlecht der MitfahrerInnen",
+      "type": "string",
+      "enum": [
+        "male",
+        "female",
+        "any"
+      ]
+    },
+    "website": {
+      "description": "Öffentlicher Link auf das Angebot (Deeplink).",
+      "type": "string",
+      "format": "url"
     }
   }
 }

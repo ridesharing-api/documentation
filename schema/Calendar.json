@@ -26,23 +26,6 @@
       "type": "string",
       "format": "date-time"
     },
-    "start": {
-      "description": "Beginn der Gültigkeit der angegebenen Wochentage",
-      "type": "string",
-      "format": "date"
-    },
-    "end": {
-      "description": "Ende der Gültigkeit der angegebenen Wochentage",
-      "type": "string",
-      "format": "date"
-    },
-    "weekday": {
-      "description": "Tage, an denen die Fahrt angeboten wird, als Liste an ISO 8601 Wochentag-Nummern.",
-      "type": "array",
-      "items": {
-        "type": "integer"
-      }
-    },
     "trip": {
       "description": "Fahrt",
       "references": "Trip",
@@ -60,6 +43,23 @@
       "items": {
         "type": "string",
         "format": "url"
+      }
+    },
+    "start": {
+      "description": "Beginn der Gültigkeit der angegebenen Wochentage",
+      "type": "string",
+      "format": "date"
+    },
+    "end": {
+      "description": "Ende der Gültigkeit der angegebenen Wochentage",
+      "type": "string",
+      "format": "date"
+    },
+    "weekday": {
+      "description": "Tage, an denen die Fahrt angeboten wird, als Liste an ISO 8601 Wochentag-Nummern.",
+      "type": "array",
+      "items": {
+        "type": "integer"
       }
     }
   }

@@ -26,15 +26,6 @@
       "type": "string",
       "format": "date-time"
     },
-    "moment": {
-      "description": "Geplante Zeitpunkt des Stops.",
-      "type": "string",
-      "format": "date-time"
-    },
-    "momentInaccuracy": {
-      "description": "Geplante Ungenauigkeit des Stop-Zeitpunktes in Sekunden",
-      "type": "integer"
-    },
     "trip": {
       "description": "Mitfahrgelegenheit, zu welchem der Stop gehört.",
       "references": "Trip",
@@ -62,27 +53,31 @@
         "format": "url"
       }
     },
-    "participationStart": {
-      "description": "Einsteigende Teilnahmen",
-      "references": "Participation",
-      "backreference": "start",
-      "cardinality": "1:n",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "url"
-      }
+    "arrival": {
+      "description": "Geplante Ankunftszeit am Stop.",
+      "type": "string",
+      "format": "date-time"
     },
-    "participationStop": {
-      "description": "Aussteigende Teilnahmen",
-      "references": "Participation",
-      "backreference": "stop",
-      "cardinality": "1:n",
-      "type": "array",
-      "items": {
-        "type": "string",
-        "format": "url"
-      }
+    "arrivalInaccuracy": {
+      "description": "Geplante Ungenauigkeit der Ankunft in Sekunden",
+      "type": "integer"
+    },
+    "departure": {
+      "description": "Geplante Abfahrtzeit am Stop.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "departureInaccuracy": {
+      "description": "Geplante Ungenauigkeit der Abfahrt in Sekunden",
+      "type": "integer"
+    },
+    "boardingAllowed": {
+      "description": "Status, ob ein Einsteigen erlaubt ist.",
+      "type": "bool"
+    },
+    "deboardingAllowed": {
+      "description": "Status, ob ein Aussteigen erlaubt ist.",
+      "type": "bool"
     }
   }
 }

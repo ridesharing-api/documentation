@@ -27,6 +27,30 @@
       "type": "string",
       "format": "date-time"
     },
+    "board": {
+      "description": "Haltepunkt, an welchem die Person zusteigt.",
+      "references": "SingleStop",
+      "backreference": "participationBoard",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "deboard": {
+      "description": "Haltepunkt, an welchem die Person aussteigt.",
+      "references": "SingleStop",
+      "backreference": "participationDeboard",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "person": {
+      "description": "Person.",
+      "references": "Person",
+      "backreference": "participation",
+      "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
     "role": {
       "description": "Rolle des Mitfahrenden. Mögliche Werte sind driver und passenger.",
       "type": "string"
@@ -34,38 +58,6 @@
     "status": {
       "description": "Status der Teilnahme an einer Fahrt. Mögliche Werte sind driver, passenger, requested und rejected.",
       "type": "string"
-    },
-    "start": {
-      "description": "Haltepunkt, an welchem die Person zusteigt.",
-      "references": "Stop",
-      "backreference": "starts",
-      "cardinality": "n:1",
-      "type": "string",
-      "format": "url"
-    },
-    "stop": {
-      "description": "Haltepunkt, an welchem die Person aussteigt.",
-      "references": "Stop",
-      "backreference": "stops",
-      "cardinality": "n:1",
-      "type": "string",
-      "format": "url"
-    },
-    "trip": {
-      "description": "Fahrt.",
-      "references": "Trip",
-      "backreference": "participation",
-      "cardinality": "n:1",
-      "type": "string",
-      "format": "url"
-    },
-    "person": {
-      "description": "Anonymisierte Person.",
-      "references": "Person",
-      "backreference": "participation",
-      "cardinality": "n:1",
-      "type": "string",
-      "format": "url"
     }
   }
 }

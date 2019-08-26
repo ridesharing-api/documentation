@@ -26,30 +26,6 @@
       "type": "string",
       "format": "date-time"
     },
-    "name": {
-      "description": "Name des Ortes.",
-      "type": "string"
-    },
-    "streetAddress": {
-      "description": "Straße und Hausnummer des Ortes.",
-      "type": "string"
-    },
-    "postalCode": {
-      "description": "Postleitzahl des Ortes.",
-      "type": "string"
-    },
-    "locality": {
-      "description": "Stadt oder Ort des Ortes.",
-      "type": "string"
-    },
-    "subLocality": {
-      "description": "Untergeordnete Ortsangabe der Anschrift, z.B. Stadtbezirk, Ortsteil oder Dorf.",
-      "type": "string"
-    },
-    "geojson": {
-      "description": "Geodaten-Repräsentation des Orts. Der Wert dieser Eigenschaft muss der Spezifikation von GeoJSON entsprechen, d.h. es muss ein vollständiges Feature-Objekt ausgegeben werden.",
-      "type": "object"
-    },
     "singleLocation": {
       "description": "Instanzierte Location",
       "references": "SingleLocation",
@@ -71,6 +47,30 @@
         "type": "string",
         "format": "url"
       }
+    },
+    "name": {
+      "description": "Name des Ortes.",
+      "type": "string"
+    },
+    "streetAddress": {
+      "description": "Straße und Hausnummer des Ortes.",
+      "type": "string"
+    },
+    "postalCode": {
+      "description": "Postleitzahl des Ortes.",
+      "type": "string"
+    },
+    "subLocality": {
+      "description": "Untergeordnete Ortsangabe der Anschrift, z.B. Stadtbezirk, Ortsteil oder Dorf.",
+      "type": "string"
+    },
+    "locality": {
+      "description": "Stadt oder Ort des Ortes.",
+      "type": "string"
+    },
+    "geojson": {
+      "description": "Geodaten-Repräsentation des Orts. Der Wert dieser Eigenschaft muss der Spezifikation von GeoJSON entsprechen, d.h. es muss ein vollständiges Feature-Objekt ausgegeben werden.",
+      "type": "object"
     }
   }
 }

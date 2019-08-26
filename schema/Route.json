@@ -27,16 +27,11 @@
       "type": "string",
       "format": "date-time"
     },
-    "website": {
-      "description": "URL der Route auf dem Mitfahr-Portals (Deeplink)",
-      "type": "string",
-      "format": "url"
-    },
     "system": {
       "description": "System",
       "references": "System",
       "backreference": "route",
-      "cardinality": "1:n",
+      "cardinality": "n:1",
       "type": "string",
       "format": "url"
     },
@@ -53,8 +48,25 @@
       "references": "Trip",
       "backreference": "route",
       "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    },
+    "active": {
+      "description": "Zeigt an, ob die Fahrt aktuell aktiv ist.",
+      "type": "bool"
+    },
+    "published": {
+      "description": "Zeitpunkt der Veröffentlichung.",
       "type": "string",
-      "format": "url"
+      "format": "date-time"
+    },
+    "expired": {
+      "description": "Zeitpunkt, ab welchem das Angebot nicht mehr gültig ist.",
+      "type": "string",
+      "format": "date-time"
     },
     "boardingMinimum": {
       "description": "Mindestanteil der Fahrt, die ein Mitfahrender dabei sein muss.",
@@ -62,17 +74,17 @@
       "exclusiveMinimum": 0,
       "maximum": 1
     },
-    "boardingAllowedFrom": {
-      "description": "Anteil der Fahrt, bis zu dem Aussteigen nicht erlaubt ist.",
-      "type": "float",
-      "minimum": 0,
-      "exclusiveMaximum": 1
-    },
     "boardingAllowedTill": {
       "description": "Anteil der Fahrt, ab dem kein Zusteigen mehr erlaubt ist.",
       "type": "float",
       "exclusiveMinimum": 0,
       "maximum": 1
+    },
+    "deboardingAllowedFrom": {
+      "description": "Anteil der Fahrt, bis zu dem Aussteigen nicht erlaubt ist.",
+      "type": "float",
+      "minimum": 0,
+      "exclusiveMaximum": 1
     },
     "seats": {
       "description": "Anzahl der Sitze",
@@ -109,6 +121,11 @@
       "type": "float",
       "minimum": 0,
       "maximum": 1
+    },
+    "website": {
+      "description": "URL der Route auf dem Mitfahr-Portals (Deeplink)",
+      "type": "string",
+      "format": "url"
     }
   }
 }

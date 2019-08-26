@@ -25,6 +25,14 @@
       "type": "string",
       "format": "date-time"
     },
+    "person": {
+      "description": "Person, dem die Einstellungen gehören",
+      "references": "Person",
+      "backreference": "person",
+      "cardinality": "1:1",
+      "type": "string",
+      "format": "url"
+    },
     "nonsmoking": {
       "description": "Nichtraucher-Fahrt.",
       "type": "boolean"
@@ -33,9 +41,8 @@
       "description": "Gender der MitfahrerInnen. Es SOLLTEN die Begriffe female fü weiblich und male für männlich verwendet werden. Andere Geschlechter SOLLTEN klein geschrieben und in englisch beschrieben werden.",
       "type": "string"
     },
-    "age": {
-      "description": "Alter der MitfahrerInnen, Freitext.",
-      "type": "string"
+    "bike": {
+      "description": "Fahrradmitnahme erwünscht"
     },
     "ageFrom": {
       "description": "Mindestalter der MitfahrerInnen, numerischer Wert.",
@@ -45,13 +52,11 @@
       "description": "Maximales Alter der MitfahrerInnen, numerischer Wert.",
       "type": "integer"
     },
-    "person": {
-      "description": "Person, dem die Einstellungen gehören",
-      "references": "Person",
-      "backreference": "person",
-      "cardinality": "1:1",
-      "type": "string",
-      "format": "url"
+    "talkingLevel": {
+      "description": "Das Level an Gesprächigkeit.",
+      "type": "float",
+      "minimum": 0,
+      "maximum": 1
     }
   }
 }

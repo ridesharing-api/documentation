@@ -26,20 +26,6 @@
       "type": "string",
       "format": "date-time"
     },
-    "date": {
-      "description": "Ausnahme-Datum zum bestehenden Calendar",
-      "type": "string",
-      "format": "date"
-    },
-    "end": {
-      "description": "Ende der Gültigkeit der angegebenen Wochentage",
-      "type": "string",
-      "format": "date"
-    },
-    "reason": {
-      "description": "Grund führ die Ausnahme",
-      "type": "string"
-    },
     "trip": {
       "description": "Calendar",
       "references": "Calendar",
@@ -47,6 +33,15 @@
       "cardinality": "n:1",
       "type": "string",
       "format": "url"
+    },
+    "date": {
+      "description": "Ausnahme-Datum zum bestehenden Calendar",
+      "type": "string",
+      "format": "date"
+    },
+    "reason": {
+      "description": "Grund führ die Ausnahme",
+      "type": "string"
     }
   }
 }

@@ -26,28 +26,9 @@
       "type": "string",
       "format": "date-time"
     },
-    "published": {
-      "description": "Zeitpunkt der Veröffentlichung.",
-      "type": "string",
-      "format": "date-time"
-    },
-    "expired": {
-      "description": "Zeitpunkt, ab welchem das Angebot nicht mehr gültig ist.",
-      "type": "string",
-      "format": "date-time"
-    },
-    "active": {
-      "description": "Status, ob das Angebot weiterhin angeboten wird.",
-      "type": "boolean"
-    },
-    "website": {
-      "description": "Öffentlicher Link auf das Angebot (Deeplink).",
-      "type": "string",
-      "format": "url"
-    },
     "route": {
-      "description": "Wiederkehrende Fahrt (falls vorhanden)",
-      "references": "RecurrentTrip",
+      "description": "Abstrakte Route, mit der eine oder mehrere Fahrten zusammengefasst werden.",
+      "references": "Route",
       "backreference": "trip",
       "cardinality": "n:1",
       "type": "string",
@@ -58,6 +39,14 @@
       "references": "Car",
       "backreference": "trip",
       "cardinality": "n:1",
+      "type": "string",
+      "format": "url"
+    },
+    "backTrip": {
+      "description": "Der in die exakt entgegengesetzte Richtung laufende Trip, also die Rückfahrt.",
+      "references": "Trip",
+      "backreference": "backTrip",
+      "cardinality": "1:1",
       "type": "string",
       "format": "url"
     },
@@ -72,14 +61,6 @@
         "format": "url"
       }
     },
-    "backTrip": {
-      "description": "Der in die exakt entgegengesetzte Richtung laufende Trip, also die Rückfahrt.",
-      "references": "Trip",
-      "backreference": "backTrip",
-      "cardinality": "1:1",
-      "type": "string",
-      "format": "url"
-    },
     "singleTrip": {
       "description": "Die Instanzierungen des abstrakten Trips.",
       "references": "SingleTrip",
@@ -90,6 +71,20 @@
         "type": "string",
         "format": "url"
       }
+    },
+    "active": {
+      "description": "Zeigt an, ob die Fahrt aktuell aktiv ist.",
+      "type": "bool"
+    },
+    "published": {
+      "description": "Zeitpunkt der Veröffentlichung.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "expired": {
+      "description": "Zeitpunkt, ab welchem das Angebot nicht mehr gültig ist.",
+      "type": "string",
+      "format": "date-time"
     },
     "seats": {
       "description": "Anzahl der Sitze",
@@ -138,6 +133,11 @@
         "female",
         "any"
       ]
+    },
+    "website": {
+      "description": "Öffentlicher Link auf das Angebot (Deeplink).",
+      "type": "string",
+      "format": "url"
     }
   }
 }
