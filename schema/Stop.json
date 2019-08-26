@@ -73,11 +73,11 @@
     },
     "boardingAllowed": {
       "description": "Status, ob ein Einsteigen erlaubt ist.",
-      "type": "bool"
+      "type": "boolean"
     },
     "deboardingAllowed": {
       "description": "Status, ob ein Aussteigen erlaubt ist.",
-      "type": "bool"
+      "type": "boolean"
     }
   }
 }

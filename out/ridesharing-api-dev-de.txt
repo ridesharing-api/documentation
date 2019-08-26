@@ -956,12 +956,12 @@ Zugriff auf einen Server.
   `name`                          string                                         Nutzerfreundlicher Name für das System, mit dessen Hilfe Nutzerinnen und Nutzer
                                                                                  das System erkennen und von anderen unterscheiden können.
 
+  `contactName`                   string                                         Name der Ansprechpartnerin bzw. des Ansprechpartners oder der Abteilung, die über
+                                                                                 die in contactEmail angegebene Adresse erreicht werden kann.
+
   `contactEmail`                  string                                         E-Mail-Adresse für Anfragen zur ridesharing.api-API. Die Angabe einer
                                                                                  E-Mail-Adresse dient sowohl NutzerInnen wie auch Entwicklerinnen von Clients zur
                                                                                  Kontaktaufnahme mit dem Betreiber.
-
-  `contactName`                   string                                         Name der Ansprechpartnerin bzw. des Ansprechpartners oder der Abteilung, die über
-                                                                                 die in contactEmail angegebene Adresse erreicht werden kann.
 
   `website`                       url                                            URL der Website des Mitfahr-Portals
   -----------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -971,47 +971,52 @@ Route {#entity-route}
 
 Eine Route, zu der eine oder mehrere Fahrten gehören.
 
-  ------------------------------------------------------------------------------------------------------------------------
-  Name                    Typ                                Beschreibung
-  ----------------------- ---------------------------------- -------------------------------------------------------------
-  `id`                    url                                
+  ----------------------------------------------------------------------------------------------------------------------------------
+  Name                      Typ                                   Beschreibung
+  ------------------------- ------------------------------------- ------------------------------------------------------------------
+  `id`                      url                                   
 
-  `type`                  string                             
+  `type`                    string                                
 
-  `created`               date-time                          Zeitpunkt der Erstellung.
+  `created`                 date-time                             Zeitpunkt der Erstellung.
 
-  `modified`              date-time                          Zeitpunkt der letzten Änderung.
+  `modified`                date-time                             Zeitpunkt der letzten Änderung.
 
-  `website`               url                                URL der Route auf dem Mitfahr-Portals (Deeplink)
+  `system`                  url (System)                          System
 
-  `system`                url (System)                       System
+  `owner`                   url (Person)                          Besitzer der Fahrt. Wert darf nur bei personenbesogenen Exporten
+                                                                  ausgegeben werden.
 
-  `owner`                 url (Person)                       Besitzer der Fahrt. Wert darf nur bei personenbesogenen
-                                                             Exporten ausgegeben werden.
+  `trip`                    array of url (Trip)                   Die zu der Route gehörenden Fahrten.
 
-  `trip`                  url (Trip)                         Die zu der Route gehörenden Fahrten.
+  `active`                  boolean                               Zeigt an, ob die Fahrt aktuell aktiv ist.
 
-  `boardingMinimum`       float                              Mindestanteil der Fahrt, die ein Mitfahrender dabei sein
-                                                             muss.
+  `published`               date-time                             Zeitpunkt der Veröffentlichung.
 
-  `boardingAllowedFrom`   float                              Anteil der Fahrt, bis zu dem Aussteigen nicht erlaubt ist.
+  `expired`                 date-time                             Zeitpunkt, ab welchem das Angebot nicht mehr gültig ist.
 
-  `boardingAllowedTill`   float                              Anteil der Fahrt, ab dem kein Zusteigen mehr erlaubt ist.
+  `boardingMinimum`         float                                 Mindestanteil der Fahrt, die ein Mitfahrender dabei sein muss.
 
-  `seats`                 integer                            Anzahl der Sitze
+  `boardingAllowedTill`     float                                 Anteil der Fahrt, ab dem kein Zusteigen mehr erlaubt ist.
 
-  `nonsmoking`            boolean                            Nichtraucher-Fahrt.
+  `deboardingAllowedFrom`   float                                 Anteil der Fahrt, bis zu dem Aussteigen nicht erlaubt ist.
 
-  `bike`                  boolean                            Fahrrad-Mitnahme.
+  `seats`                   integer                               Anzahl der Sitze
 
-  `ageFrom`               integer                            Mindestalter der MitfahrerInnen, numerischer Wert.
+  `nonsmoking`              boolean                               Nichtraucher-Fahrt.
 
-  `ageTill`               integer                            Maximales Alter der MitfahrerInnen, numerischer Wert.
+  `bike`                    boolean                               Fahrrad-Mitnahme.
 
-  `gender`                string                             Geschlecht der MitfahrerInnen
+  `ageFrom`                 integer                               Mindestalter der MitfahrerInnen, numerischer Wert.
 
-  `talkingLevel`          float                              Das Level an Gesprächigkeit.
-  ------------------------------------------------------------------------------------------------------------------------
+  `ageTill`                 integer                               Maximales Alter der MitfahrerInnen, numerischer Wert.
+
+  `gender`                  string                                Geschlecht der MitfahrerInnen
+
+  `talkingLevel`            float                                 Das Level an Gesprächigkeit.
+
+  `website`                 url                                   URL der Route auf dem Mitfahr-Portals (Deeplink)
+  ----------------------------------------------------------------------------------------------------------------------------------
 
 Trip {#entity-trip}
 ----
@@ -1030,24 +1035,23 @@ wiederholen kann.
 
   `modified`              date-time                          Zeitpunkt der letzten Änderung.
 
-  `published`             date-time                          Zeitpunkt der Veröffentlichung.
-
-  `expired`               date-time                          Zeitpunkt, ab welchem das Angebot nicht mehr gültig ist.
-
-  `active`                boolean                            Status, ob das Angebot weiterhin angeboten wird.
-
-  `website`               url                                Öffentlicher Link auf das Angebot (Deeplink).
-
-  `route`                 url (RecurrentTrip)                Wiederkehrende Fahrt (falls vorhanden)
+  `route`                 url (Route)                        Abstrakte Route, mit der eine oder mehrere Fahrten
+                                                             zusammengefasst werden.
 
   `car`                   url (Car)                          Fahrzeug
-
-  `stop`                  array of url (Stop)                Haltepunkte
 
   `backTrip`              url (Trip)                         Der in die exakt entgegengesetzte Richtung laufende Trip,
                                                              also die Rückfahrt.
 
+  `stop`                  array of url (Stop)                Haltepunkte
+
   `singleTrip`            array of url (SingleTrip)          Die Instanzierungen des abstrakten Trips.
+
+  `active`                boolean                            Zeigt an, ob die Fahrt aktuell aktiv ist.
+
+  `published`             date-time                          Zeitpunkt der Veröffentlichung.
+
+  `expired`               date-time                          Zeitpunkt, ab welchem das Angebot nicht mehr gültig ist.
 
   `seats`                 integer                            Anzahl der Sitze
 
@@ -1067,6 +1071,8 @@ wiederholen kann.
   `ageTill`               integer                            Maximales Alter der MitfahrerInnen, numerischer Wert.
 
   `gender`                string                             Geschlecht der MitfahrerInnen
+
+  `website`               url                                Öffentlicher Link auf das Angebot (Deeplink).
   ------------------------------------------------------------------------------------------------------------------------
 
 RecurrentTrip {#entity-recurrenttrip}
@@ -1085,17 +1091,17 @@ Das Objekt beschreibt eine wiederkehrende Fahrt.
 
   `modified`            date-time                       Zeitpunkt der letzten Änderung.
 
+  `trip`                url (Trip)                      Fahrt
+
+  `calendarException`   array of url                    Ausnahmen zu den definierten Tagen
+                        (CalendarException)             
+
   `start`               date                            Beginn der Gültigkeit der angegebenen Wochentage
 
   `end`                 date                            Ende der Gültigkeit der angegebenen Wochentage
 
   `weekday`             array of integer                Tage, an denen die Fahrt angeboten wird, als Liste an
                                                         ISO 8601 Wochentag-Nummern.
-
-  `trip`                url (Trip)                      Fahrt
-
-  `calendarException`   array of url                    Ausnahmen zu den definierten Tagen
-                        (CalendarException)             
   --------------------------------------------------------------------------------------------------------------
 
 RecurrentTrip {#entity-recurrenttrip}
@@ -1103,26 +1109,15 @@ RecurrentTrip {#entity-recurrenttrip}
 
 Das Objekt beschreibt eine wiederkehrende Fahrt.
 
-  ------------------------------------------------------------------------------------
   Name             Typ                      Beschreibung
   ---------------- ------------------------ ------------------------------------------
   `id`             url                      
-
   `type`           string                   
-
   `created`        date-time                Zeitpunkt der Erstellung.
-
   `modified`       date-time                Zeitpunkt der letzten Änderung.
-
-  `date`           date                     Ausnahme-Datum zum bestehenden Calendar
-
-  `end`            date                     Ende der Gültigkeit der angegebenen
-                                            Wochentage
-
-  `reason`         string                   Grund führ die Ausnahme
-
   `trip`           url (Calendar)           Calendar
-  ------------------------------------------------------------------------------------
+  `date`           date                     Ausnahme-Datum zum bestehenden Calendar
+  `reason`         string                   Grund führ die Ausnahme
 
 Stop {#entity-stop}
 ----
@@ -1130,19 +1125,21 @@ Stop {#entity-stop}
 Das Objekt beschreibt einen geplanten, noch nicht instanzierten
 Haltepunkte einer Fahrt.
 
-  Name                   Typ                               Beschreibung
-  ---------------------- --------------------------------- ----------------------------------------------------------
-  `id`                   url                               
-  `type`                 string                            
-  `created`              date-time                         Zeitpunkt der Erstellung.
-  `modified`             date-time                         Zeitpunkt der letzten Änderung.
-  `moment`               date-time                         **ZWINGEND** Geplante Zeitpunkt des Stops.
-  `momentInaccuracy`     integer                           Geplante Ungenauigkeit des Stop-Zeitpunktes in Sekunden
-  `trip`                 url (Trip)                        Mitfahrgelegenheit, zu welchem der Stop gehört.
-  `location`             url (Location)                    Ort.
-  `singleStop`           array of url (Stop)               Instanzierter Stop
-  `participationStart`   array of url (Participation)      Einsteigende Teilnahmen
-  `participationStop`    array of url (Participation)      Aussteigende Teilnahmen
+  Name                    Typ                                Beschreibung
+  ----------------------- ---------------------------------- -------------------------------------------------------------
+  `id`                    url                                
+  `type`                  string                             
+  `created`               date-time                          Zeitpunkt der Erstellung.
+  `modified`              date-time                          Zeitpunkt der letzten Änderung.
+  `trip`                  url (Trip)                         Mitfahrgelegenheit, zu welchem der Stop gehört.
+  `location`              url (Location)                     Ort.
+  `singleStop`            array of url (Stop)                Instanzierter Stop
+  `arrival`               date-time                          Geplante Ankunftszeit am Stop.
+  `arrivalInaccuracy`     integer                            Geplante Ungenauigkeit der Ankunft in Sekunden
+  `departure`             date-time                          Geplante Abfahrtzeit am Stop.
+  `departureInaccuracy`   integer                            Geplante Ungenauigkeit der Abfahrt in Sekunden
+  `boardingAllowed`       boolean                            Status, ob ein Einsteigen erlaubt ist.
+  `deboardingAllowed`     boolean                            Status, ob ein Aussteigen erlaubt ist.
 
 Location {#entity-location}
 --------
@@ -1160,24 +1157,24 @@ Das Objekt beschreibt einen geplanten, noch nicht instanzierten Ort.
 
   `modified`                date-time                             Zeitpunkt der letzten Änderung.
 
+  `singleLocation`          array of url (SingleLocation)         Instanzierte Location
+
+  `stop`                    array of url (Stop)                   Haltepunkte
+
   `name`                    string                                **ZWINGEND** Name des Ortes.
 
   `streetAddress`           string                                Straße und Hausnummer des Ortes.
 
   `postalCode`              string                                Postleitzahl des Ortes.
 
-  `locality`                string                                Stadt oder Ort des Ortes.
-
   `subLocality`             string                                Untergeordnete Ortsangabe der Anschrift, z.B. Stadtbezirk,
                                                                   Ortsteil oder Dorf.
+
+  `locality`                string                                Stadt oder Ort des Ortes.
 
   `geojson`                 object                                Geodaten-Repräsentation des Orts. Der Wert dieser Eigenschaft muss
                                                                   der Spezifikation von GeoJSON entsprechen, d.h. es muss ein
                                                                   vollständiges Feature-Objekt ausgegeben werden.
-
-  `singleLocation`          array of url (SingleLocation)         Instanzierte Location
-
-  `stop`                    array of url (Stop)                   Haltepunkte
   ----------------------------------------------------------------------------------------------------------------------------------
 
 SingleTrip {#entity-singletrip}
@@ -1186,64 +1183,89 @@ SingleTrip {#entity-singletrip}
 Das Objekt beschreibt eine instanzierte, also eine real zu einem
 Zeitpunkt stattfindende Fahrt.
 
-  ---------------------------------------------------------------------------------------------------
-  Name                Typ                          Beschreibung
-  ------------------- ---------------------------- --------------------------------------------------
-  `id`                url                          
+  ------------------------------------------------------------------------------------------------------------------------
+  Name                    Typ                                Beschreibung
+  ----------------------- ---------------------------------- -------------------------------------------------------------
+  `id`                    url                                
 
-  `type`              string                       
+  `type`                  string                             
 
-  `created`           date-time                    Zeitpunkt der Erstellung.
+  `created`               date-time                          Zeitpunkt der Erstellung.
 
-  `modified`          date-time                    Zeitpunkt der letzten Änderung.
+  `modified`              date-time                          Zeitpunkt der letzten Änderung.
 
-  `published`         date-time                    Zeitpunkt der Veröffentlichung.
+  `trip`                  url (RecurrentTrip)                Abstrakter Trip
 
-  `expired`           date-time                    Zeitpunkt, ab welchem das Angebot nicht mehr
-                                                   gültig ist.
+  `car`                   url (Car)                          Fahrzeug
 
-  `active`            boolean                      Status, ob das Angebot weiterhin angeboten wird.
+  `singleStop`            array of url (Stop)                Haltepunkte
 
-  `url`               url                          **ZWINGEND** Öffentlicher Link auf das Angebot.
+  `participation`         array of url (Participation)       Teilnahmen
 
-  `trip`              url (RecurrentTrip)          Abstrakter Trip
+  `cancelled`             boolean                            Wenn der instanzierte Trip ausfällt, darf er nicht einfach
+                                                             gelöscht werden, sondern bekommt das Attribut cancelled.
 
-  `singleStop`        array of url (Stop)          Haltepunkte
+  `seats`                 integer                            Anzahl der Sitze
 
-  `participation`     array of url (Participation) Teilnahmen
-  ---------------------------------------------------------------------------------------------------
+  `boardingMinimum`       float                              Mindestanteil der Fahrt, die ein Mitfahrender dabei sein
+                                                             muss.
+
+  `boardingAllowedFrom`   float                              Anteil der Fahrt, bis zu dem Aussteigen nicht erlaubt ist.
+
+  `boardingAllowedTill`   float                              Anteil der Fahrt, ab dem kein Zusteigen mehr erlaubt ist.
+
+  `nonsmoking`            boolean                            Nichtraucher-Fahrt.
+
+  `bike`                  boolean                            Fahrrad-Mitnahme.
+
+  `ageFrom`               integer                            Mindestalter der MitfahrerInnen, numerischer Wert.
+
+  `ageTill`               integer                            Maximales Alter der MitfahrerInnen, numerischer Wert.
+
+  `gender`                string                             Geschlecht der MitfahrerInnen
+
+  `website`               url                                Öffentlicher Link auf das Angebot (Deeplink).
+  ------------------------------------------------------------------------------------------------------------------------
 
 Stop {#entity-stop}
 ----
 
 Das Objekt beschreibt die Haltepunkte einer Fahrt.
 
-  -------------------------------------------------------------------------------------------------------------------
-  Name                   Typ                               Beschreibung
-  ---------------------- --------------------------------- ----------------------------------------------------------
-  `id`                   url                               
+  ------------------------------------------------------------------------------------------------------------------------
+  Name                    Typ                                Beschreibung
+  ----------------------- ---------------------------------- -------------------------------------------------------------
+  `id`                    url                                
 
-  `type`                 string                            
+  `type`                  string                             
 
-  `created`              date-time                         Zeitpunkt der Erstellung.
+  `created`               date-time                          Zeitpunkt der Erstellung.
 
-  `modified`             date-time                         Zeitpunkt der letzten Änderung.
+  `modified`              date-time                          Zeitpunkt der letzten Änderung.
 
-  `moment`               date-time                         **ZWINGEND** Erwarteter Zeitpunkt des Stops.
+  `singleTrip`            url (SingleTrip)                   Instanzierter Trip, zu welchem der Stop gehört.
 
-  `momentInaccuracy`     integer                           Erwartete Ungenauigkeit des Stop-Zeitpunktes in Sekunden
+  `singleLocation`        url (SingleLocation)               Ort.
 
-  `singleTrip`           url (SingleTrip)                  Instanzierter Trip, zu welchem der Stop gehört.
+  `stop`                  url (Stop)                         Noch nicht instanzierter Stop, von dem der SingleStop
+                                                             abgeleitet wurde.
 
-  `singleLocation`       url (SingleLocation)              Ort.
+  `participationStart`    array of url (Participation)       Einsteigende Teilnahmen
 
-  `stop`                 url (Stop)                        Noch nicht instanzierter Stop, von dem der SingleStop
-                                                           abgeleitet wurde.
+  `participationStop`     array of url (Participation)       Aussteigende Teilnahmen
 
-  `participationStart`   array of url (Participation)      Einsteigende Teilnahmen
+  `arrival`               date-time                          Geplante Ankunftszeit am Stop.
 
-  `participationStop`    array of url (Participation)      Aussteigende Teilnahmen
-  -------------------------------------------------------------------------------------------------------------------
+  `arrivalInaccuracy`     integer                            Geplante Ungenauigkeit der Ankunft in Sekunden
+
+  `departure`             date-time                          Geplante Abfahrtzeit am Stop.
+
+  `departureInaccuracy`   integer                            Geplante Ungenauigkeit der Abfahrt in Sekunden
+
+  `boardingAllowed`       boolean                            Status, ob ein Einsteigen erlaubt ist.
+
+  `deboardingAllowed`     boolean                            Status, ob ein Aussteigen erlaubt ist.
+  ------------------------------------------------------------------------------------------------------------------------
 
 SingleLocation {#entity-singlelocation}
 --------------
@@ -1261,6 +1283,11 @@ Das Objekt beschreibt einen instanzierten Ort.
 
   `modified`                date-time                             Zeitpunkt der letzten Änderung.
 
+  `stop`                    array of url (SingleStop)             Instanzierte Haltepunkte
+
+  `location`                url (Location)                        Ursprüngliche noch nicht instanzierte Location, von der die
+                                                                  SingleLocation abgeleitet wurde.
+
   `name`                    string                                **ZWINGEND** Name des Ortes.
 
   `streetAddress`           string                                Straße und Hausnummer des Ortes.
@@ -1275,11 +1302,6 @@ Das Objekt beschreibt einen instanzierten Ort.
   `geojson`                 object                                Geodaten-Repräsentation des Orts. Der Wert dieser Eigenschaft muss
                                                                   der Spezifikation von GeoJSON entsprechen, d.h. es muss ein
                                                                   vollständiges Feature-Objekt ausgegeben werden.
-
-  `stop`                    array of url (SingleStop)             Instanzierte Haltepunkte
-
-  `location`                url (Location)                        Ursprüngliche noch nicht instanzierte Location, von der die
-                                                                  SingleLocation abgeleitet wurde.
   ----------------------------------------------------------------------------------------------------------------------------------
 
 Person {#entity-person}
@@ -1298,6 +1320,16 @@ Eine anonymisierte Person.
 
   `modified`             date-time                         Zeitpunkt der letzten Änderung.
 
+  `route`                array of url (Route)              Routen, die die Person anbietet.
+
+  `car`                  array of url (Car)                Fahrzeuge
+
+  `participation`        array of url (Participation)      Teilnahmen
+
+  `personContact`        array of url (PersonContact)      Kontaktmöglichkeiten zur Person
+
+  `preferences`          array of url (Preferences)        Persönliche Präferenzen gegenüber Mitfahrern.
+
   `name`                 string                            Der vollständige Name der Person mit akademischem Grad und
                                                            dem gebräuchlichen Vornamen, wie er zur Anzeige durch den
                                                            Client genutzt werden kann.
@@ -1310,27 +1342,19 @@ Eine anonymisierte Person.
 
   `familyName`           string                            Familienname bzw. Nachname.
 
+  `formOfAddress`        string                            Anrede.
+
   `gender`               string                            Geschlecht. Vorgegebene Werte sind female und male,
                                                            weitere werden durch die durchgehend klein geschriebene
                                                            englische Bezeichnung angegeben. Für den Fall, dass das
                                                            Geschlecht der Person unbekannt ist, sollte die
                                                            Eigenschaft nicht ausgegeben werden.
-
-  `route`                array of url (Route)              Routen, die die Person anbietet.
-
-  `car`                  array of url (Car)                Fahrzeuge
-
-  `participation`        array of url (Participation)      Teilnahmen
-
-  `personContact`        array of url (PersonContact)      Kontaktmöglichkeiten zur Person
-
-  `preferences`          url (Preferences)                 Persönliche Präferenzen gegenüber Mitfahrern.
   -------------------------------------------------------------------------------------------------------------------
 
 PersonContact {#entity-personcontact}
 -------------
 
-Eine anonymisierte PersonContact.
+Eine Kontaktmöglichkeit zu einer Person.
 
   --------------------------------------------------------------------------------------------------------------
   Name                  Typ                             Beschreibung
@@ -1343,6 +1367,8 @@ Eine anonymisierte PersonContact.
 
   `modified`            date-time                       Zeitpunkt der letzten Änderung.
 
+  `person`              string                          Person, zu dem der Kontakt gehört
+
   `contactType`         string                          Art der Kontaktmöglichkeit. Vorgegebene Werte sind
                                                         email, phone, fax, mobile, website. Telefonnummern
                                                         sollten immer mit internationaler Vorwahl ausgegeben
@@ -1351,8 +1377,6 @@ Eine anonymisierte PersonContact.
 
   `contactIdentifier`   string                          Kontaktmöglichkeit, also z.B. die E-Mail oder die
                                                         Handynummer.
-
-  `person`              string                          Person, zu dem der Kontakt gehört
   --------------------------------------------------------------------------------------------------------------
 
 Participation {#entity-participation}
@@ -1371,6 +1395,14 @@ Das Objekt beschreibt die Teilnahme an einer Fahrt.
 
   `modified`      date-time              Zeitpunkt der letzten Änderung.
 
+  `board`         url (SingleStop)       Haltepunkt, an welchem die Person
+                                         zusteigt.
+
+  `deboard`       url (SingleStop)       Haltepunkt, an welchem die Person
+                                         aussteigt.
+
+  `person`        url (Person)           Person.
+
   `role`          string                 **ZWINGEND** Rolle des Mitfahrenden.
                                          Mögliche Werte sind driver und
                                          passenger.
@@ -1378,16 +1410,6 @@ Das Objekt beschreibt die Teilnahme an einer Fahrt.
   `status`        string                 **ZWINGEND** Status der Teilnahme an
                                          einer Fahrt. Mögliche Werte sind driver,
                                          passenger, requested und rejected.
-
-  `start`         url (Stop)             Haltepunkt, an welchem die Person
-                                         zusteigt.
-
-  `stop`          url (Stop)             Haltepunkt, an welchem die Person
-                                         aussteigt.
-
-  `trip`          url (Trip)             Fahrt.
-
-  `person`        url (Person)           Anonymisierte Person.
   -------------------------------------------------------------------------------
 
 Preferences {#entity-preferences}
@@ -1406,6 +1428,8 @@ Das Objekt beschreibt die Präferenzen gegenüber Mitfahrern.
 
   `modified`            date-time                       Zeitpunkt der letzten Änderung.
 
+  `person`              url (Person)                    Person, dem die Einstellungen gehören
+
   `nonsmoking`          boolean                         Nichtraucher-Fahrt.
 
   `gender`              string                          Gender der MitfahrerInnen. Es SOLLTEN die Begriffe
@@ -1413,13 +1437,13 @@ Das Objekt beschreibt die Präferenzen gegenüber Mitfahrern.
                                                         werden. Andere Geschlechter SOLLTEN klein geschrieben
                                                         und in englisch beschrieben werden.
 
-  `age`                 string                          Alter der MitfahrerInnen, Freitext.
+  `bike`                boolean                         Fahrradmitnahme erwünscht
 
   `ageFrom`             integer                         Mindestalter der MitfahrerInnen, numerischer Wert.
 
   `ageTo`               integer                         Maximales Alter der MitfahrerInnen, numerischer Wert.
 
-  `person`              url (Person)                    Person, dem die Einstellungen gehören
+  `talkingLevel`        float                           Das Level an Gesprächigkeit.
   --------------------------------------------------------------------------------------------------------------
 
 Car {#entity-car}
@@ -1427,41 +1451,42 @@ Car {#entity-car}
 
 Das Objekt beschreibt das Fahrzeug.
 
-  --------------------------------------------------------------------------------------------------------------
-  Name                  Typ                             Beschreibung
-  --------------------- ------------------------------- --------------------------------------------------------
-  `id`                  url                             
+  ------------------------------------------------------------------------------------------------------------------------
+  Name                    Typ                                Beschreibung
+  ----------------------- ---------------------------------- -------------------------------------------------------------
+  `id`                    url                                
 
-  `type`                string                          
+  `type`                  string                             
 
-  `created`             date-time                       Zeitpunkt der Erstellung.
+  `created`               date-time                          Zeitpunkt der Erstellung.
 
-  `modified`            date-time                       Zeitpunkt der letzten Änderung.
+  `modified`              date-time                          Zeitpunkt der letzten Änderung.
 
-  `carClass`            string                          Art des Fahrzeugs. Hierbei SOLLTE die aus Buchstaben
-                                                        bestehende Klassifizierung verwendet werden, welche in
-                                                        der Verordnung 1400/2002 der EU-Komission beschrieben
-                                                        wird.
+  `trip`                  array of url (Trip)                Mitfahrgelegenheiten, in welchem das Fahrzeug eingesetzt
+                                                             wird.
 
-  `capacity`            integer                         Anzahl der Sitze.
+  `singleTrip`            array of url (SingleTrip)          Instanzierte Mitfahrgelegenheiten, in welchem das Fahrzeug
+                                                             eingesetzt wird.
 
-  `vacancy`             integer                         Anzahl der freien Sitze.
+  `owner`                 url (Person)                       Besitzer des Fahrzeugs.
 
-  `color`               string                          Farbe des Fahrzeugs. Der Wert SOLLTE klein geschrieben
-                                                        und in englisch angegeben werden.
+  `carClass`              string                             Art des Fahrzeugs. Hierbei SOLLTE die aus Buchstaben
+                                                             bestehende Klassifizierung verwendet werden, welche in der
+                                                             Verordnung 1400/2002 der EU-Komission beschrieben wird.
 
-  `year`                integer                         Baujahr des Fahrzeugs.
+  `capacity`              integer                            Anzahl der Sitze.
 
-  `manufacturer`        string                          Hersteller des Fahrzeugs.
+  `color`                 string                             Farbe des Fahrzeugs. Der Wert SOLLTE klein geschrieben und in
+                                                             englisch angegeben werden.
 
-  `model`               string                          Modell des Fahrzeugs.
+  `year`                  integer                            Baujahr des Fahrzeugs.
 
-  `licencePlate`        string                          Nummernschild des Fahrzeugs.
+  `manufacturer`          string                             Hersteller des Fahrzeugs.
 
-  `trip`                url (Trip)                      Mitfahrgelegenheit, zu welchem der Stop gehört.
+  `model`                 string                             Modell des Fahrzeugs.
 
-  `owner`               url (Person)                    Besitzer des Fahrzeugs.
-  --------------------------------------------------------------------------------------------------------------
+  `licencePlate`          string                             Nummernschild des Fahrzeugs.
+  ------------------------------------------------------------------------------------------------------------------------
 
 [^1]: <http://patterns.dataincubator.org/book/follow-your-nose.html>
 

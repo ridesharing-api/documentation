@@ -42,7 +42,8 @@
       "type": "string"
     },
     "bike": {
-      "description": "Fahrradmitnahme erwünscht"
+      "description": "Fahrradmitnahme erwünscht",
+      "type": "boolean"
     },
     "ageFrom": {
       "description": "Mindestalter der MitfahrerInnen, numerischer Wert.",

@@ -74,7 +74,7 @@
     },
     "active": {
       "description": "Zeigt an, ob die Fahrt aktuell aktiv ist.",
-      "type": "bool"
+      "type": "boolean"
     },
     "published": {
       "description": "Zeitpunkt der Veröffentlichung.",
