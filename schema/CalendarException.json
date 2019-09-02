@@ -1,6 +1,6 @@
 {
-  "title": "RecurrentTrip",
-  "description": "Das Objekt beschreibt eine wiederkehrende Fahrt.",
+  "title": "CalendarException",
+  "description": "Das Objekt beschreibt Ausnahmen zu den im Calendar beschriebenen Tagen.",
   "type": "object",
   "required": [
     "id",
@@ -14,7 +14,7 @@
     },
     "type": {
       "type": "string",
-      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/RecurrentTrip$"
+      "pattern": "^https\\:\\/\\/schema\\.ridesharing-api\\.org\\/1\\.0\\/CalendarException"
     },
     "created": {
       "description": "Zeitpunkt der Erstellung.",

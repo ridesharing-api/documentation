@@ -13,7 +13,7 @@
     },
     "type": {
       "type": "string",
-      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Car$"
+      "pattern": "^https\\:\\/\\/schema\\.ridesharing-api\\.org\\/1\\.0\\/Car$"
     },
     "created": {
       "description": "Zeitpunkt der Erstellung.",

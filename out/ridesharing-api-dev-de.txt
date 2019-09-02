@@ -12,7 +12,7 @@ toc-title: Inhaltsverzeichnis
     -   [Zielsetzung](#zielsetzung)
     -   [Nutzungsszenarien](#nutzungsszenarien)
     -   [Marktumfeld](#marktumfeld)
-    -   [Bestehende Schnittellen](#bestehende-schnittellen)
+    -   [Bestehende Standards](#bestehende-standards)
     -   [Nomenklatur](#nomenklatur)
     -   [Datenschutz](#datenschutz)
     -   [Autoren](#autoren)
@@ -27,6 +27,7 @@ toc-title: Inhaltsverzeichnis
     -   [Gelöschte Objekte](#geloeschte-objekte)
     -   [Ausnahmebehandlung](#ausnahmebehandlung)
     -   [ridesharing.api Endpunkt](#ridesharing.api-endpunkt)
+    -   [Instanzierung](#instanzierung)
 -   [Schema](#schema)
     -   [Die Objekte](#objekttypen)
     -   [Übergreifende Aspekte](#uebergreifende-aspekte)
@@ -35,8 +36,8 @@ toc-title: Inhaltsverzeichnis
     -   [System](#entity-system)
     -   [Route](#entity-route)
     -   [Trip](#entity-trip)
-    -   [RecurrentTrip](#entity-recurrenttrip)
-    -   [RecurrentTrip](#entity-recurrenttrip)
+    -   [Calendar](#entity-calendar)
+    -   [CalendarException](#entity-calendarexception)
     -   [Stop](#entity-stop)
     -   [Location](#entity-location)
     -   [SingleTrip](#entity-singletrip)
@@ -106,6 +107,18 @@ Einige davon sollen hier exemplarisch vorgestellt werden.
 Marktumfeld
 -----------
 
+Mit über 50 Mitfahrbörsen und Mitfahrapps gibt es eine Vielzahl an
+Angeboten. Unter den Plattformen gibt es nur in Einzelfällen einen
+Datenaustausch. Da die Anzahl der Fahrerinnen und Fahrer eher begrenzt
+ist, gibt es viele recht leere Mitfahrbörsen. Mitfahrerinnen und
+Mitfahrer haben daher häufig das Problem, dass Suchen nach
+Mitfahrgelegenheiten sehr mühsam sind, da man etliche Börsen durchgehen
+muss, um etwas zu finden.
+
+FahrerInnen und MitfahrerInnen verlieren sich schlicht auf der Vielzahl
+nicht vernetzter Angebote, und dies sorgt für ein Schrumpfen des
+gesamten Marktes.
+
 ### Metaportal
 
 Aktuell verlieren sich Fahrt-Anbieter und Mitfahrer von
@@ -135,6 +148,20 @@ ursprüngliche Portal dies nicht kann.
 
 ### Multimodalität
 
+Ridesharing funktioniert dann ganz besonders gut, wenn man es mit dem
+öffentlichen Nahverkehr verbindet. Denn gerade, wenn MitfahrerInnen
+zwischendurch dazusteigen wollen, hängt vom Wahl des Treffpunktes die
+Effizienz der gesamten Fahrt ab. Bei Langstrecken-Fahrten lohnt es sich
+oft, einen Treffpunkt außerhalb der Innenstadt zu wählen. Und auch bei
+Pendelfahrten lohnt es sich, den Mitfahrenden nicht unbedingt von zu
+Hause aus abzuholen.
+
+Moderne Routing-Engines bringen alles mit, um Mitfahrgelegenheiten und
+ÖPNV optimal zu verknüpfen. Um jedoch zu funktionieren, brauchen
+Routing-Engines standardisierte Rohdaten. Viele Routing-Engines
+funktionieren mit GTFS sowie GTFS-RT, so dass ein Datenstandard für
+Mitfahrgelegenheiten bestmöglich in GTFS umformbar sein sollte.
+
 ### Export von Profildaten
 
 Da es zahlreiche Ridesharing-Plattformen gibt, sollte es eine
@@ -155,8 +182,8 @@ Plattform das unterstützt, könnte der Nutzer die Datei dann auf der
 Ziel- Plattform hochladen und hätte so ganz einfach sämtliche
 Einstellungen übertragen.
 
-Bestehende Schnittellen
------------------------
+Bestehende Standards
+--------------------
 
 Es gibt bereits eine Reihe an Datenstandards, die sich im Umfeld des
 Ridesharing-Marktes bewegen. Grob lassen sich diese in zwei Kategorien
@@ -167,8 +194,9 @@ Kompatibilität zu anderen Mobilitätsformen herstellen. Eine Auswahl:
 
 -   Dycapo ist das Ergebnis einer Bachelor-Arbeit, welche ein abstraktes
     Datenmodell auf JSON-Basis definiert und einen vollwertigen Server
-    mit vielen Aspekten des Meta-M-Mitfahrportals entwickelt hat. Die
-    Dokumentation und der Code sind öffentlich auf Github einsehbar.
+    mit vielen Aspekten des Meta-M-Mitfahrportals entwickelt hat. [Die
+    Dokumentation und der Code sind öffentlich auf Github
+    einsehbar](https://github.com/dgraziotin/dycapo).
 -   Das oben erwähnte Forschungsprojekt hat ein sehr umfangreiches
     XML-Datenmodell spezifiziert, welches viele wichtige Aspekte
     anspricht, aber mittlerweile aufgrund seines Alters von ca. 10
@@ -177,21 +205,135 @@ Kompatibilität zu anderen Mobilitätsformen herstellen. Eine Auswahl:
     Mitfahrgelegenheiten ab. Diese werden hier aus Neutralitätsgründen
     nicht aufgeführt. Umso mehr wird eingeladen, diese auf Github zu
     sammeln und zu diskutieren .
--   Die abstrakten Datenstandards GTFS und GTFS-RT bieten eine gute und
-    realistische Möglichkeit, Ridesharing-Daten mit weiteren
-    Mobilitätsdaten wie zum Beispiel dem ÖPNV zu verknüpfen. Außerdem
-    ist GTFS ein Standard-Import-Format für Open-Source-Routing-Engines.
+-   Die Datenstandards
+    [GTFS](https://developers.google.com/transit/gtfs/) und
+    [GTFS-RT](https://developers.google.com/transit/gtfs-realtime/)
+    bieten eine gute und realistische Möglichkeit, Ridesharing-Daten mit
+    weiteren Mobilitätsdaten wie zum Beispiel dem ÖPNV zu verknüpfen.
+    Außerdem ist GTFS ein Standard-Import-Format für
+    Open-Source-Routing-Engines.
 -   Es sollte darauf geachtet werden, Kompatibilität zum zukünftigen
-    europäischen Datenstandard für Nahverkehrs-Daten NeTEx zu
-    gewährleisten, da abzusehen ist, dass in diesem Umfeld Daten und
-    Software entstehen wird, welche auch für den Mitfahr-Markt von
-    Interesse sind.
+    europäischen Datenstandard für Nahverkehrs-Daten
+    [NeTEx](http://netex-cen.eu/) zu gewährleisten, da abzusehen ist,
+    dass in diesem Umfeld Daten und Software entstehen wird, welche auch
+    für den Mitfahr-Markt von Interesse sind.
 
 Nomenklatur
 -----------
 
+### Zwingende, empfohlene und optionale Anforderungen {#muss_sollte_darf}
+
+Diese Spezifikation nutzt **müssen**, **können** und **sollten** in
+einer eindeutig definierten Art und Weise. Diese ist angelehnt an die
+Definitionen der Begriffe MUST, SHOULD und MAY (bzw. MUST NOT, SHOULD
+NOT und MAY NOT) aus RFC2119.[^1]
+
+Die Bedeutung im Einzelnen:
+
+**müssen**/**muss** bzw. **zwingend**:
+
+:   Die Erfüllung einer so gekennzeichneten Anforderung ist zwingend
+    erforderlich.
+
+    Die Entsprechung in RFC2119 lautet "MUST", "REQUIRED" oder "SHALL".
+
+**nicht dürfen**/**darf nicht**:
+
+:   Dieses Stichwort kennzeichnet ein absolutes Verbot.
+
+    Die Entsprechung in RFC2119 lautet "MUST NOT" oder "SHALL NOT".
+
+**sollten**/**sollte** bzw. **empfohlen**:
+
+:   Mit dem Wort **sollten** bzw. **sollte** sind empfohlene
+    Anforderungen gekennzeichnet, die von jeder Implementierung erfüllt
+    werden sollten. Eine Nichterfüllung ist als Nachteil zu verstehen,
+    beispielsweise weil die Nutzerfreundlichkeit dadurch Einbußen
+    erleidet, und sollte daher sorgfältig abgewogen werden.
+
+    Die Entsprechung in RFC2119 lautet "SHOULD" oder "RECOMMENDED".
+
+**sollten nicht**/**sollte nicht** bzw. **nicht empfohlen**:
+
+:   Diese Formulierung wird verwendet, wenn unter gewissen Umständen
+    Gründe existieren können, die ein bestimmtes Verhalten akzeptabel
+    oder sogar nützlich erscheinen lassen, jedoch die Auswirkung des
+    Verhaltens vor einer entsprechenden Implementierung verstanden und
+    abgewogen werden sollten.
+
+    Die Entsprechung in RFC2119 lautet "SHOULD NOT" oder "NOT
+    RECOMMENDED".
+
+**dürfen**/**darf** bzw. **optional**:
+
+:   Mit dem Wort **dürfen** bzw. **darf** oder **optional** sind
+    optionale Bestandteile gekennzeichnet. Ein Anbieter könnte sich
+    entscheiden, den entsprechenden Bestandteil aufgrund besonderer
+    Kundenanforderungen zu unterstützen, während andere diesen
+    Bestandteil ignorieren könnten. Implementierer von Clients oder
+    Servern **dürfen** in solchen Fällen **nicht** davon ausgehen, dass
+    der jeweilige Kommunikationspartner den entsprechenden, optionalen
+    Anteil unterstützt.
+
+    Die Entsprechung in RFC2119 lautet "MAY".
+
+### Geschlechterspezifische Begrifflichkeiten
+
+Um bei Begriffen wie Nutzer, Anwender, Betreiber etc. die sonst übliche
+Dominanz der männlichen Variante zu vermeiden, werden in diesem Dokument
+männliche und weibliche Varianten gemischt. Gemeint sind in allen Fällen
+Personen jeglichen Geschlechts.
+
+### Codebeispiele
+
+Die in diesem Dokument aufgeführten Codebeispiele dienen der
+Veranschaulichung der beschriebenen Prinzipien. Es handelt sich um frei
+erfundene Daten.
+
+Codebeispiele erheben insbesondere bei JSON-Code nicht den Anspruch auf
+syntaktische Korrektheit und Vollständigkeit. Dementsprechend können in
+Codebeispielen Auslassungen vorkommen, die mit `...` gekennzeichnet
+werden.
+
+### Namespace-Präfixe für Objekt- und Datentypen {#namespace-praefixe-fuer-objekt-und-datentypen}
+
+Bei der Erwähnung von Objekttypen, die in dieser Spezifikation
+beschrieben werden, wird in der Regel ein Präfix `ridesharing-api:` vor
+den Namen gesetzt, z. B. "ridesharing-api:Trip". Damit soll verdeutlicht
+werden, dass der Objekttyp innerhalb der ridesharing.api-Spezifikation
+gemeint ist.
+
+Das Präfix `ridesharing-api:` steht hierbei für die folgende
+Namespace-URL:
+
+    https://schema.ridesharing-api.org/1.1/
+
+Dadurch kann eine Typenangabe wie `ridesharing-api:Trip` eindeutig in
+die folgende URL übersetzt werden:
+
+    https://schema.ridesharing-api.org/1.1/Trip
+
 Datenschutz
 -----------
+
+Bei all den besprochenen Daten geht es zunächst um nicht
+personenbezogene Daten, welche bestenfalls gefahrenlos geteilt werden
+können. Konkret bedeutet das, dass alle direkt personenbezogenen Daten
+wie E-Mail-Kontakt, postalische Adresse oder Handynummer auf dem Server
+des Anbieters verbleiben. Lediglich Informationen über die Fahrt selbst
+dürfen freigegeben und weiterverwendet werden. Die Kontaktaufnahme eines
+Interessenten muss daher auf dem Server des ursprünglichen Anbieters
+geschehen.
+
+Indem man die Daten verknüpft, sind jedoch trotzdem Rückschlüsse auf den
+Fahrtenanbieter möglich. Daher sollte mindestens die Einverständnis des
+Fahrtenanbieters abgefragt werden.
+
+Denn eines ist klar: Datenschutz hat allerhöchste Priorität. Bei dem
+Protokoll soll es strukturell unmöglich sein, aus Versehen
+personenbezogene Daten zu veröffentlichen. Daher muss klar zwischen
+öffentlichen und privaten Daten unterschieden werden: Erstere möchte man
+nutzen, zweitere schützen.
 
 Autoren
 -------
@@ -279,7 +421,7 @@ etwa ein Mitglied des Gremiums, dadurch ausgeben, dass im Kontext des
 Gremiums die URL des Mitglieds ausgeben wird. Der Client kann somit
 ausgehend von einem bestimmten Objekt die zugehörigen Objekte im System
 finden, indem er einfach den angebotenen URLs folgt. Dieses Prinzip wird
-auch "Follow Your Nose"[^1] genannt.
+auch "Follow Your Nose"[^2] genannt.
 
 Zukunftssicherheit
 ------------------
@@ -299,7 +441,7 @@ URLs
 Den URLs (für *Uniform Resource Locators*) kommt eine besondere
 Bedeutung zu und es werden deshalb eine Reihe von Anforderungen an deren
 Aufbau und Eigenschaften gestellt. Die allgemeine Funktionsweise von
-URLs ist in RFC 3986 beschrieben[^2].
+URLs ist in RFC 3986 beschrieben[^3].
 
 Grundsätzlich **müssen** alle Zugriffe zustandslos erfolgen können, also
 ohne Sessioninformationen wie Cookies. Das bedeutet, dass alle
@@ -381,26 +523,26 @@ sein. Ist ein ridesharing.api-Server beispielsweise in PHP geschrieben,
 **sollte** dies **nicht** dazu führen, dass im Pfad ein Bestandteil wie
 "ridesharing.php/" erscheint.
 
-Weitere Empfehlungen für langlebige URLs liefern Tim Berners-Lee[^3]
-sowie die Europäische Kommission[^4].
+Weitere Empfehlungen für langlebige URLs liefern Tim Berners-Lee[^4]
+sowie die Europäische Kommission[^5].
 
 JSON-Ausgabe
 ------------
 
 Ein ridesharing.api-Server **muss** Objekte in Form von JSON ausgeben.
 Die Abkürzung JSON steht für "JavaScript Object Notation". Das
-JSON-Format ist in RFC 7159[^5] beschrieben.
+JSON-Format ist in RFC 7159[^6] beschrieben.
 
 Sämtliche JSON-Ausgabe **muss** in UTF-8 ohne Byte Order Mark (BOM)
-geschehen. Dies entspricht RFC 7159 Section 8.1[^6]. Gemäß RFC 7159
-Section 7[^7] **darf** UTF-8 String-Escaping verwendet werden.
+geschehen. Dies entspricht RFC 7159 Section 8.1[^7]. Gemäß RFC 7159
+Section 7[^8] **darf** UTF-8 String-Escaping verwendet werden.
 XML-/HTML-String-Escaping **darf nicht** verwendet werden.
 
 Eine Syntaxübersicht und weitere Implementierungshinweise finden sich
 auf [json.org](http://json.org/).
 
 Es ist gestattet, weitere zur JSON-Ausgabe semantisch identische
-Formate[^8] anzubieten. Da diese jedoch nicht Bestandteil der
+Formate[^9] anzubieten. Da diese jedoch nicht Bestandteil der
 Spezifikation sind, **sollten** sich Clients nicht auf deren
 Vorhandensein verlassen.
 
@@ -703,11 +845,11 @@ unterliegen diese Zugriffe üblicherweise einer *Same-Origin-Policy*
 (SOP). Das heißt, eine Anfrage ist nur an den Server zulässig, der auch
 das initiierende Skript ausgeliefert hat. Anfragen an andere Server
 werden vom Browser blockiert. Diese Einschränkung dient im Allgemeinen
-der Sicherheit von Webbrowsern.[^9]
+der Sicherheit von Webbrowsern.[^10]
 
 Um die Daten von ridesharing.api-Servern auch im Kontext von
 Webanwendungen flexibel nutzen zu können, ist die Überwindung der SOP
-nötig. Hierzu dient *Cross-Origin Resource Sharing* (CORS)[^10]. Mittels
+nötig. Hierzu dient *Cross-Origin Resource Sharing* (CORS)[^11]. Mittels
 CORS kann ein Server mitteilen, dass bestimmte von ihm ausgelieferte
 Ressourcen auch innerhalb von Webapplikationen genutzt werden dürfen,
 die nicht vom selben Server ausgeliefert werden. Technisch wird dies
@@ -792,6 +934,32 @@ allerdings möglich, eine Liste von `ridesharing.api:System`-Objekten
 auszugeben, die z.B. auf verschiedene ridesharing.api-Versionen einer
 Schnittstelle verweisen.
 
+Instanzierung
+-------------
+
+Ein wichtiger Aspekt im Datenstandard ist die Instanzierung. Damit ist
+gemeint, dass auch Mitfahrbörsen ganz analog zum ÖPNV einen Soll- und
+einen Ist-Fahrtplan haben.
+
+Die allermeisten Börsen haben zur Zeit nur einen Soll-Fahrplan, den
+Börsen ist meistens nicht bekannt, ob eine konkrete Fahrt wirklich
+stattfindet. Dafür hat ein relevanter Teil der Mitfahrangebote eine Art
+Fahrtplan: die Fahrten finden nicht nur ein mal statt, sondern
+regelmäßig. Im Falle einer regionalen Fahrt ist dies zum Beispiel eine
+tägliche Fahrt zur Arbeit, im Falle einer überregionalen Fahrt
+Wochenend-Pendler, die jedes Wochenende an einen anderen Ort fahren.
+
+Die ridesharing.api bildet die Instanzierung über die Single\*-Objekte
+ab. `Trip`, `Stop` und `Location` repräsentieren den Soll-Fahrplan und
+haben daher keine Festlegung auf ein Datum, sondern nur auf eine Zeit
+und einen Rythmus. `SingleTrip`, `SingleStop` und `SingleLocation`
+dagegen repräsentieren konkrete Fahrten und haben daher ein exaktes
+Datum sowie exakte Uhrzeiten.
+
+Durch die Verlinkung via `id`s können Update der instanzierten
+Datensätze auch einzeln vorgenommen werden, so dass die Serverlast
+gering gehalten werden kann.
+
 Schema
 ======
 
@@ -829,6 +997,43 @@ ein `ridesharing-api:Stop` enthalten ist:
 
 ``` {#objekte_example1 .json}
 {
+    "id": "https://api.meine-mitfahrboerse.de/trip/123",
+    "type": "https://schema.ridesharing-api.org/1.0/Trip",
+    "created": "2019-02-07T18:28:18",
+    "modified": "2019-03-14T15:09:26",
+    "active": true,
+    "seats": 3,
+    "website": "https://meine-mitfahrboerse.de/trip/123",
+    "route": "https://api.meine-mitfahrboerse.de/route/456",
+    "stop": [
+        {
+            "id": "https://api.meine-mitfahrboerse.de/stop/789",
+            "type": "https://schema.ridesharing-api.org/1.0/Stop",
+            "created": "2019-02-07T18:28:18",
+            "modified": "2019-03-14T15:09:26",
+            "arrival": "10:00:00",
+            "departure": "10:10:00",
+            "location": {
+                "id": "https://api.meine-mitfahrboerse.de/stop/012",
+                "type": "https://schema.ridesharing-api.org/1.0/Location",
+                "name": "Lyonesse Bahnhof"
+            }
+        },
+        {
+            "id": "https://api.meine-mitfahrboerse.de/stop/345",
+            "type": "https://schema.ridesharing-api.org/1.0/Stop",
+            "created": "2019-02-07T18:28:18",
+            "modified": "2019-03-14T15:09:26",
+            "arrival": "12:00:00",
+            "departure": "12:10:00",
+            "location": {
+                "id": "https://api.meine-mitfahrboerse.de/stop/678",
+                "type": "https://schema.ridesharing-api.org/1.0/Location",
+                "name": "Atlantis Hafen"
+            }
+        },
+        [...]
+    ]
 }
 ```
 
@@ -838,15 +1043,39 @@ hinzu.:
 
 ``` {#objekte_example2 .json}
 {
+    "id": "https://api.meine-mitfahrboerse.de/stop/789",
+    "type": "https://schema.ridesharing-api.org/1.0/Stop",
+    "created": "2019-02-07T18:28:18",
+    "modified": "2019-03-14T15:09:26",
+    "arrival": "10:00:00",
+    "departure": "10:10:00",
+    "trip": "https://api.meine-mitfahrboerse.de/trip/123",
+    "location": {
+        "id": "https://api.meine-mitfahrboerse.de/stop/012",
+        "type": "https://schema.ridesharing-api.org/1.0/Location",
+        "name": "Lyonesse Bahnhof"
+    }
 }
 ```
 
-Das zusätzliche Attribut ist ein Array, da es auch möglich ist, dass
-Fahrzeuge von mehreren Hauptobjekten aus genutzt werden. Das kann z.B.
-bei `ridesharing-api:Car` vorkommen:
+Die im ersten Beispiel gezeigte Liste kann auch als Liste an URLs
+geschrieben werden:
 
-``` {#objekte_example2 .json}
+``` {#objekte_example3 .json}
 {
+    "id": "https://api.meine-mitfahrboerse.de/trip/123",
+    "type": "https://schema.ridesharing-api.org/1.0/Trip",
+    "created": "2019-02-07T18:28:18",
+    "modified": "2019-03-14T15:09:26",
+    "active": true,
+    "seats": 3,
+    "website": "https://meine-mitfahrboerse.de/trip/123",
+    "route": "https://api.meine-mitfahrboerse.de/route/456",
+    "stop": [
+        "https://api.meine-mitfahrboerse.de/stop/789",
+        "https://api.meine-mitfahrboerse.de/stop/345",
+        [...]
+    ]
 }
 ```
 
@@ -892,17 +1121,23 @@ Objekttypenangabe des Objekts, **zwingend** für jedes Objekt. Der Wert
 ist eine Namespace-URL. Für die ridesharing.api-Objekttypen sind die
 folgenden URLs definiert:
 
-  Typ (kurz)                                             Namespace-URL
-  ------------------------------------------------------ ------------------------------------------------------------------------------------
-  `ridesharing-api:Car`                                  https://schema.ridesharing-api.org/1.0/Car
-  `ridesharing-api:Location`                             https://schema.ridesharing-api.org/1.0/Location
-  `ridesharing-api:Participation`                        https://schema.ridesharing-api.org/1.0/Participation
-  `ridesharing-api:Person`                               https://schema.ridesharing-api.org/1.0/Person
-  `ridesharing-api:Preferences`                          https://schema.ridesharing-api.org/1.0/Preferences
-  `ridesharing-api:RecurrentTrip`                        https://schema.ridesharing-api.org/1.0/RecurrentTrip
-  `ridesharing-api:Stop`                                 https://schema.ridesharing-api.org/1.0/Stop
-  `ridesharing-api:System`                               https://schema.ridesharing-api.org/1.0/System
-  `ridesharing-api:Trip`                                 https://schema.ridesharing-api.org/1.0/Trip
+  Typ (kurz)                                                 Namespace-URL
+  ---------------------------------------------------------- -----------------------------------------------------------------------------------
+  `ridesharing-api:Calendar`                                 https://schema.ridesharing-api.org/1.0/Calendar
+  `ridesharing-api:CalendarException`                        https://schema.ridesharing-api.org/1.0/CalendarException
+  `ridesharing-api:Car`                                      https://schema.ridesharing-api.org/1.0/Car
+  `ridesharing-api:Location`                                 https://schema.ridesharing-api.org/1.0/Location
+  `ridesharing-api:Participation`                            https://schema.ridesharing-api.org/1.0/Participation
+  `ridesharing-api:Person`                                   https://schema.ridesharing-api.org/1.0/Person
+  `ridesharing-api:PersonContact`                            https://schema.ridesharing-api.org/1.0/PersonContact
+  `ridesharing-api:Preferences`                              https://schema.ridesharing-api.org/1.0/Preferences
+  `ridesharing-api:Route`                                    https://schema.ridesharing-api.org/1.0/Route
+  `ridesharing-api:SingleLocation`                           https://schema.ridesharing-api.org/1.0/SingleLocation
+  `ridesharing-api:SingleStop`                               https://schema.ridesharing-api.org/1.0/SingleStop
+  `ridesharing-api:SingleTrip`                               https://schema.ridesharing-api.org/1.0/SingleTrip
+  `ridesharing-api:Stop`                                     https://schema.ridesharing-api.org/1.0/Stop
+  `ridesharing-api:System`                                   https://schema.ridesharing-api.org/1.0/System
+  `ridesharing-api:Trip`                                     https://schema.ridesharing-api.org/1.0/Trip
 
 ### `created` {#eigenschaft-created}
 
@@ -1053,7 +1288,7 @@ wiederholen kann.
 
   `expired`               date-time                          Zeitpunkt, ab welchem das Angebot nicht mehr gültig ist.
 
-  `seats`                 integer                            Anzahl der Sitze
+  `seats`                 integer                            Anzahl der für Mitfahrer verfügbaren Sitze
 
   `boardingMinimum`       float                              Mindestanteil der Fahrt, die ein Mitfahrender dabei sein
                                                              muss.
@@ -1075,10 +1310,11 @@ wiederholen kann.
   `website`               url                                Öffentlicher Link auf das Angebot (Deeplink).
   ------------------------------------------------------------------------------------------------------------------------
 
-RecurrentTrip {#entity-recurrenttrip}
--------------
+Calendar {#entity-calendar}
+--------
 
-Das Objekt beschreibt eine wiederkehrende Fahrt.
+Das Objekt beschreibt eine Art Fahrplan, an denen die Mitfahrgelegenheit
+fährt.
 
   --------------------------------------------------------------------------------------------------------------
   Name                  Typ                             Beschreibung
@@ -1104,10 +1340,10 @@ Das Objekt beschreibt eine wiederkehrende Fahrt.
                                                         ISO 8601 Wochentag-Nummern.
   --------------------------------------------------------------------------------------------------------------
 
-RecurrentTrip {#entity-recurrenttrip}
--------------
+CalendarException {#entity-calendarexception}
+-----------------
 
-Das Objekt beschreibt eine wiederkehrende Fahrt.
+Das Objekt beschreibt Ausnahmen zu den im Calendar beschriebenen Tagen.
 
   Name             Typ                      Beschreibung
   ---------------- ------------------------ ------------------------------------------
@@ -1205,7 +1441,7 @@ Zeitpunkt stattfindende Fahrt.
   `cancelled`             boolean                            Wenn der instanzierte Trip ausfällt, darf er nicht einfach
                                                              gelöscht werden, sondern bekommt das Attribut cancelled.
 
-  `seats`                 integer                            Anzahl der Sitze
+  `seats`                 integer                            Anzahl der freien Sitze
 
   `boardingMinimum`       float                              Mindestanteil der Fahrt, die ein Mitfahrender dabei sein
                                                              muss.
@@ -1307,7 +1543,7 @@ Das Objekt beschreibt einen instanzierten Ort.
 Person {#entity-person}
 ------
 
-Eine anonymisierte Person.
+Eine Person.
 
   -------------------------------------------------------------------------------------------------------------------
   Name                   Typ                               Beschreibung
@@ -1488,30 +1724,32 @@ Das Objekt beschreibt das Fahrzeug.
   `licencePlate`          string                             Nummernschild des Fahrzeugs.
   ------------------------------------------------------------------------------------------------------------------------
 
-[^1]: <http://patterns.dataincubator.org/book/follow-your-nose.html>
+[^1]: RFC2119 <http://tools.ietf.org/html/rfc2119>
 
-[^2]: RFC 3986: <http://tools.ietf.org/html/rfc3986>
+[^2]: <http://patterns.dataincubator.org/book/follow-your-nose.html>
 
-[^3]: Berners-Lee, Tim: Cool URIs don't change.
+[^3]: RFC 3986: <http://tools.ietf.org/html/rfc3986>
+
+[^4]: Berners-Lee, Tim: Cool URIs don't change.
     <http://www.w3.org/Provider/Style/URI.html>
 
-[^4]: Study on persistent URIs, with identification of best practices
+[^5]: Study on persistent URIs, with identification of best practices
     and recommendations on the topic for the MSs and the EC. (PDF)
     <https://joinup.ec.europa.eu/sites/default/files/D7.1.3%20-%20Study%20on%20persistent%20URIs.pdf>
 
-[^5]: RFC 7159: <https://tools.ietf.org/html/rfc7159>
-
-[^6]: [RFC 7159 Section
-    8.1](https://tools.ietf.org/html/rfc7159#section-8.1)
+[^6]: RFC 7159: <https://tools.ietf.org/html/rfc7159>
 
 [^7]: [RFC 7159 Section
+    8.1](https://tools.ietf.org/html/rfc7159#section-8.1)
+
+[^8]: [RFC 7159 Section
     7](https://tools.ietf.org/html/rfc7159#section-7)
 
-[^8]: Zu semantisch identischen Formaten zählen u.a.: YAML, MessagePack,
+[^9]: Zu semantisch identischen Formaten zählen u.a.: YAML, MessagePack,
     etc.
 
-[^9]: vgl. Wikipedia: Same-Origin-Policy
+[^10]: vgl. Wikipedia: Same-Origin-Policy
     <https://de.wikipedia.org/wiki/Same-Origin-Policy>
 
-[^10]: Cross Origin Resource Sharing - W3C Recommendation 16. Januar
+[^11]: Cross Origin Resource Sharing - W3C Recommendation 16. Januar
     2014: <http://www.w3.org/TR/cors/>

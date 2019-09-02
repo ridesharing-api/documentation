@@ -15,7 +15,7 @@
     },
     "type": {
       "type": "string",
-      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Route"
+      "pattern": "^https\\:\\/\\/schema\\.ridesharing-api\\.org\\/1\\.0\\/Route"
     },
     "created": {
       "description": "Zeitpunkt der Erstellung.",

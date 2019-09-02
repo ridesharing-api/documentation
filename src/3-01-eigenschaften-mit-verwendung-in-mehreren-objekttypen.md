@@ -11,17 +11,23 @@ Objekttypenangabe des Objekts, **zwingend** für jedes Objekt. Der Wert ist
 eine Namespace-URL. Für die ridesharing.api-Objekttypen sind die folgenden URLs
 definiert:
 
-Typ (kurz)                       | Namespace-URL
----------------------------------|----------------------------------------------------
-`ridesharing-api:Car`            |https://schema.ridesharing-api.org/1.0/Car
-`ridesharing-api:Location`       |https://schema.ridesharing-api.org/1.0/Location
-`ridesharing-api:Participation`  |https://schema.ridesharing-api.org/1.0/Participation
-`ridesharing-api:Person`         |https://schema.ridesharing-api.org/1.0/Person
-`ridesharing-api:Preferences`    |https://schema.ridesharing-api.org/1.0/Preferences
-`ridesharing-api:RecurrentTrip`  |https://schema.ridesharing-api.org/1.0/RecurrentTrip
-`ridesharing-api:Stop`           |https://schema.ridesharing-api.org/1.0/Stop
-`ridesharing-api:System`         |https://schema.ridesharing-api.org/1.0/System
-`ridesharing-api:Trip`           |https://schema.ridesharing-api.org/1.0/Trip
+Typ (kurz)                          | Namespace-URL
+------------------------------------|----------------------------------------------------
+`ridesharing-api:Calendar`          |https://schema.ridesharing-api.org/1.0/Calendar
+`ridesharing-api:CalendarException` |https://schema.ridesharing-api.org/1.0/CalendarException
+`ridesharing-api:Car`               |https://schema.ridesharing-api.org/1.0/Car
+`ridesharing-api:Location`          |https://schema.ridesharing-api.org/1.0/Location
+`ridesharing-api:Participation`     |https://schema.ridesharing-api.org/1.0/Participation
+`ridesharing-api:Person`            |https://schema.ridesharing-api.org/1.0/Person
+`ridesharing-api:PersonContact`     |https://schema.ridesharing-api.org/1.0/PersonContact
+`ridesharing-api:Preferences`       |https://schema.ridesharing-api.org/1.0/Preferences
+`ridesharing-api:Route`             |https://schema.ridesharing-api.org/1.0/Route
+`ridesharing-api:SingleLocation`    |https://schema.ridesharing-api.org/1.0/SingleLocation
+`ridesharing-api:SingleStop`        |https://schema.ridesharing-api.org/1.0/SingleStop
+`ridesharing-api:SingleTrip`        |https://schema.ridesharing-api.org/1.0/SingleTrip
+`ridesharing-api:Stop`              |https://schema.ridesharing-api.org/1.0/Stop
+`ridesharing-api:System`            |https://schema.ridesharing-api.org/1.0/System
+`ridesharing-api:Trip`              |https://schema.ridesharing-api.org/1.0/Trip
 
 ### `created` {#eigenschaft-created}
 

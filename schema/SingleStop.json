@@ -14,7 +14,7 @@
     },
     "type": {
       "type": "string",
-      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/SingleStop$"
+      "pattern": "^https\\:\\/\\/schema\\.ridesharing-api\\.org\\/1\\.0\\/SingleStop$"
     },
     "created": {
       "description": "Zeitpunkt der Erstellung.",

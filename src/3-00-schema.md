@@ -29,6 +29,43 @@ ist:
 
 ~~~~~  {#objekte_example1 .json}
 {
+    "id": "https://api.meine-mitfahrboerse.de/trip/123",
+    "type": "https://schema.ridesharing-api.org/1.0/Trip",
+    "created": "2019-02-07T18:28:18",
+    "modified": "2019-03-14T15:09:26",
+    "active": true,
+    "seats": 3,
+    "website": "https://meine-mitfahrboerse.de/trip/123",
+    "route": "https://api.meine-mitfahrboerse.de/route/456",
+    "stop": [
+        {
+            "id": "https://api.meine-mitfahrboerse.de/stop/789",
+            "type": "https://schema.ridesharing-api.org/1.0/Stop",
+            "created": "2019-02-07T18:28:18",
+            "modified": "2019-03-14T15:09:26",
+            "arrival": "10:00:00",
+            "departure": "10:10:00",
+            "location": {
+                "id": "https://api.meine-mitfahrboerse.de/stop/012",
+                "type": "https://schema.ridesharing-api.org/1.0/Location",
+                "name": "Lyonesse Bahnhof"
+            }
+        },
+        {
+            "id": "https://api.meine-mitfahrboerse.de/stop/345",
+            "type": "https://schema.ridesharing-api.org/1.0/Stop",
+            "created": "2019-02-07T18:28:18",
+            "modified": "2019-03-14T15:09:26",
+            "arrival": "12:00:00",
+            "departure": "12:10:00",
+            "location": {
+                "id": "https://api.meine-mitfahrboerse.de/stop/678",
+                "type": "https://schema.ridesharing-api.org/1.0/Location",
+                "name": "Atlantis Hafen"
+            }
+        },
+        [...]
+    ]
 }
 ~~~~~
 
@@ -37,18 +74,41 @@ dann das Eltern-Objekt als zusätzliches Attribut hinzu.:
 
 ~~~~~  {#objekte_example2 .json}
 {
+    "id": "https://api.meine-mitfahrboerse.de/stop/789",
+    "type": "https://schema.ridesharing-api.org/1.0/Stop",
+    "created": "2019-02-07T18:28:18",
+    "modified": "2019-03-14T15:09:26",
+    "arrival": "10:00:00",
+    "departure": "10:10:00",
+    "trip": "https://api.meine-mitfahrboerse.de/trip/123",
+    "location": {
+        "id": "https://api.meine-mitfahrboerse.de/stop/012",
+        "type": "https://schema.ridesharing-api.org/1.0/Location",
+        "name": "Lyonesse Bahnhof"
+    }
 }
 ~~~~~
 
-Das zusätzliche Attribut ist ein Array, da es auch möglich ist, dass Fahrzeuge
-von mehreren Hauptobjekten aus genutzt werden. Das kann z.B. bei `ridesharing-api:Car`
-vorkommen:
+Die im ersten Beispiel gezeigte Liste kann auch als Liste an URLs
+geschrieben werden:
 
-~~~~~  {#objekte_example2 .json}
+~~~~~  {#objekte_example3 .json}
 {
+    "id": "https://api.meine-mitfahrboerse.de/trip/123",
+    "type": "https://schema.ridesharing-api.org/1.0/Trip",
+    "created": "2019-02-07T18:28:18",
+    "modified": "2019-03-14T15:09:26",
+    "active": true,
+    "seats": 3,
+    "website": "https://meine-mitfahrboerse.de/trip/123",
+    "route": "https://api.meine-mitfahrboerse.de/route/456",
+    "stop": [
+        "https://api.meine-mitfahrboerse.de/stop/789",
+        "https://api.meine-mitfahrboerse.de/stop/345",
+        [...]
+    ]
 }
 ~~~~~
-
 
 ## Übergreifende Aspekte {#uebergreifende-aspekte}
 

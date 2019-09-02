@@ -1,4 +1,4 @@
-## Bestehende Schnittellen
+## Bestehende Standards
 
 Es gibt bereits eine Reihe an Datenstandards, die sich im Umfeld des 
 Ridesharing-Marktes bewegen. Grob lassen sich diese in zwei Kategorien 
@@ -9,8 +9,9 @@ Kompatibilität zu anderen Mobilitätsformen herstellen. Eine Auswahl:
 
 * Dycapo ist das Ergebnis einer Bachelor-Arbeit, welche ein abstraktes 
 Datenmodell auf JSON-Basis definiert und einen vollwertigen Server mit 
-vielen Aspekten des Meta-M-Mitfahrportals entwickelt hat. Die 
-Dokumentation und der Code sind öffentlich auf Github einsehbar.
+vielen Aspekten des Meta-M-Mitfahrportals entwickelt hat. [Die 
+Dokumentation und der Code sind öffentlich auf Github
+einsehbar](https://github.com/dgraziotin/dycapo).
 * Das oben erwähnte Forschungsprojekt hat ein sehr umfangreiches 
 XML-Datenmodell spezifiziert, welches viele wichtige Aspekte anspricht, 
 aber mittlerweile aufgrund seines Alters von ca. 10 Jahren einer 
@@ -19,13 +20,14 @@ Aktualisierung bedarf  .
 Mitfahrgelegenheiten ab. Diese werden hier aus Neutralitätsgründen 
 nicht aufgeführt. Umso mehr wird eingeladen, diese auf Github zu 
 sammeln und zu diskutieren .
-* Die abstrakten Datenstandards GTFS und GTFS-RT bieten eine gute und 
-realistische Möglichkeit, Ridesharing-Daten mit weiteren Mobilitätsdaten 
-wie zum Beispiel dem ÖPNV zu verknüpfen. Außerdem ist GTFS ein 
-Standard-Import-Format für Open-Source-Routing-Engines.
+* Die Datenstandards [GTFS](https://developers.google.com/transit/gtfs/)
+und [GTFS-RT](https://developers.google.com/transit/gtfs-realtime/)
+bieten eine gute und realistische Möglichkeit, Ridesharing-Daten mit 
+weiteren Mobilitätsdaten wie zum Beispiel dem ÖPNV zu verknüpfen. 
+Außerdem ist GTFS ein Standard-Import-Format für 
+Open-Source-Routing-Engines.
 * Es sollte darauf geachtet werden, Kompatibilität zum zukünftigen 
-europäischen Datenstandard für Nahverkehrs-Daten NeTEx zu gewährleisten,
-da abzusehen ist, dass in diesem Umfeld Daten und Software entstehen 
-wird, welche auch für den Mitfahr-Markt von Interesse sind.
-
- 
+europäischen Datenstandard für Nahverkehrs-Daten
+[NeTEx](http://netex-cen.eu/) zu gewährleisten, da abzusehen ist, dass
+in diesem Umfeld Daten und Software entstehen wird, welche auch für den 
+Mitfahr-Markt von Interesse sind.

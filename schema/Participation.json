@@ -15,7 +15,7 @@
     },
     "type": {
       "type": "string",
-      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Participation$"
+      "pattern": "^https\\:\\/\\/schema\\.ridesharing-api\\.org\\/1\\.0\\/Participation$"
     },
     "created": {
       "description": "Zeitpunkt der Erstellung.",

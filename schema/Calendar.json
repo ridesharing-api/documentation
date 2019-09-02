@@ -1,6 +1,6 @@
 {
-  "title": "RecurrentTrip",
-  "description": "Das Objekt beschreibt eine wiederkehrende Fahrt.",
+  "title": "Calendar",
+  "description": "Das Objekt beschreibt eine Art Fahrplan, an denen die Mitfahrgelegenheit fährt.",
   "type": "object",
   "required": [
     "id",
@@ -14,7 +14,7 @@
     },
     "type": {
       "type": "string",
-      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/RecurrentTrip$"
+      "pattern": "^https\\:\\/\\/schema\\.ridesharing-api\\.org\\/1\\.0\\/Calendar"
     },
     "created": {
       "description": "Zeitpunkt der Erstellung.",

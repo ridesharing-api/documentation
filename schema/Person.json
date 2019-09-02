@@ -1,6 +1,6 @@
 {
   "title": "Person",
-  "description": "Eine anonymisierte Person.",
+  "description": "Eine Person.",
   "type": "object",
   "required": [
     "id",
@@ -15,7 +15,7 @@
     },
     "type": {
       "type": "string",
-      "pattern": "^https\\:\\/\\/schema\\.mmport\\.org\\/1\\.0\\/Person$"
+      "pattern": "^https\\:\\/\\/schema\\.ridesharing-api\\.org\\/1\\.0\\/Person$"
     },
     "created": {
       "description": "Zeitpunkt der Erstellung.",
