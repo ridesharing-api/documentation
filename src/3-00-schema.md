@@ -5,20 +5,27 @@ die Objekttypen und ihre Eigenschaften. Darüber hinaus ist im Schema
 auch festgelegt, in welcher Beziehung verschiedene Objekttypen zu
 einander stehen.
 
-![ridesharing.api Objekttypen: Ein Überblick. Die Zahl an den Verbindungslinien entspricht der Anzahl der Attribute, die eine oder mehrere Verknüpfungen herstellen.](build/src/images/objekttypen_graph.png){ width=100% }
+![ridesharing.api Objekttypen: Ein Überblick. Die Zahl an den Verbindungslinien entspricht der Anzahl der Attribute, die eine oder mehrere Verknüpfungen herstellen.](build/src/images/uml.svg){ width=100% }
 
 ## Die Objekte {#objekttypen}
 
 Die ridesharing.api nutzt folgenden Objekte:
 
 * ridesharing.api:System
+* ridesharing.api:Route
 * ridesharing.api:Trip
-* ridesharing.api:Person
-* ridesharing.api:Car
-* ridesharing.api:Participation
+* ridesharing.api:Calendar
+* ridesharing.api:CalendarException
 * ridesharing.api:Stop
 * ridesharing.api:Location
+* ridesharing.api:SingleTrip
+* ridesharing.api:SingleStop
+* ridesharing.api:SingleLocation
+* ridesharing.api:Person
+* ridesharing.api:PersonContact
+* ridesharing.api:Participation
 * ridesharing.api:Preferences
+* ridesharing.api:Car
 
 Grundsätzlich muss jedes Objekt unter seiner ID abrufbar sein - auch dann, wenn
 das Objekt in anderen Objekten intern ausgegeben wird. Bei der internen Ausgabe

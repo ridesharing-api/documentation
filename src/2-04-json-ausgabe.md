@@ -56,7 +56,7 @@ date-time:
 
 ### Datums- und Zeitangaben  {#datum_zeit}
 
-Für Datums- und Zeitangaben wird eine Spezielisierung der in ISO 8601
+Für Datums- und Zeitangaben wird eine Spezialisierung der in ISO 8601
 beschriebenen Formate verwendet.
 Ein Datum (date) **muss** muss die Form `yyyy-mm-dd` besitzen und ein
 Zeitpunkt (date-time) **muss** in der Form `yyyy-mm-ddThh:mm:ss±hh:mm` angegeben werden.

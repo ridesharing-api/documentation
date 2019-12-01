@@ -13,20 +13,32 @@ Verfahren jeweils zu verwenden ist. Diese Information ist den
 Bei der Referenzierung einzelner Objekte wird eine URL angegeben, welche auf
 das entsprechende Objekt verweist. Der Typ ist hierbei ein
 `string (url: Objekt-ID)`.
-Ein Beispiel hierfür ist `` in ``:
+Ein Beispiel hierfür ist `location` in `Stop`:
 
 ~~~~~  {#objektlisten_ex1 .json}
 {
+    "id": "https://ridesharing-api.example-ridesharing.de/stop/1"
+    "type": "https://schema.ridesharing-api.org/1.0/Stop",
+    "location": "https://ridesharing-api.example-ridesharing.de/location/1",
+    [...]
 }
 ~~~~~
 
-Es kann auch eine Liste von Referenzen ausgegeben werden. Der Typ ist in diese
+Es kann auch eine Liste von Referenzen ausgegeben werden. Der Typ ist in diesem
 Fall `array of string (url: Objekt-ID)`.
 
-Ein Beispiel hierfür ist `` in ``:
+Ein Beispiel hierfür ist `stop` in `Trip`:
 
 ~~~~~  {#objektlisten_ex2 .json}
 {
+    "id": "https://ridesharing-api.example-ridesharing.de/trip/1"
+    "type": "https://schema.ridesharing-api.org/1.0/Trip",
+    "stop": [
+        "https://ridesharing-api.example-ridesharing.de/stop/1",
+        "https://ridesharing-api.example-ridesharing.de/stop/2",
+        [...],
+    ],
+    [...]
 }
 ~~~~~
 
@@ -34,9 +46,20 @@ Ein Beispiel hierfür ist `` in ``:
 
 Objekte können auch intern ausgegeben werden. Dabei wird das gesamte Objekt als
 Wert eines Attributs angegeben. Ein Beispiel für ein internes Objekt ist
-`trip` in `ridesharing-api:System`:
+`location` in `ridesharing-api:Stop`:
 
 ~~~~~  {#objektlisten_ex3 .json}
+{
+    "id": "https://ridesharing-api.example-ridesharing.de/stop/1"
+    "type": "https://schema.ridesharing-api.org/1.0/Stop",
+    "location": {
+        "id": "https://ridesharing-api.example-ridesharing.de/location/1"
+        "type": "https://schema.ridesharing-api.org/1.0/Location",
+        [...]
+    },
+    [...]
+}
+
 ~~~~~
 
 Ebenso kann eine Liste von Objekten intern ausgegeben werden. Hier das
@@ -44,6 +67,19 @@ Beispiel des Attributes `stop` in `ridesharing-api:Trip`.
 
 ~~~~~  {#objektlisten_ex4 .json}
 {
+    "id": "https://ridesharing-api.example-ridesharing.de/trip/1"
+    "type": "https://schema.ridesharing-api.org/1.0/Trip",
+    "stop": [
+        {
+            "id": "https://ridesharing-api.example-ridesharing.de/stop/1"
+            "type": "https://schema.ridesharing-api.org/1.0/Stop",
+        },
+        {
+            "id": "https://ridesharing-api.example-ridesharing.de/stop/2"
+            "type": "https://schema.ridesharing-api.org/1.0/Stop",
+        },
+        [...]
+    ]
 }
 ~~~~~
 
@@ -54,12 +90,15 @@ Objekte ausgeben.
 
 Es können auch Referenzen zu sogenannten externen Objektlisten angegeben werden.
 Die externe Liste enthält dann die betreffenden Objekte in Form einer
-Listenausgabe. Ein Beispiel dafür ist `trips` in `ridesharing-api:System`.
+Listenausgabe. Ein Beispiel dafür ist `route` in `ridesharing-api:System`.
 
 `ridesharing-api:System`:
 
 ~~~~~  {#objektlisten_ex5a .json}
 {
+    "id": "https://ridesharing-api.example-ridesharing.de/system"
+    "type": "https://schema.ridesharing-api.org/1.0/System",
+    "route": "https://ridesharing-api.example-ridesharing.de/routes"
 }
 ~~~~~
 
@@ -68,7 +107,17 @@ Die externe Objektliste:
 ~~~~~  {#objektlisten_ex5b .json}
 {
     "data": [
-      
+        {
+            "id":"https://ridesharing-api.example-ridesharing.de/route/1",
+            "type": "https://schema.ridesharing-api.org/1.0/System",
+            [...]
+        },
+        {
+            "id":"https://ridesharing-api.example-ridesharing.de/route/2",
+            "type": "https://schema.ridesharing-api.org/1.0/System",
+            [...]
+        },
+        [...]
     ],
     ...
 }
@@ -203,9 +252,9 @@ Drucksachen herunterladen und in einer Datenbank speichern.
 
 Um den Datenbestand am nächsten Tag zu aktualisieren, ruft der Client dieselbe
 URL auf, diesmal jedoch mit dem Parameter `modified_since` mit dem Wert
-`2014-01-01T02:00:00+01:00` und mit `omit_internal`.
+`2014-01-01T02:00:00+01:00`.
 
-    https://ridesharing.example.org/trips/?modified_since=2014-01-01T02%3A00%3A00%2B01%3A00&omit_internal=true
+    https://ridesharing.example.org/trips/?modified_since=2014-01-01T02%3A00%3A00%2B01%3A00
 
 Diese Liste ist in der Regel deutlich kürzer als die Liste aller Objekte,
 sodass die Aktualisierung bedeutend schneller ist als der erste Abruf. Der

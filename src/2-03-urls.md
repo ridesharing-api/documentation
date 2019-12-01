@@ -24,7 +24,7 @@ auf die Langlebigkeit der URLs wichtig.
 
 Um die Kanonisierung zu gewährleisten **sollten** ridesharing.api-Server so konfiguriert
 werden, dass sie nur über eine bestimmte Domain erreichbar sind. ridesharing.api-Server
- **sollten** dagegen möglichst **nicht** nur über eine IP-Addresse sowieso möglichst auch **nicht** über weitere, nicht kanonische URLs erreichbar sein.
+ **sollten** dagegen möglichst **nicht** nur über eine IP-Addresse sowie möglichst auch **nicht** über weitere, nicht kanonische URLs erreichbar sein.
 
 Wenn ein Server auch durch eine nicht-kanonische URL erreichbar ist, dann
 **sollte** eine entsprechende HTTP-Anfrage mit einer Weiterleitung auf die

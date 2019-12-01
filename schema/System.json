@@ -42,6 +42,17 @@
       },
       "type": "array"
     },
+    "route": {
+      "description": "Die zu dem System gehörenden Routen. es wird auf eine paginierte externe Objektliste verlinkt.",
+      "references": "Route",
+      "backreference": "system",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    },
     "license": {
       "description": "Lizenz, unter der durch diese API abrufbaren Daten stehen.",
       "type": "string",

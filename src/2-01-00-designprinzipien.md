@@ -20,7 +20,7 @@ gelten.
 
 Als Beispiel wäre die Fähigkeit zu Websocket-basierten Live-Updates zu nennen.
 Diese sind nicht verpflichtend, sind aber eine sinnvolle Erweiterung, die mit demselben
-Datenmodel realsierbar sind.
+Datenmodell realisierbar sind.
 
 ### Selbstbeschreibungsfähigkeit {#selbstbeschreibungsfaehigkeit}
 

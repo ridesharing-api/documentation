@@ -1,6 +1,6 @@
 {
-  "title": "Stop",
-  "description": "Das Objekt beschreibt die Haltepunkte einer Fahrt.",
+  "title": "SingleStop",
+  "description": "Das Objekt beschreibt einen instanzierten Haltepunkte einer Fahrt.",
   "type": "object",
   "required": [
     "id",

@@ -56,7 +56,7 @@
       "type": "string"
     },
     "status": {
-      "description": "Status der Teilnahme an einer Fahrt. Mögliche Werte sind driver, passenger, requested und rejected.",
+      "description": "Status der Teilnahme an einer Fahrt. Mögliche Werte sind attending, requested und rejected.",
       "type": "string"
     }
   }

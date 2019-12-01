@@ -60,7 +60,7 @@
       "type": "string"
     },
     "capacity": {
-      "description": "Anzahl der Sitze.",
+      "description": "Anzahl der Sitze inkl. Fahrersitz.",
       "type": "integer"
     },
     "color": {
@@ -82,6 +82,14 @@
     "licencePlate": {
       "description": "Nummernschild des Fahrzeugs.",
       "type": "string"
+    },
+    "vin": {
+      "description": "Vehicle Identification Number.",
+      "type": "string"
+    },
+    "luggageSuitcaseCapacity": {
+      "description": "Gepäckkapazität, in großen Koffern gemessen.",
+      "type": "integer"
     }
   }
 }

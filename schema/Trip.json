@@ -50,6 +50,17 @@
       "type": "string",
       "format": "url"
     },
+    "relatedTrip": {
+      "description": "Trips, welche in irgendeiner anderen Form mit dem bestehenden Trip in Zusammenhang stehen (z.B. Weiterfahrten).",
+      "references": "Trip",
+      "backreference": "backTrip",
+      "cardinality": "1:n",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "url"
+      }
+    },
     "stop": {
       "description": "Haltepunkte",
       "references": "Stop",
@@ -86,47 +97,55 @@
       "type": "string",
       "format": "date-time"
     },
+    "maxDetourTime": {
+      "description": "Maximale Anzahl an Minuten, die der / die FahrerIn zum Einsammeln der Mitfahrerer zusätzlich fahren würde. Wird nur ausgegeben, wenn der Wert sich vom Wert in Route unterscheidet.",
+      "type": "integer"
+    },
+    "maxDetourDistance": {
+      "description": "Maximale Anzahl an Kilometern, die der / die FahrerIn zum Einsammeln der MitfahrererInnen zusätzlich fahren würde. Wird nur ausgegeben, wenn der Wert sich vom Wert in Route unterscheidet.",
+      "type": "integer"
+    },
     "seats": {
-      "description": "Anzahl der für Mitfahrer verfügbaren Sitze",
+      "description": "Anzahl der für Mitfahrer verfügbaren Sitze. Wird nur ausgegeben, wenn der Wert sich vom Wert in Route unterscheidet.",
       "type": "integer",
       "minimum": 1
     },
     "boardingMinimum": {
-      "description": "Mindestanteil der Fahrt, die ein Mitfahrender dabei sein muss.",
+      "description": "Mindestanteil der Fahrt, die ein Mitfahrender dabei sein muss. Wird nur ausgegeben, wenn der Wert sich vom Wert in Route unterscheidet.",
       "type": "float",
       "exclusiveMinimum": 0,
       "maximum": 1
     },
     "boardingAllowedFrom": {
-      "description": "Anteil der Fahrt, bis zu dem Aussteigen nicht erlaubt ist.",
+      "description": "Anteil der Fahrt, bis zu dem Aussteigen nicht erlaubt ist. Wird nur ausgegeben, wenn der Wert sich vom Wert in Route unterscheidet.",
       "type": "float",
       "minimum": 0,
       "exclusiveMaximum": 1
     },
     "boardingAllowedTill": {
-      "description": "Anteil der Fahrt, ab dem kein Zusteigen mehr erlaubt ist.",
+      "description": "Anteil der Fahrt, ab dem kein Zusteigen mehr erlaubt ist. Wird nur ausgegeben, wenn der Wert sich vom Wert in Route unterscheidet.",
       "type": "float",
       "exclusiveMinimum": 0,
       "maximum": 1
     },
     "nonsmoking": {
-      "description": "Nichtraucher-Fahrt.",
+      "description": "Nichtraucher-Fahrt. Wird nur ausgegeben, wenn der Wert sich vom Wert in Route unterscheidet.",
       "type": "boolean"
     },
     "bike": {
-      "description": "Fahrrad-Mitnahme.",
-      "type": "boolean"
+      "description": "Anzahl an Fahrrädern, welche mitgenommen werden können. Wird nur ausgegeben, wenn der Wert sich vom Wert in Route unterscheidet.",
+      "type": "integer"
     },
     "ageFrom": {
-      "description": "Mindestalter der MitfahrerInnen, numerischer Wert.",
+      "description": "Mindestalter der MitfahrerInnen, numerischer Wert. Wird nur ausgegeben, wenn der Wert sich vom Wert in Route unterscheidet.",
       "type": "integer"
     },
     "ageTill": {
-      "description": "Maximales Alter der MitfahrerInnen, numerischer Wert.",
+      "description": "Maximales Alter der MitfahrerInnen, numerischer Wert. Wird nur ausgegeben, wenn der Wert sich vom Wert in Route unterscheidet.",
       "type": "integer"
     },
     "gender": {
-      "description": "Geschlecht der MitfahrerInnen",
+      "description": "Geschlecht der MitfahrerInnen. Wird nur ausgegeben, wenn der Wert sich vom Wert in Route unterscheidet.",
       "type": "string",
       "enum": [
         "male",

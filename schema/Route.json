@@ -86,6 +86,14 @@
       "minimum": 0,
       "exclusiveMaximum": 1
     },
+    "maxDetourTime": {
+      "description": "Maximale Anzahl an Minuten, die der / die FahrerIn zum Einsammeln der Mitfarherer zusätzlich fahren würde.",
+      "type": "integer"
+    },
+    "maxDetourDistance": {
+      "description": "Maximale Anzahl an Kilometern, die der / die FahrerIn zum Einsammeln der MitfahrererInnen zusätzlich fahren würde.",
+      "type": "integer"
+    },
     "seats": {
       "description": "Anzahl der Sitze",
       "type": "integer",
@@ -96,8 +104,8 @@
       "type": "boolean"
     },
     "bike": {
-      "description": "Fahrrad-Mitnahme.",
-      "type": "boolean"
+      "description": "Anzahl an Fahrrädern, welche mitgenommen werden können.",
+      "type": "integer"
     },
     "ageFrom": {
       "description": "Mindestalter der MitfahrerInnen, numerischer Wert.",
