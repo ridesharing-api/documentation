@@ -205,6 +205,7 @@ def prepare_images(tools):
 
         cmd = shlex.split(convert_command)
         try:
+            print(cmd)
             subprocess.run(cmd, check=True)
         except subprocess.CalledProcessError:
             raise Exception(
