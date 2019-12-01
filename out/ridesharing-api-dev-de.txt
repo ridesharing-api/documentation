@@ -41,13 +41,16 @@ toc-title: Inhaltsverzeichnis
     -   [Stop](#entity-stop)
     -   [Location](#entity-location)
     -   [SingleTrip](#entity-singletrip)
-    -   [Stop](#entity-stop)
+    -   [SingleStop](#entity-singlestop)
     -   [SingleLocation](#entity-singlelocation)
     -   [Person](#entity-person)
     -   [PersonContact](#entity-personcontact)
     -   [Participation](#entity-participation)
     -   [Preferences](#entity-preferences)
     -   [Car](#entity-car)
+-   [Sucherweiterung](#sucherweiterung)
+    -   [Suchanfrage](#suchanfrage)
+    -   [Suchantwort](#suchantwort)
 
 Einleitung
 ==========
@@ -366,7 +369,7 @@ Anforderung gelten.
 
 Als Beispiel wäre die Fähigkeit zu Websocket-basierten Live-Updates zu
 nennen. Diese sind nicht verpflichtend, sind aber eine sinnvolle
-Erweiterung, die mit demselben Datenmodel realsierbar sind.
+Erweiterung, die mit demselben Datenmodell realisierbar sind.
 
 ### Selbstbeschreibungsfähigkeit {#selbstbeschreibungsfaehigkeit}
 
@@ -463,8 +466,8 @@ Hinblick auf die Langlebigkeit der URLs wichtig.
 Um die Kanonisierung zu gewährleisten **sollten** ridesharing.api-Server
 so konfiguriert werden, dass sie nur über eine bestimmte Domain
 erreichbar sind. ridesharing.api-Server **sollten** dagegen möglichst
-**nicht** nur über eine IP-Addresse sowieso möglichst auch **nicht**
-über weitere, nicht kanonische URLs erreichbar sein.
+**nicht** nur über eine IP-Addresse sowie möglichst auch **nicht** über
+weitere, nicht kanonische URLs erreichbar sein.
 
 Wenn ein Server auch durch eine nicht-kanonische URL erreichbar ist,
 dann **sollte** eine entsprechende HTTP-Anfrage mit einer Weiterleitung
@@ -590,7 +593,7 @@ date-time:
 
 ### Datums- und Zeitangaben {#datum_zeit}
 
-Für Datums- und Zeitangaben wird eine Spezielisierung der in ISO 8601
+Für Datums- und Zeitangaben wird eine Spezialisierung der in ISO 8601
 beschriebenen Formate verwendet. Ein Datum (date) **muss** muss die Form
 `yyyy-mm-dd` besitzen und ein Zeitpunkt (date-time) **muss** in der Form
 `yyyy-mm-ddThh:mm:ss±hh:mm` angegeben werden.
@@ -630,20 +633,33 @@ Information ist den [Schemadefinitionen](#schema) zu entnehmen.
 
 Bei der Referenzierung einzelner Objekte wird eine URL angegeben, welche
 auf das entsprechende Objekt verweist. Der Typ ist hierbei ein
-`string (url: Objekt-ID)`. Ein Beispiel hierfür ist `in`:
+`string (url: Objekt-ID)`. Ein Beispiel hierfür ist `location` in
+`Stop`:
 
 ``` {#objektlisten_ex1 .json}
 {
+    "id": "https://ridesharing-api.example-ridesharing.de/stop/1"
+    "type": "https://schema.ridesharing-api.org/1.0/Stop",
+    "location": "https://ridesharing-api.example-ridesharing.de/location/1",
+    [...]
 }
 ```
 
 Es kann auch eine Liste von Referenzen ausgegeben werden. Der Typ ist in
-diese Fall `array of string (url: Objekt-ID)`.
+diesem Fall `array of string (url: Objekt-ID)`.
 
-Ein Beispiel hierfür ist `in`:
+Ein Beispiel hierfür ist `stop` in `Trip`:
 
 ``` {#objektlisten_ex2 .json}
 {
+    "id": "https://ridesharing-api.example-ridesharing.de/trip/1"
+    "type": "https://schema.ridesharing-api.org/1.0/Trip",
+    "stop": [
+        "https://ridesharing-api.example-ridesharing.de/stop/1",
+        "https://ridesharing-api.example-ridesharing.de/stop/2",
+        [...],
+    ],
+    [...]
 }
 ```
 
@@ -651,9 +667,19 @@ Ein Beispiel hierfür ist `in`:
 
 Objekte können auch intern ausgegeben werden. Dabei wird das gesamte
 Objekt als Wert eines Attributs angegeben. Ein Beispiel für ein internes
-Objekt ist `trip` in `ridesharing-api:System`:
+Objekt ist `location` in `ridesharing-api:Stop`:
 
 ``` {#objektlisten_ex3 .json}
+{
+    "id": "https://ridesharing-api.example-ridesharing.de/stop/1"
+    "type": "https://schema.ridesharing-api.org/1.0/Stop",
+    "location": {
+        "id": "https://ridesharing-api.example-ridesharing.de/location/1"
+        "type": "https://schema.ridesharing-api.org/1.0/Location",
+        [...]
+    },
+    [...]
+}
 ```
 
 Ebenso kann eine Liste von Objekten intern ausgegeben werden. Hier das
@@ -661,6 +687,19 @@ Beispiel des Attributes `stop` in `ridesharing-api:Trip`.
 
 ``` {#objektlisten_ex4 .json}
 {
+    "id": "https://ridesharing-api.example-ridesharing.de/trip/1"
+    "type": "https://schema.ridesharing-api.org/1.0/Trip",
+    "stop": [
+        {
+            "id": "https://ridesharing-api.example-ridesharing.de/stop/1"
+            "type": "https://schema.ridesharing-api.org/1.0/Stop",
+        },
+        {
+            "id": "https://ridesharing-api.example-ridesharing.de/stop/2"
+            "type": "https://schema.ridesharing-api.org/1.0/Stop",
+        },
+        [...]
+    ]
 }
 ```
 
@@ -671,13 +710,16 @@ gelöschten Objekte ausgeben.
 
 Es können auch Referenzen zu sogenannten externen Objektlisten angegeben
 werden. Die externe Liste enthält dann die betreffenden Objekte in Form
-einer Listenausgabe. Ein Beispiel dafür ist `trips` in
+einer Listenausgabe. Ein Beispiel dafür ist `route` in
 `ridesharing-api:System`.
 
 `ridesharing-api:System`:
 
 ``` {#objektlisten_ex5a .json}
 {
+    "id": "https://ridesharing-api.example-ridesharing.de/system"
+    "type": "https://schema.ridesharing-api.org/1.0/System",
+    "route": "https://ridesharing-api.example-ridesharing.de/routes"
 }
 ```
 
@@ -686,7 +728,17 @@ Die externe Objektliste:
 ``` {#objektlisten_ex5b .json}
 {
     "data": [
-      
+        {
+            "id":"https://ridesharing-api.example-ridesharing.de/route/1",
+            "type": "https://schema.ridesharing-api.org/1.0/System",
+            [...]
+        },
+        {
+            "id":"https://ridesharing-api.example-ridesharing.de/route/2",
+            "type": "https://schema.ridesharing-api.org/1.0/System",
+            [...]
+        },
+        [...]
     ],
     ...
 }
@@ -827,9 +879,9 @@ aller Drucksachen herunterladen und in einer Datenbank speichern.
 
 Um den Datenbestand am nächsten Tag zu aktualisieren, ruft der Client
 dieselbe URL auf, diesmal jedoch mit dem Parameter `modified_since` mit
-dem Wert `2014-01-01T02:00:00+01:00` und mit `omit_internal`.
+dem Wert `2014-01-01T02:00:00+01:00`.
 
-    https://ridesharing.example.org/trips/?modified_since=2014-01-01T02%3A00%3A00%2B01%3A00&omit_internal=true
+    https://ridesharing.example.org/trips/?modified_since=2014-01-01T02%3A00%3A00%2B01%3A00
 
 Diese Liste ist in der Regel deutlich kürzer als die Liste aller
 Objekte, sodass die Aktualisierung bedeutend schneller ist als der erste
@@ -971,7 +1023,7 @@ einander stehen.
 ![ridesharing.api Objekttypen: Ein Überblick. Die Zahl an den
 Verbindungslinien entspricht der Anzahl der Attribute, die eine oder
 mehrere Verknüpfungen
-herstellen.](build/src/images/objekttypen_graph.png){width="100%"}
+herstellen.](build/src/images/uml.png){width="100%"}
 
 Die Objekte {#objekttypen}
 -----------
@@ -979,13 +1031,20 @@ Die Objekte {#objekttypen}
 Die ridesharing.api nutzt folgenden Objekte:
 
 -   ridesharing.api:System
+-   ridesharing.api:Route
 -   ridesharing.api:Trip
--   ridesharing.api:Person
--   ridesharing.api:Car
--   ridesharing.api:Participation
+-   ridesharing.api:Calendar
+-   ridesharing.api:CalendarException
 -   ridesharing.api:Stop
 -   ridesharing.api:Location
+-   ridesharing.api:SingleTrip
+-   ridesharing.api:SingleStop
+-   ridesharing.api:SingleLocation
+-   ridesharing.api:Person
+-   ridesharing.api:PersonContact
+-   ridesharing.api:Participation
 -   ridesharing.api:Preferences
+-   ridesharing.api:Car
 
 Grundsätzlich muss jedes Objekt unter seiner ID abrufbar sein - auch
 dann, wenn das Objekt in anderen Objekten intern ausgegeben wird. Bei
@@ -1186,6 +1245,9 @@ Zugriff auf einen Server.
 
   `otherRidesharingApiVersions`   array of url (System)                          Andere ridesharing.api Versionen
 
+  `route`                         array of url (Route)                           Die zu dem System gehörenden Routen. es wird auf eine paginierte externe
+                                                                                 Objektliste verlinkt.
+
   `license`                       url                                            Lizenz, unter der durch diese API abrufbaren Daten stehen.
 
   `name`                          string                                         Nutzerfreundlicher Name für das System, mit dessen Hilfe Nutzerinnen und Nutzer
@@ -1236,11 +1298,17 @@ Eine Route, zu der eine oder mehrere Fahrten gehören.
 
   `deboardingAllowedFrom`   float                                 Anteil der Fahrt, bis zu dem Aussteigen nicht erlaubt ist.
 
+  `maxDetourTime`           integer                               Maximale Anzahl an Minuten, die der / die FahrerIn zum Einsammeln
+                                                                  der Mitfarherer zusätzlich fahren würde.
+
+  `maxDetourDistance`       integer                               Maximale Anzahl an Kilometern, die der / die FahrerIn zum
+                                                                  Einsammeln der MitfahrererInnen zusätzlich fahren würde.
+
   `seats`                   integer                               Anzahl der Sitze
 
   `nonsmoking`              boolean                               Nichtraucher-Fahrt.
 
-  `bike`                    boolean                               Fahrrad-Mitnahme.
+  `bike`                    integer                               Anzahl an Fahrrädern, welche mitgenommen werden können.
 
   `ageFrom`                 integer                               Mindestalter der MitfahrerInnen, numerischer Wert.
 
@@ -1278,6 +1346,9 @@ wiederholen kann.
   `backTrip`              url (Trip)                         Der in die exakt entgegengesetzte Richtung laufende Trip,
                                                              also die Rückfahrt.
 
+  `relatedTrip`           array of url (Trip)                Trips, welche in irgendeiner anderen Form mit dem bestehenden
+                                                             Trip in Zusammenhang stehen (z.B. Weiterfahrten).
+
   `stop`                  array of url (Stop)                Haltepunkte
 
   `singleTrip`            array of url (SingleTrip)          Die Instanzierungen des abstrakten Trips.
@@ -1288,24 +1359,49 @@ wiederholen kann.
 
   `expired`               date-time                          Zeitpunkt, ab welchem das Angebot nicht mehr gültig ist.
 
-  `seats`                 integer                            Anzahl der für Mitfahrer verfügbaren Sitze
+  `maxDetourTime`         integer                            Maximale Anzahl an Minuten, die der / die FahrerIn zum
+                                                             Einsammeln der Mitfahrerer zusätzlich fahren würde. Wird nur
+                                                             ausgegeben, wenn der Wert sich vom Wert in Route
+                                                             unterscheidet.
+
+  `maxDetourDistance`     integer                            Maximale Anzahl an Kilometern, die der / die FahrerIn zum
+                                                             Einsammeln der MitfahrererInnen zusätzlich fahren würde. Wird
+                                                             nur ausgegeben, wenn der Wert sich vom Wert in Route
+                                                             unterscheidet.
+
+  `seats`                 integer                            Anzahl der für Mitfahrer verfügbaren Sitze. Wird nur
+                                                             ausgegeben, wenn der Wert sich vom Wert in Route
+                                                             unterscheidet.
 
   `boardingMinimum`       float                              Mindestanteil der Fahrt, die ein Mitfahrender dabei sein
-                                                             muss.
+                                                             muss. Wird nur ausgegeben, wenn der Wert sich vom Wert in
+                                                             Route unterscheidet.
 
   `boardingAllowedFrom`   float                              Anteil der Fahrt, bis zu dem Aussteigen nicht erlaubt ist.
+                                                             Wird nur ausgegeben, wenn der Wert sich vom Wert in Route
+                                                             unterscheidet.
 
   `boardingAllowedTill`   float                              Anteil der Fahrt, ab dem kein Zusteigen mehr erlaubt ist.
+                                                             Wird nur ausgegeben, wenn der Wert sich vom Wert in Route
+                                                             unterscheidet.
 
-  `nonsmoking`            boolean                            Nichtraucher-Fahrt.
+  `nonsmoking`            boolean                            Nichtraucher-Fahrt. Wird nur ausgegeben, wenn der Wert sich
+                                                             vom Wert in Route unterscheidet.
 
-  `bike`                  boolean                            Fahrrad-Mitnahme.
+  `bike`                  integer                            Anzahl an Fahrrädern, welche mitgenommen werden können. Wird
+                                                             nur ausgegeben, wenn der Wert sich vom Wert in Route
+                                                             unterscheidet.
 
-  `ageFrom`               integer                            Mindestalter der MitfahrerInnen, numerischer Wert.
+  `ageFrom`               integer                            Mindestalter der MitfahrerInnen, numerischer Wert. Wird nur
+                                                             ausgegeben, wenn der Wert sich vom Wert in Route
+                                                             unterscheidet.
 
-  `ageTill`               integer                            Maximales Alter der MitfahrerInnen, numerischer Wert.
+  `ageTill`               integer                            Maximales Alter der MitfahrerInnen, numerischer Wert. Wird
+                                                             nur ausgegeben, wenn der Wert sich vom Wert in Route
+                                                             unterscheidet.
 
-  `gender`                string                             Geschlecht der MitfahrerInnen
+  `gender`                string                             Geschlecht der MitfahrerInnen. Wird nur ausgegeben, wenn der
+                                                             Wert sich vom Wert in Route unterscheidet.
 
   `website`               url                                Öffentlicher Link auf das Angebot (Deeplink).
   ------------------------------------------------------------------------------------------------------------------------
@@ -1351,9 +1447,9 @@ Das Objekt beschreibt Ausnahmen zu den im Calendar beschriebenen Tagen.
   `type`           string                   
   `created`        date-time                Zeitpunkt der Erstellung.
   `modified`       date-time                Zeitpunkt der letzten Änderung.
-  `trip`           url (Calendar)           Calendar
+  `calendar`       url (Calendar)           Calendar
   `date`           date                     Ausnahme-Datum zum bestehenden Calendar
-  `reason`         string                   Grund führ die Ausnahme
+  `reason`         string                   Grund für die Ausnahme
 
 Stop {#entity-stop}
 ----
@@ -1441,32 +1537,55 @@ Zeitpunkt stattfindende Fahrt.
   `cancelled`             boolean                            Wenn der instanzierte Trip ausfällt, darf er nicht einfach
                                                              gelöscht werden, sondern bekommt das Attribut cancelled.
 
-  `seats`                 integer                            Anzahl der freien Sitze
+  `maxDetourTime`         integer                            Maximale Anzahl an Minuten, die der / die FahrerIn zum
+                                                             Einsammeln der Mitfahrerer zusätzlich fahren würde. Wird nur
+                                                             ausgegeben, wenn der Wert sich vom Wert in Trip
+                                                             unterscheidet.
+
+  `maxDetourDistance`     integer                            Maximale Anzahl an Kilometern, die der / die FahrerIn zum
+                                                             Einsammeln der MitfahrererInnen zusätzlich fahren würde. Wird
+                                                             nur ausgegeben, wenn der Wert sich vom Wert in Trip
+                                                             unterscheidet.
+
+  `seats`                 integer                            Anzahl der aktuell freien Sitze.
 
   `boardingMinimum`       float                              Mindestanteil der Fahrt, die ein Mitfahrender dabei sein
-                                                             muss.
+                                                             muss. Wird nur ausgegeben, wenn der Wert sich vom Wert in
+                                                             Trip unterscheidet.
 
   `boardingAllowedFrom`   float                              Anteil der Fahrt, bis zu dem Aussteigen nicht erlaubt ist.
+                                                             Wird nur ausgegeben, wenn der Wert sich vom Wert in Trip
+                                                             unterscheidet.
 
   `boardingAllowedTill`   float                              Anteil der Fahrt, ab dem kein Zusteigen mehr erlaubt ist.
+                                                             Wird nur ausgegeben, wenn der Wert sich vom Wert in Trip
+                                                             unterscheidet.
 
-  `nonsmoking`            boolean                            Nichtraucher-Fahrt.
+  `nonsmoking`            boolean                            Nichtraucher-Fahrt. Wird nur ausgegeben, wenn der Wert sich
+                                                             vom Wert in Trip unterscheidet.
 
-  `bike`                  boolean                            Fahrrad-Mitnahme.
+  `bike`                  integer                            Anzahl an Fahrrädern, welche mitgenommen werden können. Wird
+                                                             nur ausgegeben, wenn der Wert sich vom Wert in Trip
+                                                             unterscheidet.
 
-  `ageFrom`               integer                            Mindestalter der MitfahrerInnen, numerischer Wert.
+  `ageFrom`               integer                            Mindestalter der MitfahrerInnen, numerischer Wert. Wird nur
+                                                             ausgegeben, wenn der Wert sich vom Wert in Trip
+                                                             unterscheidet.
 
-  `ageTill`               integer                            Maximales Alter der MitfahrerInnen, numerischer Wert.
+  `ageTill`               integer                            Maximales Alter der MitfahrerInnen, numerischer Wert. Wird
+                                                             nur ausgegeben, wenn der Wert sich vom Wert in Trip
+                                                             unterscheidet.
 
-  `gender`                string                             Geschlecht der MitfahrerInnen
+  `gender`                string                             Geschlecht der MitfahrerInnen. Wird nur ausgegeben, wenn der
+                                                             Wert sich vom Wert in Trip unterscheidet.
 
   `website`               url                                Öffentlicher Link auf das Angebot (Deeplink).
   ------------------------------------------------------------------------------------------------------------------------
 
-Stop {#entity-stop}
-----
+SingleStop {#entity-singlestop}
+----------
 
-Das Objekt beschreibt die Haltepunkte einer Fahrt.
+Das Objekt beschreibt einen instanzierten Haltepunkte einer Fahrt.
 
   ------------------------------------------------------------------------------------------------------------------------
   Name                    Typ                                Beschreibung
@@ -1644,8 +1763,8 @@ Das Objekt beschreibt die Teilnahme an einer Fahrt.
                                          passenger.
 
   `status`        string                 **ZWINGEND** Status der Teilnahme an
-                                         einer Fahrt. Mögliche Werte sind driver,
-                                         passenger, requested und rejected.
+                                         einer Fahrt. Mögliche Werte sind
+                                         attending, requested und rejected.
   -------------------------------------------------------------------------------
 
 Preferences {#entity-preferences}
@@ -1687,42 +1806,163 @@ Car {#entity-car}
 
 Das Objekt beschreibt das Fahrzeug.
 
-  ------------------------------------------------------------------------------------------------------------------------
-  Name                    Typ                                Beschreibung
-  ----------------------- ---------------------------------- -------------------------------------------------------------
-  `id`                    url                                
+  ---------------------------------------------------------------------------------------------------------------------------------------------
+  Name                        Typ                                      Beschreibung
+  --------------------------- ---------------------------------------- ------------------------------------------------------------------------
+  `id`                        url                                      
 
-  `type`                  string                             
+  `type`                      string                                   
 
-  `created`               date-time                          Zeitpunkt der Erstellung.
+  `created`                   date-time                                Zeitpunkt der Erstellung.
 
-  `modified`              date-time                          Zeitpunkt der letzten Änderung.
+  `modified`                  date-time                                Zeitpunkt der letzten Änderung.
 
-  `trip`                  array of url (Trip)                Mitfahrgelegenheiten, in welchem das Fahrzeug eingesetzt
-                                                             wird.
+  `trip`                      array of url (Trip)                      Mitfahrgelegenheiten, in welchem das Fahrzeug eingesetzt wird.
 
-  `singleTrip`            array of url (SingleTrip)          Instanzierte Mitfahrgelegenheiten, in welchem das Fahrzeug
-                                                             eingesetzt wird.
+  `singleTrip`                array of url (SingleTrip)                Instanzierte Mitfahrgelegenheiten, in welchem das Fahrzeug eingesetzt
+                                                                       wird.
 
-  `owner`                 url (Person)                       Besitzer des Fahrzeugs.
+  `owner`                     url (Person)                             Besitzer des Fahrzeugs.
 
-  `carClass`              string                             Art des Fahrzeugs. Hierbei SOLLTE die aus Buchstaben
-                                                             bestehende Klassifizierung verwendet werden, welche in der
-                                                             Verordnung 1400/2002 der EU-Komission beschrieben wird.
+  `carClass`                  string                                   Art des Fahrzeugs. Hierbei SOLLTE die aus Buchstaben bestehende
+                                                                       Klassifizierung verwendet werden, welche in der Verordnung 1400/2002 der
+                                                                       EU-Komission beschrieben wird.
 
-  `capacity`              integer                            Anzahl der Sitze.
+  `capacity`                  integer                                  Anzahl der Sitze inkl. Fahrersitz.
 
-  `color`                 string                             Farbe des Fahrzeugs. Der Wert SOLLTE klein geschrieben und in
-                                                             englisch angegeben werden.
+  `color`                     string                                   Farbe des Fahrzeugs. Der Wert SOLLTE klein geschrieben und in englisch
+                                                                       angegeben werden.
 
-  `year`                  integer                            Baujahr des Fahrzeugs.
+  `year`                      integer                                  Baujahr des Fahrzeugs.
 
-  `manufacturer`          string                             Hersteller des Fahrzeugs.
+  `manufacturer`              string                                   Hersteller des Fahrzeugs.
 
-  `model`                 string                             Modell des Fahrzeugs.
+  `model`                     string                                   Modell des Fahrzeugs.
 
-  `licencePlate`          string                             Nummernschild des Fahrzeugs.
-  ------------------------------------------------------------------------------------------------------------------------
+  `licencePlate`              string                                   Nummernschild des Fahrzeugs.
+
+  `vin`                       string                                   Vehicle Identification Number.
+
+  `luggageSuitcaseCapacity`   integer                                  Gepäckkapazität, in großen Koffern gemessen.
+  ---------------------------------------------------------------------------------------------------------------------------------------------
+
+Sucherweiterung
+===============
+
+Die `ridesharing.api` ist konzipiert, um volle Datenbestände abzurufen
+und aktuell zu halten. Hintergrund ist, dass nur mit dem Vorliegen aller
+Daten wünschenswerte Features wie multimodales Routing umgesetzt werden
+können. Daher wird empfohlen, immer diesen Weg bereitzustellen.
+
+Da zum Beispiel aber bei Browserabfragen lediglich ein
+nutzerspezifisches Subset an Informationen gebraucht wird, soll im
+Folgenden skiziert werden, wie man leicht auf dem `ridesharing.api`
+Datenmodell Abfragen erstellen kann.
+
+Suchanfrage
+-----------
+
+In den allermeisten Fällen wird nach einem `SingleTrip` gesucht, da
+üblicherweise eine spezifische Fahrt von A nach B gesucht wird. Darüber
+hinaus wird im Fall von regelmäßigen Fahrten ein abstrakterer `Trip`
+gesucht. Die Suchanfragen unterscheiden sich wie bei `SingleTrip` vs.
+`Trip` vor allem darin, dass beim `SingleTrip` eine konkrete Abfahrtzeit
+gesucht wird, beim `Trip` dagegen aber ein sich wiederholendes Muster
+wie z.B. "jeden Wochentag 7:00 Uhr".
+
+Unsere Such-API muss also für beide Basis-Objekte funktionieren, was
+angesichts der Ähnlichkeit beider Objekte recht einfach ist.
+
+Um eine Suche zu starten, muss ein mit den Wünschen des Anfragenden
+ausgefüllter `Trip` bzw. `SingleTrip` an den Server gesendet werden.
+Relevant bei dieser Anfrage sind zudem die `Stop`s bzw. `SingleStop`s
+und ihre dazugehörigen `Location` bzw `SingleLocation`.
+
+Um alles in einen Request zu verpacken, wird die in Kapitel 2.5.3
+dokumentierte interne Ausgabe von Objekten verwendet. Eine so aufgebaute
+Suchanfrage sähe zum Beispiel also wie folgt aus:
+
+``` {#search_request_1.json}
+{
+    "type": "https://schema.ridesharing-api.org/1.0/SingleTrip",
+    "nonsmoking": true,
+    "singleStop": [
+        {
+            "type": "https://schema.ridesharing-api.org/1.0/Stop",
+            "departure": "2019-03-14T15:09:26",
+            "singleLocation": {
+                "streetAddress": "Am Geldspeicher 10",
+                "postalCode": "12354",
+                "locality": "Entenhausen"
+            }
+        },
+        {
+            "type": "https://schema.ridesharing-api.org/1.0/Stop",
+            "singleLocation": {
+                "streetAddress": "Am großen Pilz 5", 
+                "postalCode": "54321",
+                "locality": "Schlumpfhausen"
+            }
+        }
+    ]
+}
+```
+
+Ebenfalls möglich ist eine Suche über Längen- und Breitengrad:
+
+``` {#search_request_1.json}
+{
+    "type": "https://schema.ridesharing-api.org/1.0/SingleTrip",
+    "nonsmoking": true,
+    "singleStop": [
+        {
+            "type": "https://schema.ridesharing-api.org/1.0/Stop",
+            "departure": "2019-03-14T15:09:26",
+            "singleLocation": {
+                "geojson": {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [49, 09]
+                    }
+                }
+            }
+        },
+        {
+            "type": "https://schema.ridesharing-api.org/1.0/Stop",
+            "singleLocation": {
+                "geojson": {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [50, 10]
+                    }
+                }
+            }
+        }
+    ]
+}
+```
+
+Dieselbe Art der Anfrage ist auch auf `Trip` mäglich und lässt sich
+beliebig durch Zusätze a la `Calendar` zur Definition von regelmäßigen
+Fahrten erweitern.
+
+Suchantwort
+-----------
+
+Eine Antwort auf eine Suchanfrage findet ebenfalls als Trip bzw
+SingleTrip mit intern ausgegebenen Objekten statt. Da die Ausgabe zu
+100% der normalen `ridesharing.api` Ausgabe enstpricht, verzichten wir
+hier auf ein Beispiel.
+
+Wenn mit der Suchabfrage mehrere Server abgefragt werden, so wird es
+zwangsweise zu sehr unterschiedlichen Ergebnissen kommen: jeder Dienst
+wird eine andere Form der Georeferenzierung und der Priorisierung haben.
+Diese zwangsweise auftretende Ungenauigkeit sollte beim Entwicklen
+berücksichtigt werden und als Empfehlung zum vollständigen Bereitstellen
+der Daten verstanden werden: nur so lassen sich konsistente
+Suchergebnisse erzeugen.
 
 [^1]: RFC2119 <http://tools.ietf.org/html/rfc2119>
 
